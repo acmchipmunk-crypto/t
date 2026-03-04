@@ -2882,42 +2882,61 @@ let busLine = isFit ? "" : `\nbus no : ${busNo}`;
 
 
 
-                                   if(g.langContext === 'CN') {
+                        if(g.langContext === 'CN') {
 
                 langTag = "";
 
-                let pickupTime = "";
+                msgText = `[${dayLabel}/- ${guideName}]\n${groupLine}${seatLine}\n1. 退房 (11:00 前)\n*行李寄放一楼大厅 \n⚠️ 迟交罚款 : 10,000 / 30分\n\n2. Klook 休息室 (10:00)\n👉 付款 & 领取缆车票 \n\n${step3_CN}\n\n${priceList_CN}`;
 
-                if (loc.includes('홍대')) { pickupInfo = `❗️${tH} 弘大入口站 8號出口`; pickupTime = tH; } 
+            } else {
 
-                else if (loc.includes('명동')) { pickupInfo = `❗️${tM} 明洞站 3號出口`; pickupTime = tM; } 
+                langTag = "";
 
-                else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} 東大門歷史文化公園站 11號出口`; pickupTime = tD; } 
+                msgText = `[${dayLabel}/Return Guide - ${guideName}]\n${groupLine}${seatLine}\n1. Check-out (Until 11:00)\n*Leave bags at Lobby\n⚠️ Late Penalty: 10,000 KRW / 30min\n\n2. Klook Lounge (10:00)\n👉 Payment & Get Lift Card\n\n${step3_EN}\n\n${priceList_EN}`;
 
-                else { pickupInfo = `❗️${tH} 弘대 8번 / ❗️${tM} 명동 3번 / ❗️${tD} 동대문 11번`; pickupTime = `${tH} / ${tM} / ${tD}`; }
+            }
+
+
+        } 
+
+        else {
+
+             let pickupInfo = ""; let loc = g.location ? g.location.trim() : "";
+
+             
+
+             if(g.langContext === 'CN') {
+
+                langTag = "";
+
+                if (loc.includes('홍대')) { pickupInfo = `❗️${tH} 弘大入口站 8號出口`; } 
+
+                else if (loc.includes('명동')) { pickupInfo = `❗️${tM} 明洞站 3號出口`; } 
+
+                else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} 東大門歷史文化公園站 11號出口`; } 
+
+                else { pickupInfo = `❗️${tH} 弘대 8번 / ❗️${tM} 명동 3번 / ❗️${tD} 동대문 11번`; }
 
                 
 
-                msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n*為了避開交通堵塞，我們會準時出發。\n*遲到恕不退款。\n*車內只允許飲用白水。\n*不包含餐費。\n\n👉 如果收到信息，麻煩回覆 “我會在 ${pickupTime} 準備好出發”, 讓我們知道噢,謝謝😊。\n大巴號: ${busNo}\n家庭號: ${g.repNum}\n座位號: ${seatStr}`;
+                msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n*為了避開交通堵塞，我們會準時出發。\n*遲到恕不退款。\n*車內只允許飲用白水。\n*不包含餐費。\n\n👉 如果收到信息，麻煩回覆 “您所了解的出發時間”, 讓我們知道噢,謝謝😊。\n大巴號: ${busNo}\n家庭號: ${g.repNum}\n座位號: ${seatStr}`;
 
 
             } else {
 
                 langTag = "";
 
-                let pickupTime = "";
+                if (loc.includes('홍대') || loc.includes('Hongik')) { pickupInfo = `❗️${tH} Hongik Univ.s.t Exit 8`; } 
 
-                if (loc.includes('홍대') || loc.includes('Hongik')) { pickupInfo = `❗️${tH} Hongik Univ.s.t Exit 8`; pickupTime = tH; } 
+                else if (loc.includes('명동') || loc.includes('Myeongdong')) { pickupInfo = `❗️${tM} Myeongdong s.t Exit 3`; } 
 
-                else if (loc.includes('명동') || loc.includes('Myeongdong')) { pickupInfo = `❗️${tM} Myeongdong s.t Exit 3`; pickupTime = tM; } 
+                else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} Dongdaemun History Culture park s.t Exit 11`; } 
 
-                else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} Dongdaemun History Culture park s.t Exit 11`; pickupTime = tD; } 
-
-                else { pickupInfo = `❗️${tH} Hongik Univ. Exit 8 / ❗️${tM} Myeongdong Exit 3 / ❗️${tD} Dongdaemun History & Culture Park Station Exit 11`; pickupTime = `${tH} / ${tM} / ${tD}`; }
+                else { pickupInfo = `❗️${tH} Hongik Univ. Exit 8 / ❗️${tM} Myeongdong Exit 3 / ❗️${tD} Dongdaemun History & Culture Park Station Exit 11`; }
 
                 
 
-                msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n\n*We depart early to avoid traffic.\n*There is no refund if you are late.\n*Only water is allowed on the bus.\n*Meals are not included.\n\n👉 Reply "I will be ready to leave at ${pickupTime}"\nbus no : ${busNo}\nGroup: ${g.repNum}\nSeat: ${seatStr}`;
+                msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n\n*We depart early to avoid traffic.\n*There is no refund if you are late.\n*Only water is allowed on the bus.\n*Meals are not included.\n\n​👉 Reply "departure time you understood"\nbus no : ${busNo}\nGroup: ${g.repNum}\nSeat: ${seatStr}`;
 
             }
 
