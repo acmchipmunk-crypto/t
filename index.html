@@ -283,7 +283,8 @@
 
   .msg-seats { font-size: 14px; font-weight: bold; color: #d32f2f; margin-top: 4px; }
 
-  .msg-memo-input { width: 100%; margin-top: 5px; border: none; border-bottom: 1px solid #ccc; font-size: 12px; padding: 5px 2px; background: #fafafa; }
+    .msg-memo-input { width: 100%; margin-top: 5px; border: 2px solid #d3d3d3; border-radius: 6px; font-weight: bold; font-size: 12px; padding: 6px 8px; background: #fafafa; box-sizing: border-box; }
+
 
   .option-card-wrapper {
     display: flex;
@@ -3023,7 +3024,7 @@ if (g.paxType === 'D1') extraTags += `<span class="day-tag tag-d1" style="margin
 
 
 
-        card.innerHTML = `
+                card.innerHTML = `
      <div class="msg-check-area">
         <div class="check-box-wrapper"><label class="msg-check-label label-sent">연락함</label><input type="checkbox" class="msg-check-input chk-sent" onchange="updateMsgStatus('${gid}', 'contacted', this.checked, null)" ${isContacted ? 'checked' : ''}></div>
         <div class="check-box-wrapper"><label class="msg-check-label label-connected">연락됨</label><input type="checkbox" class="msg-check-input chk-conn" onchange="updateMsgStatus('${gid}', 'connected', this.checked, null)" ${isConnected ? 'checked' : ''}></div>
@@ -3032,6 +3033,7 @@ if (g.paxType === 'D1') extraTags += `<span class="day-tag tag-d1" style="margin
         <div class="msg-group-row"><span class="msg-group" style="background-color: ${groupBgColor}; color: ${groupTextColor};">${uiGroupNum}</span>${getOriginBadgeHtml(g.originTag)}${langTag}${extraTags}</div>
         <div class="msg-seats">Seat: ${seatStr}</div>
         <div style="font-size: 18px; margin-top: 5px; line-height: 1.4; color: #333;">${namesHtml}</div>
+        <input type="text" class="msg-memo-input" placeholder="메모" value="${memoText}" onchange="updateMsgStatus('${gid}', 'memo', null, this.value)">
         <div class="hidden-msg">${msgText}</div>
     </div>
 
@@ -3044,6 +3046,7 @@ if (g.paxType === 'D1') extraTags += `<span class="day-tag tag-d1" style="margin
     </div>
     ${optionHtml}
 `;
+
 
 
 
