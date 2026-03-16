@@ -244,6 +244,8 @@
 .tag-sight { background-color: #a5d6a7; border: 1px solid white; font-weight:900; color: black; }
 .tag-best { background-color: #ccff00; border: 1px solid white; font-weight:900; color: black; }
 .tag-zip { background-color: #00FFCC; border: 1px solid white; font-weight:900; color: black; }
+.tag-bike { background-color: #FFEB33; border: 1px solid white; font-weight:900; color: black; }
+
 
 
 
@@ -1774,8 +1776,10 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
     let isSled = (line.includes('스노우힐'));
     let isShuttle = (line.includes('셔틀'));
   let isBest = (line.includes('BEST'));
-    let isZip = (line.toLowerCase().includes('zip') || line.includes('집라인'));
+        let isZip = (line.toLowerCase().includes('zip') || line.includes('집라인'));
+    let isBike = (line.includes('지정바이크'));
     let lowerP = productName.toLowerCase();
+
 
 
 
@@ -1825,9 +1829,10 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
       count: count, location: location, note: note,
       country: parsedInfo.country, langContext: langContext, gender: gender, appType: appType, messenger: messengerCol, isGrouped: false,
                         paxType: paxType, isStay: isStay, isBoard: isBoard, isSki: isSki, isNoLesson: isNoLesson,
-            isSancheoneo: !isSkiTour, isHot: isHot, isMoving: isMoving, isChair: isChair, isSightseeing: isSightseeing, isSled: isSled, isShuttle: isShuttle, isBest: isBest, isZip: isZip, email: emailAddr,
+                  isSancheoneo: !isSkiTour, isHot: isHot, isMoving: isMoving, isChair: isChair, isSightseeing: isSightseeing, isSled: isSled, isShuttle: isShuttle, isBest: isBest, isZip: isZip, isBike: isBike, email: emailAddr,
 
       originTag: originTag, 
+
 
 
 
@@ -1944,10 +1949,13 @@ function createGroupsFromEntries(entries) {
                         memberSightseeingList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isSightseeing)),
             isShuttle: currentGroupMembers.some(m => m.isShuttle),
             memberShuttleList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isShuttle)),
-            isZip: currentGroupMembers.some(m => m.isZip),
+                        isZip: currentGroupMembers.some(m => m.isZip),
             memberZipList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isZip)),
+            isBike: currentGroupMembers.some(m => m.isBike),
+            memberBikeList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isBike)),
 
                         isSkiTour: currentGroupMembers.some(m => !m.isSancheoneo),
+
 
                         email: rep.email,
             originTag: combinedOrigin, 
@@ -2205,8 +2213,10 @@ raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
 
                 let individualShuttle = (grp.memberShuttleList && grp.memberShuttleList[i]) ? true : false;
                                 let individualSled = (grp.memberSledList && grp.memberSledList[i]) ? true : false;
-                let individualSight = (grp.memberSightseeingList && grp.memberSightseeingList[i]) ? true : false;
+                                let individualSight = (grp.memberSightseeingList && grp.memberSightseeingList[i]) ? true : false;
                 let individualZip = (grp.memberZipList && grp.memberZipList[i]) ? true : false;
+                let individualBike = (grp.memberBikeList && grp.memberBikeList[i]) ? true : false;
+
 
                 // 해당 좌석(seatNum)에 개별 속성을 부여하여 셔틀 손님에게 보드 마크가 붙지 않게 합니다.
 
@@ -2222,10 +2232,12 @@ raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
 
 
                                         isShuttle: individualShuttle,
-                    isSled: individualSled,
+                                        isSled: individualSled,
                     isSightseeing: individualSight,
-                    isZip: individualZip
+                    isZip: individualZip,
+                    isBike: individualBike
                 }; 
+
 
 
 
@@ -2652,8 +2664,10 @@ if (data.isShuttle) tagsHtml += `<span class="day-tag tag-shuttle">셔</span>`;
 if (data.isSled) tagsHtml += `<span class="day-tag tag-sled">썰</span>`;
 if (data.isSightseeing) tagsHtml += `<span class="day-tag tag-sight">관</span>`;
 if (data.isZip) tagsHtml += `<span class="day-tag tag-zip">Z</span>`;
+if (data.isBike) tagsHtml += `<span class="day-tag tag-bike">지</span>`;
 
     if (data.paxType === 'D1') tagsHtml += `<span class="day-tag tag-d1">D1</span>`;
+
 
 
 
@@ -2993,9 +3007,11 @@ if (g.paxType === 'D1') extraTags += `<span class="day-tag tag-d1" style="margin
         if (g.paxType === 'D2') extraTags += `<span class="day-tag tag-d2" style="margin-left:5px;">[D2]</span>`;
 
 
-                if (g.paxType === 'D3') extraTags += `<span class="day-tag tag-d3" style="margin-left:5px;">[D3]</span>`;
+                     if (g.paxType === 'D3') extraTags += `<span class="day-tag tag-d3" style="margin-left:5px;">[D3]</span>`;
 
 if (g.isZip) extraTags += `<span class="day-tag tag-zip" style="margin-left:5px;">Z</span>`;
+if (g.isBike) extraTags += `<span class="day-tag tag-bike" style="margin-left:5px;">지</span>`;
+
         
 
         let emailBtnHtml = g.email ? `<div class="btn-action btn-copy-mail" onclick="copyAndOpen(this, '${g.email}', 'mail')">Mail<br>Copy</div>` : "";
