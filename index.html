@@ -874,7 +874,7 @@
 </div>
 
 <div id="railbikePanel">
-    <div class="rb-header">🚲 강촌 레일바이크 모드</div>
+    <div class="rb-header">🚲  레일바이크 모드</div>
     <div class="rb-controls">
         <button id="btnRb4" class="rb-btn rb-btn-4" onclick="toggleBikeMode(4)">🚲 4인승 지정</button>
         <button id="btnRb2" class="rb-btn rb-btn-2" onclick="toggleBikeMode(2)">🚲 2인승 지정</button>
@@ -4142,13 +4142,14 @@ function handleNoShow() {
 }
 
  function checkRailbikeMode(raw) {
-    if (raw.includes('강촌')) {
+    if (raw.includes('강촌') || raw.includes('가평')) {
         document.getElementById('railbikePanel').style.display = 'block';
     } else {
         document.getElementById('railbikePanel').style.display = 'none';
         resetBikeGroups();
     }
 }
+
 
 function toggleBikeMode(type) {
     if (activeBikeType === type) {
@@ -4424,7 +4425,7 @@ function loadBikeGroups() {
     currentBikeSeats = [];
     
     let raw = document.getElementById('rawData').value;
-    if (raw.includes('강촌')) {
+    if (raw.includes('강촌') || raw.includes('가평')) {
         document.getElementById('railbikePanel').style.display = 'block';
     } else {
         document.getElementById('railbikePanel').style.display = 'none';
@@ -4432,6 +4433,7 @@ function loadBikeGroups() {
     
     updateBikeVisuals();
 }
+
 
 </script>
 
