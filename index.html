@@ -614,6 +614,33 @@
 #floatingBackBtn:active { transform: scale(0.95); }
 
 #resetPwBtn { margin-top: 30px; padding: 10px 20px; background: #757575; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.bus-grid { position: relative; }
+#railbikePanel { background: #e0f7fa; border: 2px solid #00bcd4; border-radius: 12px; padding: 10px; margin-bottom: 10px; display: none; }
+.rb-header { font-size: 16px; font-weight: 900; color: #00838f; margin-bottom: 8px; text-align: center; }
+.rb-controls { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px; margin-bottom: 10px; }
+.rb-btn { padding: 6px 2px; font-size: 11px; font-weight: 900; border: 2px solid transparent; border-radius: 6px; cursor: pointer; transition: all 0.2s; text-align: center; word-break: keep-all; line-height: 1.2; }
+.rb-btn-4 { background: #ffffff; color: #ff9800; border-color: #ff9800; }
+.rb-btn-4.active { background: #ff9800; color: #ffffff; transform: scale(0.95); box-shadow: inset 0 3px 6px rgba(0,0,0,0.3); }
+.rb-btn-2 { background: #ffffff; color: #00bfa5; border-color: #00bfa5; }
+.rb-btn-2.active { background: #00bfa5; color: #ffffff; transform: scale(0.95); box-shadow: inset 0 3px 6px rgba(0,0,0,0.3); }
+.rb-btn-reset { background: #ffebee; color: #f44336; border-color: #ef9a9a; font-size: 10px; }
+.rb-btn-undo { background: #f5f5f5; color: #757575; border-color: #e0e0e0; font-size: 10px; }
+
+.rb-stats { display: flex; gap: 8px; justify-content: center; margin-bottom: 12px; }
+.rb-stat-box { flex: 1; padding: 12px 5px; border-radius: 8px; font-size: 16px; font-weight: 900; text-align: center; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.rb-stat-box-4 { background: linear-gradient(135deg, #ffb74d, #f57c00); }
+.rb-stat-box-2 { background: linear-gradient(135deg, #4db6ac, #00897b); }
+.rb-stat-box-unassigned { background: linear-gradient(135deg, #f5f5f5, #bdbdbd); color: #333; }
+
+.rb-badge { position: absolute; color: white; font-size: 12px; font-weight: 900; padding: 4px 6px; border-radius: 6px; z-index: 25; box-shadow: 0 2px 4px rgba(0,0,0,0.5); border: 1px solid white; text-shadow: 1px 1px 1px black; transform: translate(-50%, -50%); opacity: 0.7; }
+
+.rb-badge-4 { background: #ff9800; }
+.rb-badge-2 { background: #00bfa5; }
+.rb-line { position: absolute; z-index: 15; transform-origin: 0 50%; pointer-events: none; opacity: 0.5; }
+.rb-dot { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 14px; height: 14px; border-radius: 50%; z-index: 12; pointer-events: none; }
+
+.rb-dot-4 { background-color: rgba(255, 152, 0, 0.4); }
+.rb-dot-2 { background-color: rgba(0, 191, 165, 0.4); }
 
 </style>
 
@@ -845,6 +872,23 @@
     <div class="bus-grid" id="busGrid2"></div>
   </div>
 </div>
+
+<div id="railbikePanel">
+    <div class="rb-header">🚲 강촌 레일바이크 모드</div>
+    <div class="rb-controls">
+        <button id="btnRb4" class="rb-btn rb-btn-4" onclick="toggleBikeMode(4)">🚲 4인승 지정</button>
+        <button id="btnRb2" class="rb-btn rb-btn-2" onclick="toggleBikeMode(2)">🚲 2인승 지정</button>
+        <button class="rb-btn rb-btn-undo" onclick="undoBikeGroup()">↩️ 한번 되돌리기</button>
+        <button class="rb-btn rb-btn-reset" onclick="if(confirm('지정된 바이크를 모두 초기화하시겠습니까?')) resetBikeGroups()">🗑️ 바이크지정 초기화</button>
+    </div>
+    <div class="rb-stats">
+        <div class="rb-stat-box rb-stat-box-4">4인승: <span id="countRb4">0</span>대</div>
+        <div class="rb-stat-box rb-stat-box-2">2인승: <span id="countRb2">0</span>대</div>
+        <div class="rb-stat-box rb-stat-box-unassigned">미지정: <span id="countRbUnassigned">0</span>명</div>
+    </div>
+</div>
+
+
 
 
 <div class="v11-card" style="background: #fff9c4; border: 1px solid #fbc02d;">
@@ -1137,6 +1181,9 @@ let priorityQueue = [];
 let audioCtx = null;
 let lpTimer = null; // 롱프레스 타이머
 let lpTarget = null; // 롱프레스 대상 정보
+let activeBikeType = 0;
+let currentBikeSeats = [];
+let bikeGroups = [];
 
 let currentActiveRoom = '';
 let currentScreenMode = 'entry'; 
@@ -1268,17 +1315,14 @@ function loadAllDataForRoom() {
     loadGuideName(); 
     document.getElementById('specialNotice').value = localStorage.getItem(lsKey('bus_specialNotice')) || "";
 
-    const savedTimes = JSON.parse(localStorage.getItem(lsKey('bus_times')) || '{}');
+        const savedTimes = JSON.parse(localStorage.getItem(lsKey('bus_times')) || '{}');
     if(savedTimes.h) document.getElementById('timeHongdae').value = savedTimes.h;
     if(savedTimes.m) document.getElementById('timeMyeongdong').value = savedTimes.m;
     if(savedTimes.d) document.getElementById('timeDongdaemun').value = savedTimes.d;
     
     loadSeatMap();
+    loadBikeGroups();
 }
-
-
-
-
 
 
 // =========================================
@@ -2057,6 +2101,9 @@ function runAI() {
 
     let raw = document.getElementById('rawData').value;
 
+    checkRailbikeMode(raw);
+
+
 
     // 따옴표 안에 있는 줄바꿈(\r\n) 뿐만 아니라 탭(\t)도 공백으로 바꿔서 칸 밀림 방지
 raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
@@ -2310,11 +2357,13 @@ raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
 
 
 
-    saveSeatMap(); redrawAll(busSize, isFit); // [수정] isFit 전달
+        saveSeatMap(); redrawAll(busSize, isFit); // [수정] isFit 전달
 
     renderMessages(msgListGroups, currentSeatMap1, currentSeatMap2, isFit); // [수정] isFit 전달
 
+    updateBikeVisuals();
 }
+
 
 
 
@@ -2683,6 +2732,10 @@ if (data.isBike) tagsHtml += `<span class="day-tag tag-bike">지</span>`;
 
 
 function handleSeatClick(el, busNum, seatIdx, busSize) {
+    if (activeBikeType > 0) {
+        handleBikeSeatClick(busNum, seatIdx, el);
+        return;
+    }
 
     if(selectedSeat.idx === -1) { 
 
@@ -2714,11 +2767,25 @@ function handleSeatClick(el, busNum, seatIdx, busSize) {
 
         }
 
+        bikeGroups.forEach(group => {
+            group.seats.forEach(s => {
+                if (s.busNum === sourceBus) {
+                    if (s.seatIdx === sourceIdx) {
+                        s.seatIdx = targetIdx;
+                    } else if (s.seatIdx === targetIdx) {
+                        s.seatIdx = sourceIdx;
+                    }
+                }
+            });
+        });
+        saveBikeGroups();
+
         resetSelection(); refreshDisplay();
 
     }
 
 }
+
 
 
 
@@ -2787,15 +2854,18 @@ function refreshDisplay() {
 
 
 
-    saveSeatMap(); 
+        saveSeatMap(); 
 
     redrawAll(busSize, isFit); 
 
     renderMessages(msgListGroups, currentSeatMap1, currentSeatMap2, isFit);
 
+    updateBikeVisuals();
+
     window.scrollTo(0, scrollY);
 
 }
+
 
 
 
@@ -3449,11 +3519,13 @@ function syncToServer() {
             'bus_size': localStorage.getItem(currentActiveRoom + '_bus_size') || '44',
             'bus_times': localStorage.getItem(currentActiveRoom + '_bus_times') || '{}',
             'bus_guideName': localStorage.getItem(currentActiveRoom + '_bus_guideName') || '',
-            'bus_number': localStorage.getItem(currentActiveRoom + '_bus_number') || '',
+                  'bus_number': localStorage.getItem(currentActiveRoom + '_bus_number') || '',
             'bus_specialNotice': localStorage.getItem(currentActiveRoom + '_bus_specialNotice') || '',
-            'bus_msgStatus': localStorage.getItem(currentActiveRoom + '_bus_msgStatus') || '{}'
+            'bus_msgStatus': localStorage.getItem(currentActiveRoom + '_bus_msgStatus') || '{}',
+            'bus_bikeGroups': localStorage.getItem(currentActiveRoom + '_bus_bikeGroups') || '[]'
         };
         google.script.run.saveSkiTourData(currentActiveRoom, JSON.stringify(roomData));
+
     }, 1500);
 }
 
@@ -3554,13 +3626,17 @@ function loadGuideName() { const savedGuide = localStorage.getItem(lsKey('bus_gu
 
 function clearData() {
     if(confirm('초기화하시겠습니까?')) {
+        resetBikeGroups();
         document.getElementById('rawData').value = '';
-        document.querySelector('input[name="busSize"][value="44"]').checked = true;
+
+                document.querySelector('input[name="busSize"][value="44"]').checked = true;
         localStorage.removeItem(lsKey('bus_rawData'));
         localStorage.removeItem(lsKey('bus_size'));
         localStorage.removeItem(lsKey('bus_seatMap'));
         localStorage.removeItem(lsKey('bus_msgStatus'));
+        localStorage.removeItem(lsKey('bus_bikeGroups'));
         currentSeatMap1 = [];
+
         currentSeatMap2 = [];
         msgListGroups = [];
         priorityQueue = [];
@@ -4065,7 +4141,298 @@ function handleNoShow() {
     }
 }
 
- 
+ function checkRailbikeMode(raw) {
+    if (raw.includes('강촌')) {
+        document.getElementById('railbikePanel').style.display = 'block';
+    } else {
+        document.getElementById('railbikePanel').style.display = 'none';
+        resetBikeGroups();
+    }
+}
+
+function toggleBikeMode(type) {
+    if (activeBikeType === type) {
+        activeBikeType = 0;
+        document.getElementById('btnRb' + type).classList.remove('active');
+        currentBikeSeats = [];
+    } else {
+        activeBikeType = type;
+        document.getElementById('btnRb4').classList.remove('active');
+        document.getElementById('btnRb2').classList.remove('active');
+        document.getElementById('btnRb' + type).classList.add('active');
+        currentBikeSeats = [];
+    }
+    updateBikeVisuals();
+}
+
+function handleBikeSeatClick(busNum, seatIdx, el) {
+    if (seatIdx === 1) {
+        if (currentBikeSeats.length > 0) {
+            completeBikeGroup();
+        }
+        return;
+    }
+    let alreadyIn = currentBikeSeats.findIndex(s => s.seatIdx === seatIdx && s.busNum === busNum);
+    if (alreadyIn > -1) return;
+    
+    currentBikeSeats.push({ busNum: busNum, seatIdx: seatIdx });
+    updateBikeVisuals();
+    
+    if (currentBikeSeats.length === activeBikeType) {
+        completeBikeGroup();
+    }
+}
+
+function completeBikeGroup() {
+    if (currentBikeSeats.length === 0) return;
+    bikeGroups.push({
+        type: activeBikeType,
+        seats: [...currentBikeSeats]
+    });
+    currentBikeSeats = [];
+    updateBikeVisuals();
+    saveBikeGroups();
+}
+
+
+function undoBikeGroup() {
+    if (bikeGroups.length > 0) {
+        bikeGroups.pop();
+        currentBikeSeats = [];
+        updateBikeVisuals();
+        saveBikeGroups();
+    }
+}
+
+
+function resetBikeGroups() {
+    bikeGroups = [];
+    currentBikeSeats = [];
+    activeBikeType = 0;
+    document.getElementById('btnRb4').classList.remove('active');
+    document.getElementById('btnRb2').classList.remove('active');
+    updateBikeVisuals();
+    saveBikeGroups();
+}
+
+
+function updateBikeVisuals() {
+    document.querySelectorAll('.rb-badge').forEach(e => e.remove());
+    document.querySelectorAll('.rb-line').forEach(e => e.remove());
+    document.querySelectorAll('.rb-dot').forEach(e => e.remove());
+    
+    document.querySelectorAll('.seat').forEach(el => {
+        el.style.border = '';
+        el.style.boxShadow = '';
+        if (el.classList.contains('empty')) {
+            el.style.border = '2px dashed #ddd';
+        } else if (el.classList.contains('synced-general')) {
+            el.style.border = '1px solid #bdbdbd';
+        } else if (el.classList.contains('boarded')) {
+            el.style.border = '2px solid #333';
+        } else {
+            el.style.border = '1px solid rgba(0,0,0,0.1)';
+            el.style.boxShadow = '1px 2px 3px rgba(0,0,0,0.1)';
+        }
+    });
+
+    let count4 = 0;
+    let count2 = 0;
+
+    bikeGroups.forEach(group => {
+        let badgeNum = 0;
+        let color = '';
+        let badgeClass = '';
+        let dotClass = '';
+        if (group.type === 4) {
+            count4++;
+            badgeNum = count4;
+            color = '#ff9800';
+            badgeClass = 'rb-badge-4';
+            dotClass = 'rb-dot-4';
+        } else {
+            count2++;
+            badgeNum = count2;
+            color = '#00bfa5';
+            badgeClass = 'rb-badge-2';
+            dotClass = 'rb-dot-2';
+        }
+
+                        let validSeats = 0;
+        let grid = null;
+        let dotsPos = [];
+
+        for (let i = 0; i < group.seats.length; i++) {
+            let s = group.seats[i];
+            let domEl = document.querySelector(`#busGrid${s.busNum} .seat[data-idx="${s.seatIdx}"]`);
+            if (domEl) {
+                let dot = document.createElement('div');
+                dot.className = `rb-dot ${dotClass}`;
+                domEl.appendChild(dot);
+
+                if (!grid) grid = document.getElementById(`busGrid${s.busNum}`);
+                let gridRect = grid.getBoundingClientRect();
+                let rect = domEl.getBoundingClientRect();
+                let cx = rect.left + rect.width / 2 - gridRect.left;
+                let cy = rect.top + rect.height / 2 - gridRect.top;
+                dotsPos.push({x: cx, y: cy});
+                validSeats++;
+
+                if (i > 0) {
+                    let prev = group.seats[i - 1];
+                    let prevEl = document.querySelector(`#busGrid${prev.busNum} .seat[data-idx="${prev.seatIdx}"]`);
+                    if (prevEl && prev.busNum === s.busNum) {
+                        drawLineBetween(prevEl, domEl, color, s.busNum, false);
+                    }
+                }
+            }
+        }
+
+        if (validSeats > 0 && grid) {
+            let centerX, centerY;
+            if (dotsPos.length > 1) {
+                let totalLength = 0;
+                let segments = [];
+                for (let j = 0; j < dotsPos.length - 1; j++) {
+                    let p1 = dotsPos[j];
+                    let p2 = dotsPos[j + 1];
+                    let dist = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+                    segments.push({ p1: p1, p2: p2, dist: dist });
+                    totalLength += dist;
+                }
+                
+                let targetLength = totalLength / 2;
+                let currentLength = 0;
+                
+                for (let j = 0; j < segments.length; j++) {
+                    let seg = segments[j];
+                    if (currentLength + seg.dist >= targetLength) {
+                        let remain = targetLength - currentLength;
+                        let ratio = seg.dist === 0 ? 0 : remain / seg.dist;
+                        centerX = seg.p1.x + (seg.p2.x - seg.p1.x) * ratio;
+                        centerY = seg.p1.y + (seg.p2.y - seg.p1.y) * ratio;
+                        break;
+                    }
+                    currentLength += seg.dist;
+                }
+            } else {
+                centerX = dotsPos[0].x;
+                centerY = dotsPos[0].y;
+            }
+            let badge = document.createElement('div');
+            badge.className = `rb-badge ${badgeClass}`;
+            badge.innerText = badgeNum + '호';
+            badge.style.left = centerX + 'px';
+            badge.style.top = centerY + 'px';
+            grid.appendChild(badge);
+        }
+
+
+
+    });
+
+        for (let i = 0; i < currentBikeSeats.length; i++) {
+        let s = currentBikeSeats[i];
+        let color = activeBikeType === 4 ? '#ff9800' : '#00bfa5';
+        let dotClass = activeBikeType === 4 ? 'rb-dot-4' : 'rb-dot-2';
+        let domEl = document.querySelector(`#busGrid${s.busNum} .seat[data-idx="${s.seatIdx}"]`);
+        if (domEl) {
+            let dot = document.createElement('div');
+            dot.className = `rb-dot ${dotClass}`;
+            domEl.appendChild(dot);
+
+            if (i > 0) {
+                let prev = currentBikeSeats[i - 1];
+                let prevEl = document.querySelector(`#busGrid${prev.busNum} .seat[data-idx="${prev.seatIdx}"]`);
+                if (prevEl && prev.busNum === s.busNum) {
+                    drawLineBetween(prevEl, domEl, color, s.busNum, true);
+                }
+            }
+        }
+    }
+
+    let totalPeople = 0;
+    for (let i = 1; i < currentSeatMap1.length; i++) {
+        if (currentSeatMap1[i]) {
+            totalPeople++;
+        }
+    }
+    
+    let assignedPeople = 0;
+    bikeGroups.forEach(group => {
+        assignedPeople += group.seats.length;
+    });
+    assignedPeople += currentBikeSeats.length;
+    
+    let unassignedPeople = totalPeople - assignedPeople;
+    if (unassignedPeople < 0) {
+        unassignedPeople = 0;
+    }
+
+    document.getElementById('countRb4').innerText = count4;
+    document.getElementById('countRb2').innerText = count2;
+    document.getElementById('countRbUnassigned').innerText = unassignedPeople;
+}
+
+
+function drawLineBetween(el1, el2, color, busNum, isDash) {
+    let grid = document.getElementById(`busGrid${busNum}`);
+    let gridRect = grid.getBoundingClientRect();
+    let rect1 = el1.getBoundingClientRect();
+    let rect2 = el2.getBoundingClientRect();
+
+    let x1 = rect1.left + rect1.width / 2 - gridRect.left;
+    let y1 = rect1.top + rect1.height / 2 - gridRect.top;
+    let x2 = rect2.left + rect2.width / 2 - gridRect.left;
+    let y2 = rect2.top + rect2.height / 2 - gridRect.top;
+
+    let length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+    let angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+
+    let line = document.createElement('div');
+    line.className = 'rb-line';
+    line.style.width = length + 'px';
+    line.style.height = '4px';
+    if (isDash) {
+        line.style.borderBottom = `4px dashed ${color}`;
+        line.style.backgroundColor = 'transparent';
+    } else {
+        line.style.backgroundColor = color;
+    }
+    line.style.left = x1 + 'px';
+    line.style.top = (y1 - 2) + 'px';
+    line.style.transform = `rotate(${angle}deg)`;
+    grid.appendChild(line);
+}
+function saveBikeGroups() {
+    localStorage.setItem(lsKey('bus_bikeGroups'), JSON.stringify(bikeGroups));
+    syncToServer();
+}
+
+function loadBikeGroups() {
+    const saved = localStorage.getItem(lsKey('bus_bikeGroups'));
+    if (saved) {
+        try {
+            bikeGroups = JSON.parse(saved);
+        } catch(e) {
+            bikeGroups = [];
+        }
+    } else {
+        bikeGroups = [];
+    }
+    activeBikeType = 0;
+    currentBikeSeats = [];
+    
+    let raw = document.getElementById('rawData').value;
+    if (raw.includes('강촌')) {
+        document.getElementById('railbikePanel').style.display = 'block';
+    } else {
+        document.getElementById('railbikePanel').style.display = 'none';
+    }
+    
+    updateBikeVisuals();
+}
+
 </script>
 
 
