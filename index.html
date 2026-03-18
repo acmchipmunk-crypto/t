@@ -901,9 +901,13 @@
     <div class="v11-card">
       <span class="v11-section-label">11. 메시지 발송 & 체크</span>
       <p class="v11-section-desc">손님에게 메시지를 보내고 체크합니다.</p>
+      <div class="v11-btn-group" style="margin-top: 5px;">
+          <button class="btn-run v11-ui-element" style="background: #e65100; color: white; border:none; flex:1;" onclick="copyAllMemos(this)">📋 비고 일괄 복사</button>
+      </div>
     </div>
     <div id="msgList"></div>
 </div>
+
 
 
     <div class="info-text" style="margin-bottom:15px; text-align:center;">Send 버튼을 누르면 WhatsApp이 열립니다.</div>
@@ -1626,6 +1630,21 @@ function copyAndOpen(el, text, schemeKey, encodedText) {
 }
 
 
+function copyAllMemos(btn) {
+    let statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
+    let resultText = "";
+    msgListGroups.forEach(g => {
+        let memoText = statusData[g.repNum]?.memo || "";
+        let countryName = CONFIG.COUNTRY_MAP[g.country] || g.country;
+        let uiGroupNum = g.msgNum.replace(/[a-zA-Z]/g, '');
+        resultText += uiGroupNum + "번팀 (" + g.count + "명)(" + countryName + ")\n[" + memoText + "]\n\n";
+    });
+    if (resultText === "") {
+        alert("복사할 데이터가 없습니다.");
+        return;
+    }
+    copyToClipboard(resultText.trim(), btn);
+}
 
 
 function feedback(el) { if(!el) return; let original = el.innerHTML; el.innerHTML = 'OK!'; setTimeout(() => el.innerHTML = original, 800); }
