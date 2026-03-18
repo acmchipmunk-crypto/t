@@ -4192,6 +4192,10 @@ function handleBikeSeatClick(busNum, seatIdx, el) {
         }
         return;
     }
+    let existingGroupIndex = bikeGroups.findIndex(group => group.seats.some(s => s.seatIdx === seatIdx && s.busNum === busNum));
+    if (existingGroupIndex > -1) {
+        bikeGroups.splice(existingGroupIndex, 1);
+    }
     let alreadyIn = currentBikeSeats.findIndex(s => s.seatIdx === seatIdx && s.busNum === busNum);
     if (alreadyIn > -1) return;
     
@@ -4202,6 +4206,7 @@ function handleBikeSeatClick(busNum, seatIdx, el) {
         completeBikeGroup();
     }
 }
+
 
 function completeBikeGroup() {
     if (currentBikeSeats.length === 0) return;
