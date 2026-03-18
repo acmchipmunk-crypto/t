@@ -245,6 +245,10 @@
 .tag-sight { background-color: #a5d6a7; border: 1px solid white; font-weight:900; color: black; }
 .tag-best { background-color: #ccff00; border: 1px solid white; font-weight:900; color: black; }
 .tag-zip { background-color: #00FFCC; border: 1px solid white; font-weight:900; color: black; }
+.tag-hanbok { background: linear-gradient(135deg, blue, yellow, red); border: 1px solid white; font-weight:900; color: black; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; }
+
+.tag-bike { background-color: #FFEB33; border: 1px solid white; font-weight:900; color: black; }
+
 .tag-bike { background-color: #FFEB33; border: 1px solid white; font-weight:900; color: black; }
 
 
@@ -1895,13 +1899,44 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
     let isMoving = (line.includes('무빙') && !line.includes('리프트'));
     let isChair = (productName.includes('리프트') && !productName.includes('관광'));
 
-    let isSightseeing = (line.includes('관광'));
+     let isSightseeing = (line.includes('관광'));
     let isSled = (line.includes('스노우힐'));
     let isShuttle = (line.includes('셔틀'));
   let isBest = (line.includes('BEST'));
-        let isZip = (line.toLowerCase().includes('zip') || line.includes('집라인'));
+        let isZip = false;
+    let zipCount = 0;
+    let zipMatch = line.match(/Zipwire\s*X\s*(\d+)/i);
+    if (zipMatch) {
+        isZip = true;
+        zipCount = parseInt(zipMatch[1], 10);
+        if (zipCount > count) {
+            alert("[" + name + "]님의 집라인 인원(" + zipCount + "명)이 총 인원(" + count + "명)을 초과했습니다.");
+            zipCount = count;
+        }
+    } else if (line.toLowerCase().includes('zip') || line.includes('집라인') || line.includes('짚라인')) {
+        isZip = true;
+        zipCount = count;
+    }
+
+    let isHanbok = false;
+    let hanbokCount = 0;
+    let hanbokMatch = line.match(/한복체험\s*X\s*(\d+)/i);
+    if (hanbokMatch) {
+        isHanbok = true;
+        hanbokCount = parseInt(hanbokMatch[1], 10);
+        if (hanbokCount > count) {
+            alert("[" + name + "]님의 한복체험 인원(" + hanbokCount + "명)이 총 인원(" + count + "명)을 초과했습니다.");
+            hanbokCount = count;
+        }
+    } else if (line.includes('한복체험') || line.includes('한복')) {
+        isHanbok = true;
+        hanbokCount = count;
+    }
+
     let isBike = (line.includes('지정바이크'));
+
     let lowerP = productName.toLowerCase();
+
 
 
 
@@ -1952,7 +1987,9 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
       count: count, location: location, note: note,
       country: parsedInfo.country, langContext: langContext, gender: gender, appType: appType, messenger: messengerCol, isGrouped: false,
                         paxType: paxType, isStay: isStay, isBoard: isBoard, isSki: isSki, isNoLesson: isNoLesson,
-                  isSancheoneo: !isSkiTour, isHot: isHot, isMoving: isMoving, isChair: isChair, isSightseeing: isSightseeing, isSled: isSled, isShuttle: isShuttle, isBest: isBest, isZip: isZip, isBike: isBike, email: emailAddr,
+                                                                        isSancheoneo: !isSkiTour, isHot: isHot, isMoving: isMoving, isChair: isChair, isSightseeing: isSightseeing, isSled: isSled, isShuttle: isShuttle, isBest: isBest, isZip: isZip, zipCount: zipCount, isHanbok: isHanbok, hanbokCount: hanbokCount, isBike: isBike, email: emailAddr,
+
+
 
       originTag: originTag, 
 
@@ -2072,9 +2109,27 @@ function createGroupsFromEntries(entries) {
                         memberSightseeingList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isSightseeing)),
             isShuttle: currentGroupMembers.some(m => m.isShuttle),
             memberShuttleList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isShuttle)),
-                        isZip: currentGroupMembers.some(m => m.isZip),
-            memberZipList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isZip)),
+                                                                                                isZip: currentGroupMembers.some(m => m.isZip),
+            memberZipList: currentGroupMembers.flatMap(m => {
+                let arr = Array(m.count).fill(false);
+                if (m.isZip) {
+                    let zCount = m.zipCount > 0 ? m.zipCount : m.count;
+                    for(let i=0; i<Math.min(zCount, m.count); i++) arr[i] = true;
+                }
+                return arr;
+            }),
+            isHanbok: currentGroupMembers.some(m => m.isHanbok),
+            memberHanbokList: currentGroupMembers.flatMap(m => {
+                let arr = Array(m.count).fill(false);
+                if (m.isHanbok) {
+                    let hCount = m.hanbokCount > 0 ? m.hanbokCount : m.count;
+                    for(let i=0; i<Math.min(hCount, m.count); i++) arr[i] = true;
+                }
+                return arr;
+            }),
             isBike: currentGroupMembers.some(m => m.isBike),
+
+
             memberBikeList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isBike)),
 
                         isSkiTour: currentGroupMembers.some(m => !m.isSancheoneo),
@@ -2340,8 +2395,10 @@ raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
                 let individualShuttle = (grp.memberShuttleList && grp.memberShuttleList[i]) ? true : false;
                                 let individualSled = (grp.memberSledList && grp.memberSledList[i]) ? true : false;
                                 let individualSight = (grp.memberSightseeingList && grp.memberSightseeingList[i]) ? true : false;
-                let individualZip = (grp.memberZipList && grp.memberZipList[i]) ? true : false;
+                                let individualZip = (grp.memberZipList && grp.memberZipList[i]) ? true : false;
+                let individualHanbok = (grp.memberHanbokList && grp.memberHanbokList[i]) ? true : false;
                 let individualBike = (grp.memberBikeList && grp.memberBikeList[i]) ? true : false;
+
 
 
                 // 해당 좌석(seatNum)에 개별 속성을 부여하여 셔틀 손님에게 보드 마크가 붙지 않게 합니다.
@@ -2359,10 +2416,12 @@ raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
 
                                         isShuttle: individualShuttle,
                                         isSled: individualSled,
-                    isSightseeing: individualSight,
+                                        isSightseeing: individualSight,
                     isZip: individualZip,
+                    isHanbok: individualHanbok,
                     isBike: individualBike
                 }; 
+
 
 
 
@@ -2792,7 +2851,9 @@ if (data.isShuttle) tagsHtml += `<span class="day-tag tag-shuttle">셔</span>`;
 if (data.isSled) tagsHtml += `<span class="day-tag tag-sled">썰</span>`;
 if (data.isSightseeing) tagsHtml += `<span class="day-tag tag-sight">관</span>`;
 if (data.isZip) tagsHtml += `<span class="day-tag tag-zip">Z</span>`;
+if (data.isHanbok) tagsHtml += `<span class="day-tag tag-hanbok">한</span>`;
 if (data.isBike) tagsHtml += `<span class="day-tag tag-bike">지</span>`;
+
 
     if (data.paxType === 'D1') tagsHtml += `<span class="day-tag tag-d1">D1</span>`;
 
@@ -3162,6 +3223,7 @@ if (g.paxType === 'D1') extraTags += `<span class="day-tag tag-d1" style="margin
                      if (g.paxType === 'D3') extraTags += `<span class="day-tag tag-d3" style="margin-left:5px;">[D3]</span>`;
 
 if (g.isZip) extraTags += `<span class="day-tag tag-zip" style="margin-left:5px;">Z</span>`;
+if (g.isHanbok) extraTags += `<span class="day-tag tag-hanbok" style="margin-left:5px;">한</span>`;
 if (g.isBike) extraTags += `<span class="day-tag tag-bike" style="margin-left:5px;">지</span>`;
 
         
