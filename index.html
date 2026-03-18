@@ -337,11 +337,21 @@
   .lang-tag { font-size: 10px; padding: 2px 4px; border-radius: 3px; font-weight: bold; }
 
 
-  .lang-CN { background: #fce4ec; color: #c2185b; }
+    .lang-CN { background: #fce4ec; color: #c2185b; }
 
   .lang-EN { background: #e3f2fd; color: #1565c0; }
 
+  .lunch-btn-group { display: flex; gap: 4px; margin-top: 5px; width: 100%; grid-column: 1 / -1; }
+  .lunch-btn { flex: 1; padding: 6px 2px; border-radius: 6px; font-size: 12px; font-weight: 900; color: white; border: none; cursor: pointer; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+  .lunch-btn-mild { background-color: #8D6E63; }
+  .lunch-btn-spicy { background-color: #E53935; }
+  .lunch-btn-cheese { background-color: #FDD835; color: #333; }
+  .lunch-btn-rice { background-color: #43A047; }
+  .lunch-btn-reset { background-color: #757575; }
+  .lunch-memo-input { width: 100%; margin-top: 4px; border: 2px solid #FF9800; border-radius: 6px; font-weight: bold; font-size: 12px; padding: 6px 8px; background: #FFF3E0; box-sizing: border-box; color: #E65100; }
+
   .msg-actions { display: grid; grid-template-columns: 45px 45px; gap: 5px; align-items: center; justify-content: center; }
+
 
 
   .btn-action { width: 45px; height: 45px; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-decoration: none; font-size: 10px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; text-align: center; line-height: 1.2; transition: transform 0.1s; }
@@ -904,11 +914,12 @@
       <span class="v11-section-label">11. 메시지 발송 & 체크</span>
       <p class="v11-section-desc">손님에게 메시지를 보내고 체크합니다.</p>
       <div class="v11-btn-group" style="margin-top: 5px;">
-          <button class="btn-run v11-ui-element" style="background: #e65100; color: white; border:none; flex:1;" onclick="copyAllMemos(this)">📋 비고 일괄 복사</button>
+          <button class="btn-run v11-ui-element" style="background: #e65100; color: white; border:none; flex:1;" onclick="copyLunchMemos(this)">🍱 점심 주문 일괄 복사</button>
       </div>
     </div>
     <div id="msgList"></div>
 </div>
+
 
 
 
@@ -1632,21 +1643,68 @@ function copyAndOpen(el, text, schemeKey, encodedText) {
 }
 
 
-function copyAllMemos(btn) {
+function copyLunchMemos(btn) {
     let statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
     let resultText = "";
+    let totals = { '매움': 0, '안매움': 0, '치즈': 0, '볶음밥': 0 };
+    let hasData = false;
+    
     msgListGroups.forEach(g => {
-        let memoText = statusData[g.repNum]?.memo || "";
-        let countryName = CONFIG.COUNTRY_MAP[g.country] || g.country;
-        let uiGroupNum = g.msgNum.replace(/[a-zA-Z]/g, '');
-        resultText += uiGroupNum + "번팀 (" + g.count + "명)(" + countryName + ")\n[" + memoText + "]\n\n";
+        let lunchMemoText = statusData[g.repNum]?.lunchMemo || "";
+        if (lunchMemoText.trim() !== "") {
+            hasData = true;
+            let countryName = CONFIG.COUNTRY_MAP[g.country] || g.country;
+            let uiGroupNum = g.msgNum.replace(/[a-zA-Z]/g, '');
+            
+            let groupOrders = { '매움': 0, '안매움': 0, '치즈': 0, '볶음밥': 0 };
+            let parts = lunchMemoText.split(',');
+            parts.forEach(p => {
+                let m = p.trim().match(/(.+?)(\d+)$/);
+                if (m) {
+                    let name = m[1].trim();
+                    let cnt = parseInt(m[2]);
+                    if (groupOrders[name] !== undefined) {
+                        groupOrders[name] += cnt;
+                        totals[name] += cnt;
+                    }
+                }
+            });
+            
+            let orderStrArr = [];
+            if (groupOrders['매움'] > 0) orderStrArr.push("매움 " + groupOrders['매움']);
+            if (groupOrders['안매움'] > 0) orderStrArr.push("안매움 " + groupOrders['안매움']);
+            if (groupOrders['치즈'] > 0) orderStrArr.push("치즈 " + groupOrders['치즈']);
+            if (groupOrders['볶음밥'] > 0) orderStrArr.push("볶음밥 " + groupOrders['볶음밥']);
+            
+            let orderLine = orderStrArr.length > 0 ? orderStrArr.join(', ') : lunchMemoText.trim();
+            
+            resultText += uiGroupNum + "번팀 (" + g.count + "명)(" + countryName + ")\n" + orderLine + "\n\n";
+        }
     });
-    if (resultText === "") {
-        alert("복사할 데이터가 없습니다.");
+    
+    if (!hasData) {
+        alert("복사할 점심 주문 데이터가 없습니다.");
         return;
     }
+    
+    let totalPeople = 0;
+    for (let i = 1; i < currentSeatMap1.length; i++) {
+        if (currentSeatMap1[i]) totalPeople++;
+    }
+    
+    resultText += "\n[전체 총합]\n";
+    let totalArr = [];
+    if (totals['매움'] > 0) totalArr.push("매움 " + totals['매움']);
+    if (totals['안매움'] > 0) totalArr.push("안매움 " + totals['안매움']);
+    if (totals['치즈'] > 0) totalArr.push("치즈 " + totals['치즈']);
+    if (totals['볶음밥'] > 0) totalArr.push("볶음밥 " + totals['볶음밥']);
+    
+    resultText += totalArr.join(', ') + "\n";
+    resultText += "버스 총원: " + totalPeople + "명";
+    
     copyToClipboard(resultText.trim(), btn);
 }
+
 
 
 function feedback(el) { if(!el) return; let original = el.innerHTML; el.innerHTML = 'OK!'; setTimeout(() => el.innerHTML = original, 800); }
@@ -2906,16 +2964,18 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
 
     
 
-    const statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
+        const statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
 
     const guideName = document.getElementById('guideNameInput').value || "Mr. Shin";
 
 
     const busNo = document.getElementById('busNumberInput').value || "";
 
-    
+    const rawData = document.getElementById('rawData').value || "";
+    const isNamiMode = rawData.includes('남이섬');
 
     const tH = document.getElementById('timeHongdae').value;
+
 
     const tM = document.getElementById('timeMyeongdong').value;
 
@@ -3083,7 +3143,8 @@ let busLine = isFit ? "" : `\nbus no : ${busNo}`;
 
         let waBtnClass = hasPhone ? 'btn-action btn-wa-send' : 'btn-action btn-wa-send disabled';
 
-        let isContacted = statusData[gid]?.contacted || false; let isConnected = statusData[gid]?.connected || false; let memoText = statusData[gid]?.memo || "";
+                let isContacted = statusData[gid]?.contacted || false; let isConnected = statusData[gid]?.connected || false; let memoText = statusData[gid]?.memo || "";
+        let lunchMemoText = statusData[gid]?.lunchMemo || "";
 
         
 
@@ -3119,9 +3180,22 @@ if (g.isBike) extraTags += `<span class="day-tag tag-bike" style="margin-left:5p
 
                 let card = document.createElement('div'); card.className = 'msg-card';
 
-                let optionHtml = "";
+                                let optionHtml = "";
 
-        if (g.isSkiTour) {
+                if (isNamiMode) {
+            let gid = g.repNum;
+            optionHtml = `
+                <div class="lunch-btn-group">
+                    <button class="lunch-btn lunch-btn-spicy" onclick="addLunchItem('${gid}', '매움')">매움</button>
+                    <button class="lunch-btn lunch-btn-mild" onclick="addLunchItem('${gid}', '안매움')">안매움</button>
+                    <button class="lunch-btn lunch-btn-cheese" onclick="addLunchItem('${gid}', '치즈')">치즈</button>
+                    <button class="lunch-btn lunch-btn-rice" onclick="addLunchItem('${gid}', '볶음밥')">볶음밥</button>
+                    <button class="lunch-btn lunch-btn-reset" onclick="resetLunch('${gid}')">다시작성</button>
+                </div>
+                <input type="text" id="lunchMemo_${gid}" class="lunch-memo-input" placeholder="점심 주문" value="${lunchMemoText}" onchange="updateMsgStatus('${gid}', 'lunchMemo', null, this.value)">
+            `;
+        } else if (g.isSkiTour) {
+
             let pickupColor = groupBgColor;
             let gid = g.repNum;
 
@@ -3151,7 +3225,7 @@ if (g.isBike) extraTags += `<span class="day-tag tag-bike" style="margin-left:5p
         <div class="check-box-wrapper"><label class="msg-check-label label-connected">연락됨</label><input type="checkbox" class="msg-check-input chk-conn" onchange="updateMsgStatus('${gid}', 'connected', this.checked, null)" ${isConnected ? 'checked' : ''}></div>
     </div>
         <div class="msg-info">
-        <div class="msg-group-row"><span class="msg-group" style="background-color: ${groupBgColor}; color: ${groupTextColor};">${uiGroupNum}</span>${getOriginBadgeHtml(g.originTag)}${langTag}${extraTags}</div>
+                <div class="msg-group-row"><span class="msg-group" style="background-color: ${groupBgColor}; color: ${groupTextColor};">${uiGroupNum}</span>${getOriginBadgeHtml(g.originTag)}${langTag}${extraTags}</div>
         <div class="msg-seats">Seat: ${seatStr}</div>
         <div style="font-size: 18px; margin-top: 5px; line-height: 1.4; color: #333;">${namesHtml}</div>
         <input type="text" class="msg-memo-input" placeholder="메모" value="${memoText}" onchange="updateMsgStatus('${gid}', 'memo', null, this.value)">
@@ -3167,9 +3241,6 @@ if (g.isBike) extraTags += `<span class="day-tag tag-bike" style="margin-left:5p
     </div>
     ${optionHtml}
 `;
-
-
-
 
         msgList.appendChild(card);
 
@@ -3271,16 +3342,19 @@ function updateMsgStatus(gid, type, checked, memo) {
 
     let statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
 
-    if(!statusData[gid]) statusData[gid] = { contacted: false, connected: false, memo: "" };
+    if(!statusData[gid]) statusData[gid] = { contacted: false, connected: false, memo: "", lunchMemo: "" };
 
     if(type === 'contacted') statusData[gid].contacted = checked;
 
     if(type === 'connected') statusData[gid].connected = checked;
 
-    if(memo !== null) statusData[gid].memo = memo;
+    if(type === 'memo' && memo !== null) statusData[gid].memo = memo;
+
+    if(type === 'lunchMemo' && memo !== null) statusData[gid].lunchMemo = memo;
 
     localStorage.setItem(lsKey('bus_msgStatus'), JSON.stringify(statusData));
     syncToServer();
+
 
     if(type === 'connected') {
         const scrollY = window.scrollY;
@@ -4457,6 +4531,56 @@ function drawLineBetween(el1, el2, color, busNum, isDash) {
     line.style.transform = `rotate(${angle}deg)`;
     grid.appendChild(line);
 }
+
+function addLunchItem(gid, item) {
+    if (navigator.vibrate) { navigator.vibrate(50); }
+    playPopSound();
+    let inputEl = document.getElementById('lunchMemo_' + gid);
+    if (!inputEl) return;
+    let currentText = inputEl.value.trim();
+    
+    let parts = currentText ? currentText.split(',').map(s => s.trim()) : [];
+    let found = false;
+    
+    for (let i = 0; i < parts.length; i++) {
+        if (parts[i].startsWith(item)) {
+            let numStr = parts[i].substring(item.length).trim();
+            let num = parseInt(numStr);
+            if (isNaN(num)) num = 1;
+            parts[i] = item + (num + 1);
+            found = true;
+            break;
+        }
+    }
+    
+    if (!found) {
+        parts.push(item + "1");
+    }
+    
+    const order = ['매움', '안매움', '치즈', '볶음밥'];
+    parts.sort((a, b) => {
+        let idxA = order.findIndex(o => a.startsWith(o));
+        let idxB = order.findIndex(o => b.startsWith(o));
+        if (idxA === -1) idxA = 999;
+        if (idxB === -1) idxB = 999;
+        return idxA - idxB;
+    });
+    
+    let resultStr = parts.join(', ');
+    inputEl.value = resultStr;
+    updateMsgStatus(gid, 'lunchMemo', null, resultStr);
+}
+
+
+function resetLunch(gid) {
+    if (navigator.vibrate) { navigator.vibrate(50); }
+    playPopSound();
+    let inputEl = document.getElementById('lunchMemo_' + gid);
+    if (!inputEl) return;
+    inputEl.value = "";
+    updateMsgStatus(gid, 'lunchMemo', null, "");
+}
+
 function saveBikeGroups() {
     localStorage.setItem(lsKey('bus_bikeGroups'), JSON.stringify(bikeGroups));
     syncToServer();
