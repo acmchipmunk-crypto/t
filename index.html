@@ -214,7 +214,8 @@
 
   .seat.emergency { border: 2px dashed #ff9800; background-color: #fff8e1; } 
 
-  .seat.selected { border: 3px solid #ff0000; transform: scale(1.05); z-index: 20; box-shadow: 0 0 10px rgba(255,0,0,0.5); }
+  .seat.selected { border: 3px solid #ff0000; transform: scale(1.25); z-index: 20; box-shadow: 0 0 10px rgba(255,0,0,0.5); }
+
 
   .seat.synced-general { background-color: #e0e0e0 !important; border: 1px solid #bdbdbd; opacity: 0.8; }
 
@@ -876,8 +877,9 @@
 <div id="railbikePanel">
     <div class="rb-header">🚲  레일바이크 모드</div>
     <div class="rb-controls">
-        <button id="btnRb4" class="rb-btn rb-btn-4" onclick="toggleBikeMode(4)">🚲 4인승 지정</button>
-        <button id="btnRb2" class="rb-btn rb-btn-2" onclick="toggleBikeMode(2)">🚲 2인승 지정</button>
+                <button id="btnRb4" class="rb-btn rb-btn-4" onclick="toggleBikeMode(4)">OFF 4인승 지정</button>
+        <button id="btnRb2" class="rb-btn rb-btn-2" onclick="toggleBikeMode(2)">OFF 2인승 지정</button>
+
         <button class="rb-btn rb-btn-undo" onclick="undoBikeGroup()">↩️ 한번 되돌리기</button>
         <button class="rb-btn rb-btn-reset" onclick="if(confirm('지정된 바이크를 모두 초기화하시겠습니까?')) resetBikeGroups()">🗑️ 바이크지정 초기화</button>
     </div>
@@ -4177,12 +4179,16 @@ function toggleBikeMode(type) {
     if (activeBikeType === type) {
         activeBikeType = 0;
         document.getElementById('btnRb' + type).classList.remove('active');
+        document.getElementById('btnRb' + type).innerText = 'OFF ' + type + '인승 지정';
         currentBikeSeats = [];
     } else {
         activeBikeType = type;
         document.getElementById('btnRb4').classList.remove('active');
         document.getElementById('btnRb2').classList.remove('active');
+        document.getElementById('btnRb4').innerText = 'OFF 4인승 지정';
+        document.getElementById('btnRb2').innerText = 'OFF 2인승 지정';
         document.getElementById('btnRb' + type).classList.add('active');
+        document.getElementById('btnRb' + type).innerText = 'ON ' + type + '인승 지정';
         currentBikeSeats = [];
     }
     updateBikeVisuals();
@@ -4190,21 +4196,34 @@ function toggleBikeMode(type) {
 
 
 
+
 function handleBikeSeatClick(busNum, seatIdx, el) {
-    let existingGroupIndex = bikeGroups.findIndex(group => group.seats.some(s => s.seatIdx === seatIdx && s.busNum === busNum));
-    if (existingGroupIndex > -1) {
-        bikeGroups.splice(existingGroupIndex, 1);
+    let groupRemoved = false;
+    for (let i = bikeGroups.length - 1; i >= 0; i--) {
+        if (bikeGroups[i].seats.some(s => String(s.seatIdx) === String(seatIdx) && String(s.busNum) === String(busNum))) {
+            bikeGroups.splice(i, 1);
+            groupRemoved = true;
+        }
     }
-    let alreadyIn = currentBikeSeats.findIndex(s => s.seatIdx === seatIdx && s.busNum === busNum);
-    if (alreadyIn > -1) return;
-    
+    let alreadyIn = currentBikeSeats.findIndex(s => String(s.seatIdx) === String(seatIdx) && String(s.busNum) === String(busNum));
+    if (alreadyIn > -1) {
+        currentBikeSeats.splice(alreadyIn, 1);
+        updateBikeVisuals();
+        if (groupRemoved) {
+            saveBikeGroups();
+        }
+        return;
+    }
+    if (groupRemoved) {
+        saveBikeGroups();
+    }
     currentBikeSeats.push({ busNum: busNum, seatIdx: seatIdx });
     updateBikeVisuals();
-    
     if (currentBikeSeats.length === activeBikeType) {
         completeBikeGroup();
     }
 }
+
 
 
 
@@ -4236,9 +4255,12 @@ function resetBikeGroups() {
     activeBikeType = 0;
     document.getElementById('btnRb4').classList.remove('active');
     document.getElementById('btnRb2').classList.remove('active');
+    document.getElementById('btnRb4').innerText = 'OFF 4인승 지정';
+    document.getElementById('btnRb2').innerText = 'OFF 2인승 지정';
     updateBikeVisuals();
     saveBikeGroups();
 }
+
 
 
 function updateBikeVisuals() {
