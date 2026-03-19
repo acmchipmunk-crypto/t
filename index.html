@@ -741,11 +741,11 @@
 </style>
 
 <div class="v11-title" id="mainRoomTitle" style="font-size: 36px; padding: 15px; letter-spacing: 2px;">일반투어</div>
-
+<div id="tourDestinations" style="text-align:center; font-size:18px; font-weight:900; color:#e65100; margin-bottom:10px; display:none;"></div>
 
 <div class="v11-card">
   <span class="v11-section-label">1. 기본 정보</span>
-  <p class="v11-section-desc">가이드와 버스 정보를 설정합니다.</p>
+
   <div class="guide-panel">
       <div class="guide-input-group">
           <label style="font-weight:bold; font-size:10px; color:#ef6c00;">가이드</label>
@@ -760,17 +760,16 @@
 
 <div class="v11-card">
   <span class="v11-section-label">2. 출발 시간 설정</span>
-  <p class="v11-section-desc">픽업 시간은 메시지에 자동으로 포함됩니다.</p>
   <div class="time-setting-panel">
-    <div class="time-input-group"><label>홍대</label><input type="text" id="timeHongdae" class="v11-ui-element" style="width:100%;" value="06:40" onchange="saveTimeInput()"></div>
-    <div class="time-input-group"><label>명동</label><input type="text" id="timeMyeongdong" class="v11-ui-element" style="width:100%;" value="07:10" onchange="saveTimeInput()"></div>
-    <div class="time-input-group"><label>동대문</label><input type="text" id="timeDongdaemun" class="v11-ui-element" style="width:100%;" value="07:20" onchange="saveTimeInput()"></div>
+    <div class="time-input-group"><label>홍대</label><input type="text" id="timeHongdae" class="v11-ui-element" style="width:100%;" value="06:40" onchange="updateTimeSequence('H')"></div>
+    <div class="time-input-group"><label>명동</label><input type="text" id="timeMyeongdong" class="v11-ui-element" style="width:100%;" value="07:10" onchange="updateTimeSequence('M')"></div>
+    <div class="time-input-group"><label>동대문</label><input type="text" id="timeDongdaemun" class="v11-ui-element" style="width:100%;" value="07:20" onchange="updateTimeSequence('D')"></div>
   </div>
 </div>
 
+
 <div class="v11-card">
   <span class="v11-section-label">3. 데이터 입력</span>
-  <p class="v11-section-desc">명단 전체를 복사해서 그대로 붙여넣으세요.</p>
   <textarea id="rawData" placeholder="여기에 명단 데이터 붙여넣기..." oninput="saveTextInput()"></textarea>
   <div class="size-selector" style="margin-top:2px; font-size: 11px; padding: 2px;">
     <label><input type="radio" name="busSize" value="44" checked onchange="saveTextInput()"> 44인승</label>
@@ -781,7 +780,6 @@
 
 <div class="v11-card">
   <span class="v11-section-label">4. 배치 우선순위</span>
-  <p class="v11-section-desc">좌석 배치 기준을 선택합니다.</p>
   <div class="control-panel" style="margin-top:0; border-top:none; padding-top:0;">
     <div class="priority-display" id="priorityView" style="font-size: 11px; min-height: 12px;">우선순위: 없음</div>
     <div class="control-group" style="gap: 2px;">
@@ -802,7 +800,6 @@
 
 <div class="v11-card" style="background: #e8eaf6; border: 1px solid #3f51b5;">
   <span class="v11-section-label">5. 자동 배치 실행</span>
-  <p class="v11-section-desc">선택한 조건으로 좌석을 자동 배치합니다.</p>
   <div class="v11-btn-group">
       <button class="btn-clear v11-ui-element" style="flex:1;" onclick="clearData()">🗑 초기화</button>
       <button class="btn-run v11-ui-element" style="background: #3f51b5; color: white; border:none; flex:3;" onclick="runAI()">🤖 자동 배치 실행 (Run)</button>
@@ -812,7 +809,6 @@
 
 <div class="v11-card">
   <span class="v11-section-label">6. 연락처 저장</span>
-  <p class="v11-section-desc">손님 연락처를 휴대폰에 저장합니다.</p>
   <div class="v11-btn-group">
       <input type="text" id="vcardDate" class="v11-ui-element" style="width:80px;" placeholder="YYMMDD" onchange="checkDateChange()">
       <button class="btn-vcard v11-ui-element" style="flex:1; border:none;" onclick="downloadVCard()">📞 연락처 저장(.vcf)</button>
@@ -821,7 +817,6 @@
 
 <div class="v11-card">
   <span class="v11-section-label">7. 현장 추가 or 삭제 </span>
-  <p class="v11-section-desc">배치 후 좌석을 개별로 추가·조정할 때 사용합니다.</p>
   <div class="v11-btn-group">
       <input type="text" id="manualGroupNum" class="manual-input v11-ui-element" style="flex:1;" placeholder="No. or Name">
       <button class="btn-manual btn-add v11-ui-element" style="width:45px; border:none;" onclick="manualAddGroup()">+</button>
@@ -831,7 +826,6 @@
 
 <div class="v11-card">
   <span class="v11-section-label">8. 새로운 명단 추가</span>
-  <p class="v11-section-desc">추가된 명단만 복사 해서 입력 하세요</p>
   <div class="v11-btn-group">
       <textarea id="manualBatchData" placeholder="여러 줄 명단 붙여넣기..."></textarea>
       <button class="btn-manual btn-add v11-ui-element" style="width: 70px; border:none; font-size: 12px !important;" onclick="manualBatchAdd()">명단추가</button>
@@ -851,8 +845,8 @@
 
 <div class="v11-card">
   <span class="v11-section-label">9. 좌석배치표 정리 이미지 저장</span>
-  <p class="v11-section-desc">좌석 배치 결과를 탭하여 정리하고 이미지로 저장합니다</p>
 </div>
+
 
 <div class="capture-wrapper">
   <div id="captureArea1">
@@ -909,20 +903,20 @@
 
 <div class="v11-card" style="background: #fff9c4; border: 1px solid #fbc02d;">
   <span class="v11-section-label">10. 가이드 개인공지</span>
-  <p class="v11-section-desc">가이드 개인이 추가 하고 싶은 메세지을 입력합니다</p>
   <textarea id="specialNotice" style="height: 100px; margin-top:5px; border-color:#fbc02d;" placeholder="예: 비가 오니 우산을 챙기세요. (이 내용은 전송 메시지 중간에 삽입됩니다)" oninput="saveSpecialNotice()"></textarea>
 </div>
+
 
 <div class="msg-section" id="msgSection" style="display:none;">
     <div class="v11-card">
       <span class="v11-section-label">11. 메시지 발송 & 체크</span>
-      <p class="v11-section-desc">손님에게 메시지를 보내고 체크합니다.</p>
       <div class="v11-btn-group" style="margin-top: 5px;">
           <button class="btn-run v11-ui-element" style="background: #e65100; color: white; border:none; flex:1;" onclick="copyLunchMemos(this)">🍱 점심 주문 일괄 복사</button>
       </div>
     </div>
     <div id="msgList"></div>
 </div>
+
 
 
 
@@ -2237,28 +2231,21 @@ function runAI() {
 
     checkRailbikeMode(raw);
 
+    let firstLine = raw.trim().split('\n')[0];
+    let destTitle = "";
+    if (firstLine) {
+        destTitle = firstLine.split('-')[0].replace(/^[a-zA-Z가-힣]+:\s*/, '').trim();
+        let destEl = document.getElementById('tourDestinations');
+        if (destEl) {
+            destEl.innerText = "🚩 투어 코스: " + destTitle;
+            destEl.style.display = destTitle ? "block" : "none";
+        }
+    }
 
-
-    // 따옴표 안에 있는 줄바꿈(\r\n) 뿐만 아니라 탭(\t)도 공백으로 바꿔서 칸 밀림 방지
-raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
-
-
-
-    // [수정] FIT 모드 분기 처리
-
-    let rawSizeVal = document.querySelector('input[name="busSize"]:checked').value;
-
-    const isFit = (rawSizeVal === 'FIT');
-
-    
-
-    // FIT인 경우 초기값 0, 아니면 parseInt
-
-    let busSize = isFit ? 0 : parseInt(rawSizeVal);
-
-
+    raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
 
     const direction = document.querySelector('input[name="direction"]:checked').value;
+
 
     const lines = raw.trim().split('\n');
 
@@ -2334,27 +2321,19 @@ raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
 
 
 
-    msgListGroups = createGroupsFromEntries(entries);
+        msgListGroups = createGroupsFromEntries(entries);
 
+    let totalGoing = msgListGroups.filter(g => g.paxType === 'General' || g.paxType === 'D1').reduce((sum, g) => sum + g.count, 0);
 
-
-    // [추가] FIT 모드일 경우: 배정 대상 인원수만큼 busSize 자동 설정
-
-    if (isFit) {
-
-        let totalGoing = msgListGroups
-
-            .filter(g => g.paxType === 'General' || g.paxType === 'D1')
-
-            .reduce((sum, g) => sum + g.count, 0);
-
-        
-
-        busSize = totalGoing > 0 ? totalGoing : 1; 
-
+    if (totalGoing <= 15) {
+        document.querySelector('input[name="busSize"][value="FIT"]').checked = true;
+    } else {
+        document.querySelector('input[name="busSize"][value="44"]').checked = true;
     }
 
-
+    let rawSizeVal = document.querySelector('input[name="busSize"]:checked').value;
+    const isFit = (rawSizeVal === 'FIT');
+    let busSize = isFit ? (totalGoing > 0 ? totalGoing : 1) : parseInt(rawSizeVal);
 
     let listGoing = msgListGroups.filter(g => g.paxType === 'General' || g.paxType === 'D1');
 
@@ -2581,7 +2560,10 @@ function renderFitBus(seatMap, gridId, busNum) {
 
     grid.style.gridTemplateColumns = "repeat(4, 1fr)";
 
+    grid.style.gridAutoRows = "auto";
+
     grid.style.gap = "4px";
+
 
 
 
@@ -3030,10 +3012,9 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
     const guideName = document.getElementById('guideNameInput').value || "Mr. Shin";
 
 
-    const busNo = document.getElementById('busNumberInput').value || "";
+        const busNo = document.getElementById('busNumberInput').value || "";
 
     const rawData = document.getElementById('rawData').value || "";
-    const isNamiMode = rawData.includes('남이섬');
 
     const tH = document.getElementById('timeHongdae').value;
 
@@ -3099,7 +3080,7 @@ let busLine = isFit ? "" : `\nbus no : ${busNo}`;
 
 
 
-        if (g.paxType === 'D2' || g.paxType === 'D3') {
+                if (g.paxType === 'D2' || g.paxType === 'D3') {
 
             let isReturnGuest = (g.paxType === 'D2' || g.paxType === 'D3');
 
@@ -3119,42 +3100,29 @@ let busLine = isFit ? "" : `\nbus no : ${busNo}`;
 
             }
 
-
-
-                        if(g.langContext === 'CN') {
-
-                langTag = "";
-
-                msgText = `[${dayLabel}/- ${guideName}]\n${groupLine}${seatLine}\n1. 退房 (11:00 前)\n*行李寄放一楼大厅 \n⚠️ 迟交罚款 : 10,000 / 30分\n\n2. Klook 休息室 (10:00)\n👉 付款 & 领取缆车票 \n\n${step3_CN}\n\n${priceList_CN}`;
-
+            if(g.langContext === 'CN') {
+                msgText = `[${guideName}]\n🌙 ${dayLabel} 归程 Return\n\n1. 出发 Departure (17:00)\n📍 综合售票处旁 巴士停车场\n\n${step3_CN}\n\n大巴號: ${busNo}\n家庭號: ${g.repNum}\n座位號: ${seatStr}`;
             } else {
-
-                langTag = "";
-
-                msgText = `[${dayLabel}/Return Guide - ${guideName}]\n${groupLine}${seatLine}\n1. Check-out (Until 11:00)\n*Leave bags at Lobby\n⚠️ Late Penalty: 10,000 KRW / 30min\n\n2. Klook Lounge (10:00)\n👉 Payment & Get Lift Card\n\n${step3_EN}\n\n${priceList_EN}`;
-
+                msgText = `[${guideName}]\n🌙 ${dayLabel} Return\n\n1. Departure (17:00)\n📍 Bus Parking Lot next to Ticket Office\n\n${step3_EN}\n\nbus no : ${busNo}\nGroup: ${g.repNum}\nSeat: ${seatStr}`;
             }
 
+        } else {
 
-        } 
-
-        else {
-
-                          let pickupInfo = ""; let loc = g.location ? g.location.trim() : "";
-             let guestTime = "";
-             if (loc.includes('홍대') || loc.includes('Hongik')) { guestTime = tH; }
-             else if (loc.includes('명동') || loc.includes('Myeongdong')) { guestTime = tM; }
-             else if (loc.includes('동대문')) { guestTime = tD; }
-             else { guestTime = `${tH} / ${tM} / ${tD}`; }
-             
-             if(g.langContext === 'CN') {
+            let loc = g.location || "";
+            let pickupInfo = "";
+            let luggageWarnCN = isFit ? "\n*大件行李和婴儿车不允许携带。" : "";
+            let luggageWarnEN = isFit ? "\n*Large luggage and strollers are not allowed." : "";
+            let busInfoCN = isFit ? `家庭號: ${g.repNum}` : `大巴號: ${busNo}\n家庭號: ${g.repNum}\n座位號: ${seatStr}`;
+            let busInfoEN = isFit ? `Group: ${g.repNum}` : `bus no : ${busNo}\nGroup: ${g.repNum}\nSeat: ${seatStr}`;
+            
+            if(g.langContext === 'CN') {
                 langTag = "";
                 if (loc.includes('홍대')) { pickupInfo = `❗️${tH} 弘大入口站 8號出口`; } 
                 else if (loc.includes('명동')) { pickupInfo = `❗️${tM} 明洞站 3號出口`; } 
                 else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} 東大門歷史文化公園站 11號出口`; } 
                 else { pickupInfo = `❗️${tH} 弘대 8번 / ❗️${tM} 명동 3번 / ❗️${tD} 동대문 11번`; }
                 
-                msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n*為了避開交通堵塞，我們會準時出發。\n*遲到恕不退款。\n*車內只允許飲用白水。\n*不包含餐費。\n\n👉 收到信息後，麻煩回覆 “我會在 ${guestTime} 準備好出發” \n大巴號: ${busNo}\n家庭號: ${g.repNum}\n座位號: ${seatStr}`;
+                msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n*為了避開交通堵塞，我們會準時出發。\n*遲到恕不退款。\n*車內只允許飲用白水。\n*不包含餐費。${luggageWarnCN}\n\n${busInfoCN}`;
 
             } else {
                 langTag = "";
@@ -3163,11 +3131,12 @@ let busLine = isFit ? "" : `\nbus no : ${busNo}`;
                 else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} Dongdaemun History Culture park s.t Exit 11`; } 
                 else { pickupInfo = `❗️${tH} Hongik Univ. Exit 8 / ❗️${tM} Myeongdong Exit 3 / ❗️${tD} Dongdaemun History & Culture Park Station Exit 11`; }
                 
-                msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n\n*We depart early to avoid traffic.\n*There is no refund if you are late.\n*Only water is allowed on the bus.\n*Meals are not included.\n\n👉 Reply "I will be ready to leave at ${guestTime}"\nbus no : ${busNo}\nGroup: ${g.repNum}\nSeat: ${seatStr}`;
+                msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n\n*We depart early to avoid traffic.\n*There is no refund if you are late.\n*Only water is allowed on the bus.\n*Meals are not included.${luggageWarnEN}\n\n${busInfoEN}`;
             }
 
-
         }
+
+
 
 
 
@@ -3187,6 +3156,21 @@ let busLine = isFit ? "" : `\nbus no : ${busNo}`;
         msgText += `\n\n👟 請確認您的鞋子尺寸 (毫米):\nacmchipmunk-crypto.github.io/t/s.html`;
     } else {
         msgText += `\n\n👟 You must check your shoe size (millimeter):\nacmchipmunk-crypto.github.io/t/s.html`;
+    }
+}
+
+                if (g.paxType !== 'D2' && g.paxType !== 'D3') {
+    let locForReply = g.location ? g.location.trim() : "";
+    let replyTime = "";
+    if (locForReply.includes('홍대') || locForReply.includes('Hongik')) { replyTime = tH; }
+    else if (locForReply.includes('명동') || locForReply.includes('Myeongdong')) { replyTime = tM; }
+    else if (locForReply.includes('동대문')) { replyTime = tD; }
+    else { replyTime = `${tH} / ${tM} / ${tD}`; }
+    
+    if (g.langContext === 'CN') {
+        msgText += `\n\n👉 收到信息後，麻煩回覆 “我會在 ${replyTime} 準備好出發”`;
+    } else {
+        msgText += `\n\n👉 Reply "I will be ready to leave at ${replyTime}"`;
     }
 }
 
@@ -3242,9 +3226,9 @@ if (g.isBike) extraTags += `<span class="day-tag tag-bike" style="margin-left:5p
 
                 let card = document.createElement('div'); card.className = 'msg-card';
 
-                                let optionHtml = "";
+                                                                let optionHtml = "";
 
-                if (isNamiMode) {
+                if (!g.isSkiTour) {
             let gid = g.repNum;
             optionHtml = `
                 <div class="lunch-btn-group">
@@ -3257,6 +3241,7 @@ if (g.isBike) extraTags += `<span class="day-tag tag-bike" style="margin-left:5p
                 <input type="text" id="lunchMemo_${gid}" class="lunch-memo-input" placeholder="점심 주문" value="${lunchMemoText}" onchange="updateMsgStatus('${gid}', 'lunchMemo', null, this.value)">
             `;
         } else if (g.isSkiTour) {
+
 
             let pickupColor = groupBgColor;
             let gid = g.repNum;
@@ -3733,6 +3718,48 @@ function saveTimeInput() {
     syncToServer();
 }
 
+function updateTimeSequence(source) {
+    let hInput = document.getElementById('timeHongdae');
+    let mInput = document.getElementById('timeMyeongdong');
+    let dInput = document.getElementById('timeDongdaemun');
+
+    function parseTime(val) {
+        let parts = val.split(':');
+        if (parts.length !== 2) return null;
+        let h = parseInt(parts[0], 10);
+        let m = parseInt(parts[1], 10);
+        if (isNaN(h) || isNaN(m)) return null;
+        return h * 60 + m;
+    }
+
+    function formatTime(mins) {
+        mins = ((mins % 1440) + 1440) % 1440;
+        let h = Math.floor(mins / 60);
+        let m = mins % 60;
+        return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+    }
+
+    let baseMins;
+    if (source === 'H') {
+        baseMins = parseTime(hInput.value);
+        if (baseMins === null) return;
+        mInput.value = formatTime(baseMins + 30);
+        dInput.value = formatTime(baseMins + 40);
+    } else if (source === 'M') {
+        baseMins = parseTime(mInput.value);
+        if (baseMins === null) return;
+        hInput.value = formatTime(baseMins - 30);
+        dInput.value = formatTime(baseMins + 10);
+    } else if (source === 'D') {
+        baseMins = parseTime(dInput.value);
+        if (baseMins === null) return;
+        hInput.value = formatTime(baseMins - 40);
+        mInput.value = formatTime(baseMins - 10);
+    }
+    saveTimeInput();
+}
+
+
 function saveGuideName() { 
     localStorage.setItem(lsKey('bus_guideName'), document.getElementById('guideNameInput').value);
     localStorage.setItem(lsKey('bus_number'), document.getElementById('busNumberInput').value);
@@ -3859,10 +3886,19 @@ function updateHeader1(seatMap) {
     let tM = document.getElementById('timeMyeongdong').value;
     let tD = document.getElementById('timeDongdaemun').value;
 
+    let rawText = document.getElementById('rawData').value.trim();
+    let destTitle = "";
+    if (rawText) {
+        let firstLine = rawText.split('\n')[0];
+        destTitle = firstLine.split('-')[0].replace(/^[a-zA-Z가-힣]+:\s*/, '').trim();
+    }
+    let destHtml = destTitle ? `<div style="font-size:20px; color:#aed581; margin-top:4px;">🚩 ${destTitle}</div>` : "";
+
     // 4. 레이아웃 (글자 크기 대폭 확대)
     // 줄 1: 이름 + (팀) -> 26px (노란색)
     const line1 = `<div style="font-size:26px; font-weight:900; color:#FFD54F; margin-bottom:6px; line-height:1.2;">
                       ${topTitle}
+                      ${destHtml}
                    </div>`;
     
     // 줄 2: 출발 시간 -> 20px (흰색)
