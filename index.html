@@ -3117,27 +3117,40 @@ let busLine = isFit ? "" : `\nbus no : ${busNo}`;
             let pickupInfo = "";
             let luggageWarnCN = isFit ? "\n*大件行李和婴儿车不允许携带。" : "";
             let luggageWarnEN = isFit ? "\n*Large luggage and strollers are not allowed." : "";
-            let busInfoCN = isFit ? `家庭號: ${g.repNum}` : `大巴號: ${busNo}\n家庭號: ${g.repNum}\n座位號: ${seatStr}`;
-            let busInfoEN = isFit ? `Group: ${g.repNum}` : `bus no : ${busNo}\nGroup: ${g.repNum}\nSeat: ${seatStr}`;
-            
-            if(g.langContext === 'CN') {
-                langTag = "";
-                if (loc.includes('홍대')) { pickupInfo = `❗️${tH} 弘大入口站 8號出口`; } 
-                else if (loc.includes('명동')) { pickupInfo = `❗️${tM} 明洞站 3號出口`; } 
-                else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} 東大門歷史文化公園站 11號出口`; } 
-                else { pickupInfo = `❗️${tH} 弘대 8번 / ❗️${tM} 명동 3번 / ❗️${tD} 동대문 11번`; }
+                                            let busInfoCN = isFit ? `家庭號: ${g.repNum}` : `大巴號: ${busNo}\n家庭號: ${g.repNum}\n座位號: ${seatStr}`;
+                let busInfoEN = isFit ? `Group: ${g.repNum}` : `bus no : ${busNo}\nGroup: ${g.repNum}\nSeat: ${seatStr}`;
                 
-                msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n*為了避開交通堵塞，我們會準時出發。\n*遲到恕不退款。\n*車內只允許飲用白水。\n*不包含餐費。${luggageWarnCN}\n\n${busInfoCN}`;
+                let bikeShareStrCN = "";
+                let bikeShareStrEN = "";
+                if (rawData.includes('강촌') || rawData.includes('가평')) {
+                    if (g.isBike) {
+                        bikeShareStrCN = "\n*已确认指定自行车";
+                        bikeShareStrEN = "\n*Designated bike confirmed";
+                    } else {
+                        bikeShareStrCN = "\n*无指定自行车，将与其他队伍共乘";
+                        bikeShareStrEN = "\n*No designated bike. You may share with others";
+                    }
+                }
 
-            } else {
-                langTag = "";
-                if (loc.includes('홍대') || loc.includes('Hongik')) { pickupInfo = `❗️${tH} Hongik Univ.s.t Exit 8`; } 
-                else if (loc.includes('명동') || loc.includes('Myeongdong')) { pickupInfo = `❗️${tM} Myeongdong s.t Exit 3`; } 
-                else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} Dongdaemun History Culture park s.t Exit 11`; } 
-                else { pickupInfo = `❗️${tH} Hongik Univ. Exit 8 / ❗️${tM} Myeongdong Exit 3 / ❗️${tD} Dongdaemun History & Culture Park Station Exit 11`; }
-                
-                msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n\n*We depart early to avoid traffic.\n*There is no refund if you are late.\n*Only water is allowed on the bus.\n*Meals are not included.${luggageWarnEN}\n\n${busInfoEN}`;
-            }
+                if(g.langContext === 'CN') {
+
+                    langTag = "";
+                    if (loc.includes('홍대')) { pickupInfo = `❗️${tH} 弘大入口站 8號出口`; } 
+                    else if (loc.includes('명동')) { pickupInfo = `❗️${tM} 明洞站 3號出口`; } 
+                    else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} 東大門歷史文化公園站 11號出口`; } 
+                    else { pickupInfo = `❗️${tH} 弘대 8번 / ❗️${tM} 명동 3번 / ❗️${tD} 동대문 11번`; }
+                    
+                    msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n*為了避開交通堵塞，我們會準時出發。\n*遲到恕不退款。\n*車內只允許飲用白水。\n*不包含餐費。${luggageWarnCN}${bikeShareStrCN}\n\n${busInfoCN}`;
+
+                } else {
+                    langTag = "";
+                    if (loc.includes('홍대') || loc.includes('Hongik')) { pickupInfo = `❗️${tH} Hongik Univ.s.t Exit 8`; } 
+                    else if (loc.includes('명동') || loc.includes('Myeongdong')) { pickupInfo = `❗️${tM} Myeongdong s.t Exit 3`; } 
+                    else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} Dongdaemun History Culture park s.t Exit 11`; } 
+                    else { pickupInfo = `❗️${tH} Hongik Univ. Exit 8 / ❗️${tM} Myeongdong Exit 3 / ❗️${tD} Dongdaemun History & Culture Park Station Exit 11`; }
+                    
+                    msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n\n*We depart early to avoid traffic.\n*There is no refund if you are late.\n*Only water is allowed on the bus.\n*Meals are not included.${luggageWarnEN}${bikeShareStrEN}\n\n${busInfoEN}`;
+                }
 
         }
 
