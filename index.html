@@ -787,7 +787,10 @@
       <label class="chk-label"><input type="checkbox" class="criteria" value="CN" onchange="updatePriority(this)"> 중어</label>
       <label class="chk-label"><input type="checkbox" class="criteria" value="EN" onchange="updatePriority(this)"> 영어</label>
       <label class="chk-label"><input type="checkbox" class="criteria" value="G4" onchange="updatePriority(this)"> 4인↑</label>
-      <label class="chk-label"><input type="checkbox" class="criteria" value="HD" onchange="updatePriority(this)"> 홍대</label>
+      
+      <label class="chk-label"><input type="checkbox" class="criteria" value="ODD" onchange="updatePriority(this)"> 홀수</label>
+
+<label class="chk-label"><input type="checkbox" class="criteria" value="HD" onchange="updatePriority(this)"> 홍대</label>
       <label class="chk-label"><input type="checkbox" class="criteria" value="MY" onchange="updatePriority(this)"> 명동</label>
       <label class="chk-label"><input type="checkbox" class="criteria" value="DDM" onchange="updatePriority(this)"> 동대</label>
     </div>
@@ -903,7 +906,8 @@
 
 <div class="v11-card" style="background: #fff9c4; border: 1px solid #fbc02d;">
   <span class="v11-section-label">10. 가이드 개인공지</span>
-  <textarea id="specialNotice" style="height: 100px; margin-top:5px; border-color:#fbc02d;" placeholder="예: 비가 오니 우산을 챙기세요. (이 내용은 전송 메시지 중간에 삽입됩니다)" oninput="saveSpecialNotice()"></textarea>
+  <textarea id="specialNotice" style="height: 200px; font-size: 24px; margin-top:5px; border-color:#fbc02d;" placeholder="중간에 삽입되는 메세지" oninput="saveSpecialNotice()"></textarea>
+
 </div>
 
 
@@ -2163,6 +2167,7 @@ function calculateScore(grp) {
         if (criteria === 'EN' && grp.langContext === 'EN') match = true;
 
         if (criteria === 'G4' && grp.count >= 4) match = true;
+        if (criteria === 'ODD' && grp.count % 2 !== 0) match = true;
 
         if (criteria === 'HD' && grp.location.includes('홍대')) match = true;
 
@@ -3967,7 +3972,8 @@ function updatePriority(checkbox) {
 
 function updatePriorityDisplay() {
 
-  const map = { 'solo':'혼자', 'CN':'중국어', 'EN':'영어', 'G4':'4인이상', 'HD':'홍대', 'MY':'명동', 'DDM':'동대문' };
+    const map = { 'solo':'혼자', 'CN':'중국어', 'EN':'영어', 'G4':'4인이상', 'HD':'홍대', 'MY':'명동', 'DDM':'동대문', 'ODD':'홀수' };
+
 
   const txt = priorityQueue.map(v => map[v]).join(' > ');
 
