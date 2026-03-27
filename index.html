@@ -3761,25 +3761,15 @@ function updateTimeSequence(source) {
         return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
     }
 
-    let baseMins;
-    if (source === 'H') {
-        baseMins = parseTime(hInput.value);
-        if (baseMins === null) return;
-        mInput.value = formatTime(baseMins + 30);
-        dInput.value = formatTime(baseMins + 40);
-    } else if (source === 'M') {
-        baseMins = parseTime(mInput.value);
+    if (source === 'M') {
+        let baseMins = parseTime(mInput.value);
         if (baseMins === null) return;
         hInput.value = formatTime(baseMins - 30);
         dInput.value = formatTime(baseMins + 10);
-    } else if (source === 'D') {
-        baseMins = parseTime(dInput.value);
-        if (baseMins === null) return;
-        hInput.value = formatTime(baseMins - 40);
-        mInput.value = formatTime(baseMins - 10);
     }
     saveTimeInput();
 }
+
 
 
 function saveGuideName() { 
