@@ -2330,15 +2330,17 @@ function runAI() {
 
         msgListGroups = createGroupsFromEntries(entries);
 
-    let totalGoing = msgListGroups.filter(g => g.paxType === 'General' || g.paxType === 'D1').reduce((sum, g) => sum + g.count, 0);
+        let totalGoing = msgListGroups.filter(g => g.paxType === 'General' || g.paxType === 'D1').reduce((sum, g) => sum + g.count, 0);
 
+    let currentSizeVal = document.querySelector('input[name="busSize"]:checked').value;
     if (totalGoing <= 15) {
         document.querySelector('input[name="busSize"][value="FIT"]').checked = true;
-    } else {
+    } else if (currentSizeVal === 'FIT') {
         document.querySelector('input[name="busSize"][value="44"]').checked = true;
     }
 
     let rawSizeVal = document.querySelector('input[name="busSize"]:checked').value;
+
     const isFit = (rawSizeVal === 'FIT');
     let busSize = isFit ? (totalGoing > 0 ? totalGoing : 1) : parseInt(rawSizeVal);
 
