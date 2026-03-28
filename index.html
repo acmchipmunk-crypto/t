@@ -743,31 +743,18 @@
 </style>
 
 <div class="v11-title" id="mainRoomTitle" style="font-size: 36px; padding: 15px; letter-spacing: 2px;">일반투어</div>
-<div id="tourDestinations" style="text-align:center; font-size:18px; font-weight:900; color:#e65100; margin-bottom:10px; display:none;"></div>
 
 <div class="v11-card">
-  <span class="v11-section-label">1. 기본 정보</span>
+  <span class="v11-section-label">2. 출발시간 및 버스번호 설정</span>
 
-  <div class="guide-panel">
-      <div class="guide-input-group">
-          <label style="font-weight:bold; font-size:10px; color:#ef6c00;">가이드</label>
-          <input type="text" id="guideNameInput" class="guide-input v11-ui-element" value="Mr. Shin" oninput="saveGuideName()">
-      </div>
-      <div class="guide-input-group">
-          <label style="font-weight:bold; font-size:10px; color:#0277bd;">버스</label>
-          <input type="text" id="busNumberInput" class="guide-input v11-ui-element" value="4044" oninput="saveGuideName()">
-      </div>
-  </div>
-</div>
-
-<div class="v11-card">
-  <span class="v11-section-label">2. 출발 시간 설정</span>
   <div class="time-setting-panel">
     <div class="time-input-group"><label>홍대</label><input type="text" id="timeHongdae" class="v11-ui-element" style="width:100%;" value="06:40" onchange="updateTimeSequence('H')"></div>
     <div class="time-input-group"><label>명동</label><input type="text" id="timeMyeongdong" class="v11-ui-element" style="width:100%;" value="07:10" onchange="updateTimeSequence('M')"></div>
     <div class="time-input-group"><label>동대문</label><input type="text" id="timeDongdaemun" class="v11-ui-element" style="width:100%;" value="07:20" onchange="updateTimeSequence('D')"></div>
+    <div class="time-input-group"><label>버스번호</label><input type="text" id="busNumberInput" class="v11-ui-element" style="width:100%;" value="" oninput="saveGuideName()"></div>
   </div>
 </div>
+
 
 
 <div class="v11-card">
@@ -820,14 +807,7 @@
   </div>
 </div>
 
-<div class="v11-card">
-  <span class="v11-section-label">7. 현장 추가 or 삭제 </span>
-  <div class="v11-btn-group">
-      <input type="text" id="manualGroupNum" class="manual-input v11-ui-element" style="flex:1;" placeholder="No. or Name">
-      <button class="btn-manual btn-add v11-ui-element" style="width:45px; border:none;" onclick="manualAddGroup()">+</button>
-      <button class="btn-manual btn-del v11-ui-element" style="width:45px; background:#f44336; border:none;" onclick="manualDelGroup()">-</button>
-  </div>
-</div>
+
 
 <div class="v11-card">
   <span class="v11-section-label">8. 새로운 명단 추가</span>
@@ -848,9 +828,36 @@
 
 
 
+<div class="v11-card" style="background: #f1f8e9; border: 2px dashed #689f38;">
+    <span class="v11-section-label" style="color:#33691e; font-size:16px;">💡 스마트 변수 가이드</span>
+    <div style="font-size: 12px; color: #333; line-height: 1.6; margin-top: 5px;">
+        <b>[전부 발송 (기본)]</b><br>
+        [버스] [그룹] [인원수] [좌석] [출발시간] [탑승지]<br><br>
+        <b>[조건부 발송 (해당 손님에게만 문구 자동 생성)]</b><br>
+        <span style="color:#e65100; font-weight:bold;">[신발]</span> 스키/보드 손님용 사이즈 확인 링크<br>
+        <span style="color:#e65100; font-weight:bold;">[보드]</span> 보드 손님용 부츠 영상 링크<br>
+        <span style="color:#e65100; font-weight:bold;">[바이크]</span> 바이크 일정 중 지정 바이크가 <b>없는</b> 손님 조인 안내<br>
+        <span style="color:#e65100; font-weight:bold;">[짐]</span> FIT 모드 손님용 짐/유모차 불가 경고<br>
+        <span style="color:#e65100; font-weight:bold;">[Day1]</span> Day 1 손님 전용 안내<br>
+        <span style="color:#e65100; font-weight:bold;">[Day2]</span> Day 2, Day 3 복귀/숙박 손님 전용 안내
+    </div>
+</div>
+
+<div class="v11-card" style="background: #fff9c4; border: 1px solid #fbc02d;">
+  <span class="v11-section-label">영어 템플릿</span>
+  <textarea id="englishTemplate" style="height: 300px; font-size: 16px; margin-top:5px; border-color:#fbc02d;" placeholder="여기에 영어 템플릿을 작성하세요..." onchange="saveTemplates()"></textarea>
+</div>
+
+<div class="v11-card" style="background: #e3f2fd; border: 1px solid #90caf9;">
+  <span class="v11-section-label">중국어 템플릿</span>
+  <textarea id="chineseTemplate" style="height: 300px; font-size: 16px; margin-top:5px; border-color:#90caf9;" placeholder="여기에 중국어 템플릿을 작성하세요..." onchange="saveTemplates()"></textarea>
+</div>
+
+
 <div class="v11-card">
   <span class="v11-section-label">9. 좌석배치표 정리 이미지 저장</span>
 </div>
+
 
 
 <div class="capture-wrapper">
@@ -906,11 +913,7 @@
 
 
 
-<div class="v11-card" style="background: #fff9c4; border: 1px solid #fbc02d;">
-  <span class="v11-section-label">10. 가이드 개인공지</span>
-  <textarea id="specialNotice" style="height: 200px; font-size: 24px; margin-top:5px; border-color:#fbc02d;" placeholder="중간에 삽입되는 메세지" oninput="saveSpecialNotice()"></textarea>
 
-</div>
 
 
 <div class="msg-section" id="msgSection" style="display:none;">
@@ -1332,11 +1335,13 @@ function loadAllDataForRoom() {
     document.getElementById('priorityView').innerText = "우선순위: 없음";
     document.getElementById('paxInfo').innerText = "준비됨";
 
-    loadTextInput(); 
+        loadTextInput(); 
     loadGuideName(); 
-    document.getElementById('specialNotice').value = localStorage.getItem(lsKey('bus_specialNotice')) || "";
+    document.getElementById('englishTemplate').value = localStorage.getItem(lsKey('bus_englishTemplate')) || "";
+    document.getElementById('chineseTemplate').value = localStorage.getItem(lsKey('bus_chineseTemplate')) || "";
 
         const savedTimes = JSON.parse(localStorage.getItem(lsKey('bus_times')) || '{}');
+
     if(savedTimes.h) document.getElementById('timeHongdae').value = savedTimes.h;
     if(savedTimes.m) document.getElementById('timeMyeongdong').value = savedTimes.m;
     if(savedTimes.d) document.getElementById('timeDongdaemun').value = savedTimes.d;
@@ -2228,7 +2233,7 @@ if (CONFIG.COUNTRY_MAP[grp.country]) nation = CONFIG.COUNTRY_MAP[grp.country].su
 
 function runAI() {
 
-    saveTextInput(); saveTimeInput(); saveGuideName();
+    saveTextInput(); saveTimeInput(); saveGuideName(); saveTemplates();
 
     localStorage.removeItem(lsKey('bus_seatMap'));
 
@@ -2238,18 +2243,8 @@ function runAI() {
 
     checkRailbikeMode(raw);
 
-    let firstLine = raw.trim().split('\n')[0];
-    let destTitle = "";
-    if (firstLine) {
-        destTitle = firstLine.split('-')[0].replace(/^[a-zA-Z가-힣]+:\s*/, '').trim();
-        let destEl = document.getElementById('tourDestinations');
-        if (destEl) {
-            destEl.innerText = "🚩 투어 코스: " + destTitle;
-            destEl.style.display = destTitle ? "block" : "none";
-        }
-    }
-
     raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
+
 
     const direction = document.querySelector('input[name="direction"]:checked').value;
 
@@ -3020,8 +3015,6 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
 
         const statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
 
-    const guideName = document.getElementById('guideNameInput').value || "Mr. Shin";
-
 
         const busNo = document.getElementById('busNumberInput').value || "";
 
@@ -3034,10 +3027,9 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
 
     const tD = document.getElementById('timeDongdaemun').value;
 
-    const specialMsg = document.getElementById('specialNotice').value;
+    const engTemplate = document.getElementById('englishTemplate').value || "";
 
-    const finalSpecial = specialMsg ? `\n\n${specialMsg}\n` : "";
-
+    const chnTemplate = document.getElementById('chineseTemplate').value || "";
 
 
     allGroups.sort((a, b) => {
@@ -3072,131 +3064,121 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
 
 
 
-        let gid = g.repNum; let msgText = ""; let langTag = "";
+                     let gid = g.repNum; let msgText = ""; let langTag = "";
 
-        
+        let loc = g.location || "";
+        let userTime = "";
+        let userPlaceEN = "";
+        let userPlaceCN = "";
 
-        const priceList_CN = `[Price List]\n\nS. 积极心态（包含）\n\nA. 缆车 + 装备\n   周末 70,000 / 平日 60,000\nB. 头盔 20,000\nC. 护具 15,000\nD. 滑雪服 20,000\nE. 雪橇 30,000\nF. 观光缆车 20,000\n\n*(刷卡 Card +10%)`;
-
-        const priceList_EN = `[Price List]\n\nS. Positive mindset (Included)\n\nA. Lift + Gear\n   Weekend 70,000 / Weekday 60,000\nB. Helmet 20,000\nC. Guard 15,000\nD. Ski Clothes 20,000\nE. Sled 30,000\nF. Sightseeing Lift 20,000\n\n*(Card payment +10%)`;
-
-
-
-
-        // FIT 모드에서도 그룹 번호(Group)는 표시되도록 수정합니다.
-let groupLine = `Group: ${g.msgNum}\n`; 
-let seatLine = isFit ? "" : `Seat: ${seatStr}\n`; // 좌석 번호는 FIT 모드에서 의미가 없으므로 제외 유지
-let busLine = isFit ? "" : `\nbus no : ${busNo}`;
-
-
-
-
-                if (g.paxType === 'D2' || g.paxType === 'D3') {
-
-            let isReturnGuest = (g.paxType === 'D2' || g.paxType === 'D3');
-
-            let dayLabel = isReturnGuest ? (g.paxType === 'D3' ? "Day 3" : "Day 2") : "Day 1";
-
-            let step3_EN = "3. Gathering (15:40)\n📍 Lobby (With luggage)";
-
-            let step3_CN = "3. 集合 Gathering (15:40)\n📍 酒店大厅 (带上所有行李)";
-
-            
-
-            if (g.isStay) { 
-
-                step3_EN = "3. Stay Guest\n📍 No Bus (Enjoy Skiing!)"; 
-
-                step3_CN = "3. 续住 (Stay)\n📍 No Bus (Enjoy Skiing!)"; 
-
-            }
-
-            if(g.langContext === 'CN') {
-                msgText = `[${guideName}]\n🌙 ${dayLabel} 归程 Return\n\n1. 出发 Departure (17:00)\n📍 综合售票处旁 巴士停车场\n\n${step3_CN}\n\n大巴號: ${busNo}\n家庭號: ${g.repNum}\n座位號: ${seatStr}`;
-            } else {
-                msgText = `[${guideName}]\n🌙 ${dayLabel} Return\n\n1. Departure (17:00)\n📍 Bus Parking Lot next to Ticket Office\n\n${step3_EN}\n\nbus no : ${busNo}\nGroup: ${g.repNum}\nSeat: ${seatStr}`;
-            }
-
-        } else {
-
-            let loc = g.location || "";
-            let pickupInfo = "";
-            let luggageWarnCN = isFit ? "\n*大件行李和婴儿车不允许携带。" : "";
-            let luggageWarnEN = isFit ? "\n*Large luggage and strollers are not allowed." : "";
-                                            let busInfoCN = isFit ? `家庭號: ${g.repNum}` : `大巴號: ${busNo}\n家庭號: ${g.repNum}\n座位號: ${seatStr}`;
-                let busInfoEN = isFit ? `Group: ${g.repNum}` : `bus no : ${busNo}\nGroup: ${g.repNum}\nSeat: ${seatStr}`;
-                
-                let bikeShareStrCN = "";
-                let bikeShareStrEN = "";
-                if (rawData.includes('강촌') || rawData.includes('가평')) {
-                    if (g.isBike) {
-                        bikeShareStrCN = "\n*已确认指定自行车";
-                        bikeShareStrEN = "\n*Designated bike confirmed";
-                    } else {
-                        bikeShareStrCN = "\n*无指定自行车，将与其他队伍共乘";
-                        bikeShareStrEN = "\n*No designated bike. You may share with others";
-                    }
-                }
-
-                if(g.langContext === 'CN') {
-
-                    langTag = "";
-                    if (loc.includes('홍대')) { pickupInfo = `❗️${tH} 弘大入口站 8號出口`; } 
-                    else if (loc.includes('명동')) { pickupInfo = `❗️${tM} 明洞站 3號出口`; } 
-                    else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} 東大門歷史文化公園站 11號出口`; } 
-                    else { pickupInfo = `❗️${tH} 弘대 8번 / ❗️${tM} 명동 3번 / ❗️${tD} 동대문 11번`; }
-                    
-                    msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n*為了避開交通堵塞，我們會準時出發。\n*遲到恕不退款。\n*車內只允許飲用白水。\n*不包含餐費。${luggageWarnCN}${bikeShareStrCN}\n\n${busInfoCN}`;
-
-                } else {
-                    langTag = "";
-                    if (loc.includes('홍대') || loc.includes('Hongik')) { pickupInfo = `❗️${tH} Hongik Univ.s.t Exit 8`; } 
-                    else if (loc.includes('명동') || loc.includes('Myeongdong')) { pickupInfo = `❗️${tM} Myeongdong s.t Exit 3`; } 
-                    else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} Dongdaemun History Culture park s.t Exit 11`; } 
-                    else { pickupInfo = `❗️${tH} Hongik Univ. Exit 8 / ❗️${tM} Myeongdong Exit 3 / ❗️${tD} Dongdaemun History & Culture Park Station Exit 11`; }
-                    
-                    msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n\n*We depart early to avoid traffic.\n*There is no refund if you are late.\n*Only water is allowed on the bus.\n*Meals are not included.${luggageWarnEN}${bikeShareStrEN}\n\n${busInfoEN}`;
-                }
-
+        if (loc.includes('홍대') || loc.includes('Hongik')) { 
+            userTime = tH; 
+            userPlaceEN = "Hongik Univ.s.t Exit 8"; 
+            userPlaceCN = "弘大入口站 8號出口";
+        } else if (loc.includes('명동') || loc.includes('Myeongdong')) { 
+            userTime = tM; 
+            userPlaceEN = "Myeongdong s.t Exit 3"; 
+            userPlaceCN = "明洞站 3號出口";
+        } else if (loc.includes('동대문')) { 
+            userTime = tD; 
+            userPlaceEN = "Dongdaemun History Culture park s.t Exit 11"; 
+            userPlaceCN = "東大門歷史文化公園站 11號出口";
+        } else { 
+            userTime = `${tH} / ${tM} / ${tD}`; 
+            userPlaceEN = "Hongik Univ. Exit 8 / Myeongdong Exit 3 / Dongdaemun Exit 11"; 
+            userPlaceCN = "弘大 8號 / 明洞 3號 / 東大門 11號";
         }
 
-
-
-
-
-               if (g.isBoard && g.paxType !== 'D2' && g.paxType !== 'D3') {
-    if (g.langContext === 'CN') {
-        // 중국어: 단판설화(Snowboard boots) 안내
-        msgText += `\n\n📺 如何穿單板滑雪鞋:\n${CONFIG.BOOTS_YOUTUBE}`;
-    } else {
-        // 영어: Snowboard boots 명확히 표기
-        msgText += `\n\n📺 How to wear Snowboard boots:\n${CONFIG.BOOTS_YOUTUBE}`;
-    }
-}
-
+        let userPlace = (g.langContext === 'CN') ? userPlaceCN : userPlaceEN;
+        let baseTemplate = (g.langContext === 'CN') ? chnTemplate : engTemplate;
         
-                if ((g.isSki || g.isBoard) && g.paxType !== 'D2' && g.paxType !== 'D3') {
-    if (g.langContext === 'CN') {
-        msgText += `\n\n👟 請確認您的鞋子尺寸 (毫米):\nacmchipmunk-crypto.github.io/t/s.html`;
-    } else {
-        msgText += `\n\n👟 You must check your shoe size (millimeter):\nacmchipmunk-crypto.github.io/t/s.html`;
-    }
-}
+        // --- 1. 조건부 발송 변수 세팅 ---
+        
+        // [신발] 스키/보드 손님 확인 링크
+        let varShoe = "";
+        if ((g.isSki || g.isBoard) && g.paxType !== 'D2' && g.paxType !== 'D3') {
+            if (g.langContext === 'CN') {
+                varShoe = "\n\n👟 請確認您的鞋子尺寸 (毫米):\nacmchipmunk-crypto.github.io/t/s.html";
+            } else {
+                varShoe = "\n\n👟 You must check your shoe size (millimeter):\nacmchipmunk-crypto.github.io/t/s.html";
+            }
+        }
 
-                if (g.paxType !== 'D2' && g.paxType !== 'D3') {
-    let locForReply = g.location ? g.location.trim() : "";
-    let replyTime = "";
-    if (locForReply.includes('홍대') || locForReply.includes('Hongik')) { replyTime = tH; }
-    else if (locForReply.includes('명동') || locForReply.includes('Myeongdong')) { replyTime = tM; }
-    else if (locForReply.includes('동대문')) { replyTime = tD; }
-    else { replyTime = `${tH} / ${tM} / ${tD}`; }
-    
-    if (g.langContext === 'CN') {
-        msgText += `\n\n👉 收到信息後，麻煩回覆 “我會在 ${replyTime} 準備好出發”`;
-    } else {
-        msgText += `\n\n👉 Reply "I will be ready to leave at ${replyTime}"`;
-    }
-}
+        // [보드] 스노우보드 손님용 부츠 영상
+        let varBoard = "";
+        if (g.isBoard && g.paxType !== 'D2' && g.paxType !== 'D3') {
+            if (g.langContext === 'CN') {
+                varBoard = `\n\n📺 如何穿單板滑雪鞋:\n${CONFIG.BOOTS_YOUTUBE}`;
+            } else {
+                varBoard = `\n\n📺 How to wear Snowboard boots:\n${CONFIG.BOOTS_YOUTUBE}`;
+            }
+        }
+
+        // [바이크] 레일바이크 미지정 손님 (조인 안내)
+        let varBike = "";
+        if (rawData.includes('강촌') || rawData.includes('가평')) {
+            if (!g.isBike) {
+                if (g.langContext === 'CN') {
+                    varBike = "\n*无指定自行车，将与其他队伍共乘";
+                } else {
+                    varBike = "\n*No designated bike. You may share with others";
+                }
+            }
+        }
+
+        // [짐] FIT 모드 큰 짐 경고
+        let varLuggage = "";
+        if (isFit) {
+            if (g.langContext === 'CN') {
+                varLuggage = "\n*大件行李和婴儿车不允许携带。";
+            } else {
+                varLuggage = "\n*Large luggage and strollers are not allowed.";
+            }
+        }
+        
+        // [Day1] Day 1 전용 안내
+        let varDay1 = "";
+        if (g.paxType === 'D1') {
+            if (g.langContext === 'CN') {
+                varDay1 = "\n*(Day1) 今天的行程结束后，大巴将返回首尔。";
+            } else {
+                varDay1 = "\n*(Day1) After today's tour, the bus will return to Seoul.";
+            }
+        }
+
+        // [Day2] Day 2, Day 3 복귀/숙박 손님 전용 안내
+        let varDay2 = "";
+        if (g.paxType === 'D2' || g.paxType === 'D3') {
+            let dayLabel = (g.paxType === 'D3') ? "Day 3" : "Day 2";
+            if (g.langContext === 'CN') {
+                if (g.isStay) {
+                    varDay2 = `\n\n🌙 续住 (Stay)\n📍 No Bus (Enjoy Skiing!)`;
+                } else {
+                    varDay2 = `\n\n🌙 ${dayLabel} 归程 Return\n1. 出发 Departure (17:00)\n📍 综合售票处旁 巴士停车场`;
+                }
+            } else {
+                if (g.isStay) {
+                    varDay2 = `\n\n🌙 Stay Guest\n📍 No Bus (Enjoy Skiing!)`;
+                } else {
+                    varDay2 = `\n\n🌙 ${dayLabel} Return\n1. Departure (17:00)\n📍 Bus Parking Lot next to Ticket Office`;
+                }
+            }
+        }
+
+        // --- 2. 변수 치환 적용 ---
+        msgText = baseTemplate
+            .replace(/\[버스\]/g, busNo)
+            .replace(/\[그룹\]/g, g.repNum)
+            .replace(/\[인원수\]/g, g.count)
+            .replace(/\[좌석\]/g, isFit ? "" : seatStr) 
+            .replace(/\[출발시간\]/g, userTime)
+            .replace(/\[탑승지\]/g, userPlace)
+            .replace(/\[신발\]/g, varShoe)
+            .replace(/\[보드\]/g, varBoard)
+            .replace(/\[바이크\]/g, varBike)
+            .replace(/\[짐\]/g, varLuggage)
+            .replace(/\[Day1\]/g, varDay1)
+            .replace(/\[Day2\]/g, varDay2);
 
 
 
@@ -3678,18 +3660,19 @@ function syncToServer() {
     if (currentActiveRoom === '일반투어 (가)' || currentActiveRoom === '일반투어 (나)') return;
     clearTimeout(syncTimer);
     syncTimer = setTimeout(() => {
-        let roomData = {
+                let roomData = {
             'bus_seatMap': localStorage.getItem(currentActiveRoom + '_bus_seatMap') || '',
             'bus_lastDate': localStorage.getItem(currentActiveRoom + '_bus_lastDate') || '',
             'bus_rawData': localStorage.getItem(currentActiveRoom + '_bus_rawData') || '',
             'bus_size': localStorage.getItem(currentActiveRoom + '_bus_size') || '44',
             'bus_times': localStorage.getItem(currentActiveRoom + '_bus_times') || '{}',
-            'bus_guideName': localStorage.getItem(currentActiveRoom + '_bus_guideName') || '',
-                  'bus_number': localStorage.getItem(currentActiveRoom + '_bus_number') || '',
-            'bus_specialNotice': localStorage.getItem(currentActiveRoom + '_bus_specialNotice') || '',
+            'bus_number': localStorage.getItem(currentActiveRoom + '_bus_number') || '',
+            'bus_englishTemplate': localStorage.getItem(currentActiveRoom + '_bus_englishTemplate') || '',
+            'bus_chineseTemplate': localStorage.getItem(currentActiveRoom + '_bus_chineseTemplate') || '',
             'bus_msgStatus': localStorage.getItem(currentActiveRoom + '_bus_msgStatus') || '{}',
             'bus_bikeGroups': localStorage.getItem(currentActiveRoom + '_bus_bikeGroups') || '[]'
         };
+
         google.script.run.saveSkiTourData(currentActiveRoom, JSON.stringify(roomData));
 
     }, 1500);
@@ -3775,17 +3758,19 @@ function updateTimeSequence(source) {
 
 
 function saveGuideName() { 
-    localStorage.setItem(lsKey('bus_guideName'), document.getElementById('guideNameInput').value);
     localStorage.setItem(lsKey('bus_number'), document.getElementById('busNumberInput').value);
     if(msgListGroups.length > 0) refreshDisplay(); 
     syncToServer();
 }
 
-function saveSpecialNotice() { 
-    localStorage.setItem(lsKey('bus_specialNotice'), document.getElementById('specialNotice').value); 
+
+function saveTemplates() { 
+    localStorage.setItem(lsKey('bus_englishTemplate'), document.getElementById('englishTemplate').value); 
+    localStorage.setItem(lsKey('bus_chineseTemplate'), document.getElementById('chineseTemplate').value); 
     if(msgListGroups.length > 0) refreshDisplay(); 
     syncToServer();
 }
+
 
 
 
@@ -3820,7 +3805,8 @@ function loadSeatMap() {
 
 function loadTextInput() { const savedData = localStorage.getItem(lsKey('bus_rawData')); if(savedData) document.getElementById('rawData').value = savedData; const savedSize = localStorage.getItem(lsKey('bus_size')); if(savedSize) { const radios = document.getElementsByName('busSize'); for(let r of radios) { if(r.value === savedSize) r.checked = true; } } else { document.querySelector('input[name="busSize"][value="44"]').checked = true; } }
 
-function loadGuideName() { const savedGuide = localStorage.getItem(lsKey('bus_guideName')); if(savedGuide) document.getElementById('guideNameInput').value = savedGuide; const savedBus = localStorage.getItem(lsKey('bus_number')); if(savedBus) document.getElementById('busNumberInput').value = savedBus; }
+function loadGuideName() { const savedBus = localStorage.getItem(lsKey('bus_number')); if(savedBus) document.getElementById('busNumberInput').value = savedBus; }
+
 
 function clearData() {
     if(confirm('초기화하시겠습니까?')) {
@@ -3889,12 +3875,16 @@ function updateHeader1(seatMap) {
         }
     }
 
-    // 3. 데이터 준비
-    let guideName = document.getElementById('guideNameInput').value || "Mr. Shin";
+      // 3. 데이터 준비
+    let busNo = document.getElementById('busNumberInput').value || "";
     let teamLabel = teamSet.size > 0 ? Array.from(teamSet).sort().join(', ') : ''; 
     
-    // 팀이 있으면 "Mr. Shin (B)", 없으면 "Mr. Shin" 만 표시 ("GUIDE" 글자 삭제됨)
-    let topTitle = teamLabel ? `${guideName} <span style="color:#FF4081;">(${teamLabel})</span>` : guideName;
+    // 가이드 이름 삭제 -> 버스 번호와 팀(그룹) 알파벳 표시
+    let topTitle = busNo ? `BUS: ${busNo}` : `BUS: 미정`;
+    if (teamLabel) {
+        topTitle += ` <span style="color:#FF4081;">(${teamLabel})</span>`;
+    }
+
 
     let tH = document.getElementById('timeHongdae').value;
     let tM = document.getElementById('timeMyeongdong').value;
@@ -4102,10 +4092,12 @@ function forceSaveAllData() {
     if(currentScreenMode !== 'main') return;
     try {
         saveTextInput(); saveGuideName(); saveTimeInput(); checkDateChange();
-        localStorage.setItem(lsKey('bus_specialNotice'), document.getElementById('specialNotice').value);
+        localStorage.setItem(lsKey('bus_englishTemplate'), document.getElementById('englishTemplate').value);
+        localStorage.setItem(lsKey('bus_chineseTemplate'), document.getElementById('chineseTemplate').value);
         syncToServer();
     } catch (e) { console.log("Safe Save:", e); }
 }
+
 
 
 
