@@ -192,7 +192,8 @@
 
 
 
-  .bus-date { font-size: 1.0rem; color: #555; margin-top: 6px; font-weight: 800; }
+  .bus-date { height: 0; overflow: hidden; margin: 0; opacity: 0; }
+
 
   .bus-title-label { background: #333; color: #fff; display:inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; margin-bottom: 5px; font-weight: bold; }
 
@@ -3788,6 +3789,8 @@ function clearData() {
 
 function updateHeader1(seatMap) {
     let counts = { '홍대':0, '명동':0, '동대문':0, '현장':0, '기타':0 }; 
+    let boarded = { '홍대':0, '명동':0, '동대문':0, '현장':0 };
+    let lang = { 'EN':0, 'CN':0 };
     let total = 0;
     let teamSet = new Set(); 
 
@@ -3797,18 +3800,33 @@ function updateHeader1(seatMap) {
             total++; 
             let loc = seat.location || '';
             
-            // 1. 픽업지 카운트
-            if(loc.includes('홍대')) counts['홍대']++;
-            else if(loc.includes('명동')) counts['명동']++;
-            else if(loc.includes('동대문')) counts['동대문']++;
-            else if(loc.includes('현장')) counts['현장']++;
+            let isHong = loc.includes('홍대');
+            let isMyeong = loc.includes('명동');
+            let isDong = loc.includes('동대문');
+            let isWalkIn = loc.includes('현장');
+            
+            // 1. 픽업지 예약 카운트 상태
+            if(isHong) counts['홍대']++;
+            else if(isMyeong) counts['명동']++;
+            else if(isDong) counts['동대문']++;
+            else if(isWalkIn) counts['현장']++;
             else counts['기타']++;
 
+            // 탑승 완료 카운트 상태
+            if(seat.isBoarded) {
+                if(isHong) boarded['홍대']++;
+                else if(isMyeong) boarded['명동']++;
+                else if(isDong) boarded['동대문']++;
+                else if(isWalkIn) boarded['현장']++;
+            }
+
+            // 언어 비율 카운트 상태
+            if(seat.langContext === 'EN') lang['EN']++;
+            else if(seat.langContext === 'CN') lang['CN']++;
+
             // 2. 팀 번호 파싱 (repNum의 첫 글자가 영어인지 확인)
-            // 데이터 예시: "B1", "C2" -> 첫글자 B, C 추출
             if (seat.repNum) {
                 let firstChar = String(seat.repNum).trim().charAt(0).toUpperCase();
-                // 영문자(A-Z)인 경우에만 팀 번호로 추가
                 if (/[A-Z]/.test(firstChar)) {
                     teamSet.add(firstChar);
                 }
@@ -3816,16 +3834,23 @@ function updateHeader1(seatMap) {
         }
     }
 
-      // 3. 데이터 준비
+    // 잔여 좌석 수 상태 계산
+    let emptySeats = (seatMap.length - 1) - total;
+    if (emptySeats < 0) emptySeats = 0;
+
+    // 3. 데이터 준비
     let busNo = document.getElementById('busNumberInput').value || "";
     let teamLabel = teamSet.size > 0 ? Array.from(teamSet).sort().join(', ') : ''; 
     
-    // 가이드 이름 삭제 -> 버스 번호와 팀(그룹) 알파벳 표시
-    let topTitle = busNo ? `BUS: ${busNo}` : `BUS: 미정`;
+    // 날짜 포맷 꾸밈 변경 (예: 2026-03-30 -> 2026년 3월 30일)
+    let rawDate = document.getElementById('dateDisplay1').innerText;
+    let dateMatch = rawDate.match(/(\d{4})-(\d{2})-(\d{2})/);
+    let dateStr = dateMatch ? `${dateMatch[1]}년 ${parseInt(dateMatch[2], 10)}월 ${parseInt(dateMatch[3], 10)}일` : rawDate;
+
+    let topTitle = busNo ? `${dateStr} BUS: ${busNo}` : `${dateStr} BUS: 미정`;
     if (teamLabel) {
         topTitle += ` <span style="color:#FF4081;">(${teamLabel})</span>`;
     }
-
 
     let tH = document.getElementById('timeHongdae').value;
     let tM = document.getElementById('timeMyeongdong').value;
@@ -3837,34 +3862,38 @@ function updateHeader1(seatMap) {
         let firstLine = rawText.split('\n')[0];
         destTitle = firstLine.split('-')[0].replace(/^[a-zA-Z가-힣]+:\s*/, '').trim();
     }
-    let destHtml = destTitle ? `<div style="font-size:20px; color:#aed581; margin-top:4px;">🚩 ${destTitle}</div>` : "";
+    let destHtml = destTitle ? `<div style="font-size:20px; font-weight:900; color:#aed581; margin-top:4px;">🚩 ${destTitle}</div>` : "";
 
-    // 4. 레이아웃 (글자 크기 대폭 확대)
-    // 줄 1: 이름 + (팀) -> 26px (노란색)
-    const line1 = `<div style="font-size:26px; font-weight:900; color:#FFD54F; margin-bottom:6px; line-height:1.2;">
+    // 4. 레이아웃
+    const line1 = `<div style="font-size:20px; font-weight:900; color:#FFD54F; margin-bottom:6px; line-height:1.2;">
                       ${topTitle}
                       ${destHtml}
                    </div>`;
     
-    // 줄 2: 출발 시간 -> 20px (흰색)
     const line2 = `<div style="font-size:20px; color:#fff; margin-bottom:8px; font-weight:bold;">
                       🕒 ${tH} / ${tM} / ${tD}
                    </div>`;
 
-    // 줄 3: 총 인원 및 픽업지 -> 22px / 18px
-    const line3 = `<div style="font-size:22px; font-weight:900; color:white;">
-                      TOTAL: ${total}명 
-                      <div style="font-size:18px; color:#B3E5FC; margin-top:4px; font-weight:bold;">
-                        [ 홍${counts['홍대']} / 명${counts['명동']} / 동${counts['동대문']} / 현${counts['현장']} ]
+    const line3_1 = `<div style="font-size:20px; font-weight:900; color:white; margin-bottom:4px;">
+                      총원: ${total}명 | 잔여: ${emptySeats}석
+                   </div>`;
+
+    const line3_2 = `<div style="font-size:20px; font-weight:900; color:#FFCA28; margin-bottom:6px;">
+                      EN: ${lang['EN']}명 | CN: ${lang['CN']}명
+                   </div>`;
+
+    const line4 = `<div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                      <div style="font-size:20px; color:#B3E5FC; font-weight:bold; margin-bottom:4px;">
+                        예약 [ 홍${counts['홍대']} / 명${counts['명동']} / 동${counts['동대문']} / 현${counts['현장']} ]
+                      </div>
+                      <div style="font-size:20px; color:#4fc3f7; font-weight:900;">
+                        탑승 [ 홍${boarded['홍대']} / 명${boarded['명동']} / 동${boarded['동대문']} / 현${boarded['현장']} ]
                       </div>
                    </div>`;
 
-    // [수정] 버튼 생성 코드(btnHtml)를 삭제하고, 텍스트만 출력하도록 변경
     document.getElementById('pickupSummary1').innerHTML = 
-        `<div style="text-align:left; display:flex; flex-direction:column;">${line1}${line2}${line3}</div>`;
+        `<div style="text-align:left; display:flex; flex-direction:column;">${line1}${line2}${line3_1}${line3_2}${line4}</div>`;
 }
-
-
 
 
 
