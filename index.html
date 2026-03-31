@@ -1455,7 +1455,7 @@ function combinePhoneAndMessenger(phoneCol, messengerCol) {
 
     
 
-    let targetBody = "";
+        let targetBody = "";
 
     let isMessengerValid = false;
 
@@ -1465,7 +1465,11 @@ function combinePhoneAndMessenger(phoneCol, messengerCol) {
 
         targetBody = cleanMsgCol.replace(/[^0-9]/g, '');
 
-        isMessengerValid = true;
+        if (targetBody.length > 0) {
+
+            isMessengerValid = true;
+
+        }
 
     } 
 
@@ -1476,6 +1480,7 @@ function combinePhoneAndMessenger(phoneCol, messengerCol) {
         targetBody = rawPhoneDigits;
 
     }
+
 
     
 
