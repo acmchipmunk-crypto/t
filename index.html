@@ -808,10 +808,18 @@
   </div>
 </div>
 
-
+<div class="v11-card">
+  <span class="v11-section-label">7. 현장 추가 및 삭제</span>
+  <div class="manual-control-panel" style="margin-top: 5px;">
+      <input type="text" id="manualGroupNum" class="manual-input v11-ui-element" placeholder="그룹번호 입력">
+      <button class="btn-manual btn-add v11-ui-element" onclick="manualAddGroup()">+</button>
+      <button class="btn-manual btn-del v11-ui-element" onclick="manualDelGroup()">-</button>
+  </div>
+</div>
 
 <div class="v11-card">
   <span class="v11-section-label">8. 새로운 명단 추가</span>
+
   <div class="v11-btn-group">
       <textarea id="manualBatchData" placeholder="여러 줄 명단 붙여넣기..."></textarea>
       <button class="btn-manual btn-add v11-ui-element" style="width: 70px; border:none; font-size: 12px !important;" onclick="manualBatchAdd()">명단추가</button>
