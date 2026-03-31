@@ -3980,6 +3980,16 @@ function toggleMap2(hasReturnGuests) {
 function downloadImage(num) {
 
   const capture = document.getElementById('captureArea' + num);
+  let clonedPanel = null;
+
+  if (num === 1) {
+    const railbikePanel = document.getElementById('railbikePanel');
+    if (railbikePanel && railbikePanel.style.display !== 'none') {
+      clonedPanel = railbikePanel.cloneNode(true);
+      clonedPanel.style.marginTop = '15px';
+      capture.appendChild(clonedPanel);
+    }
+  }
 
   html2canvas(capture, { scrollY: -window.scrollY }).then(canvas => {
 
@@ -3987,9 +3997,14 @@ function downloadImage(num) {
 
     link.href = canvas.toDataURL(); link.click();
 
+    if (clonedPanel) {
+      capture.removeChild(clonedPanel);
+    }
+
   });
 
 }
+
 
 
 
