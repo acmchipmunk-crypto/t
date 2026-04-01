@@ -533,24 +533,14 @@
     position: absolute;
     z-index: 10000;
     background: white;
-    width: 160px; /* 카드보다 큼 */
-    height: 230px; /* 카드 2배 정도 높이 */
+    width: 106px; /* 폭을 기존의 2/3로 축소 */
+    height: auto; /* 내용에 맞게 자동 조절 */
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     border: 2px solid #3f51b5;
-}
-
-
-.lp-header {
-    background: #3f51b5;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 6px;
-    text-align: center;
 }
 
 .lp-body {
@@ -572,9 +562,10 @@
     font-size: 14px;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    min-height: 40px; /* 버튼 최소 높이 확보 */
 }
 .lp-btn.cancel-mode {
-    background: #757575; /* 취소 모드일 때 회색 */
+    background: #757575 !important; /* 취소 모드일 때 회색 우선 적용 */
 }
 
 /* 빈 공간 (나중에 기능 추가) */
@@ -590,7 +581,7 @@
 }
 
 .lp-close {
-    background: #f44336;
+    background: #757575; /* 차분한 회색으로 변경 */
     color: white;
     border: none;
     padding: 8px;
@@ -598,8 +589,42 @@
     cursor: pointer;
 }
 
+
 .seat.boarded {
     border: 3px dashed #c05252 !important;
+}
+
+/* [수정] 후기 안씀: 카드 뚫고 나오는 거대한 숫자 효과 */
+.seat.no-review {
+    border: 4px solid #FF1493 !important; /* 눈에 확 띄는 핫핑크 테두리 */
+    box-shadow: 0 0 10px rgba(255, 20, 147, 0.5) !important;
+    overflow: visible !important; /* 숫자가 카드를 뚫고 나오도록 허용 */
+}
+
+.seat.no-review .grp-id {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    font-size: 65px !important; /* 기존 크기 무시하고 엄청 크게 */
+    font-weight: 900 !important;
+    color: #FFFFFF !important; /* 글자는 흰색 */
+    text-shadow: 
+        -3px -3px 0 #FF1493,  
+         3px -3px 0 #FF1493,
+        -3px  3px 0 #FF1493,
+         3px  3px 0 #FF1493,
+         5px  5px 10px rgba(0,0,0,0.7) !important; /* 핫핑크 외곽선 + 진한 그림자 */
+    z-index: 100 !important; /* 가장 위로 올라오게 */
+    margin: 0 !important;
+    pointer-events: none !important;
+    letter-spacing: -2px !important;
+}
+
+/* 숫자에 집중되도록 기존 배지와 좌석 번호는 흐리게 처리 */
+.seat.no-review .info-badge, 
+.seat.no-review .seat-num {
+    opacity: 0.2 !important;
 }
 
 
@@ -607,6 +632,7 @@
 
 
 #entryScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f2f5; z-index: 9998; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; overflow-y: auto; }
+
 #roomSelectScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f2f5; z-index: 9998; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px; overflow-y: auto; padding-top: 80px; padding-bottom: 60px; box-sizing: border-box; }
 
 .big-btn { width: 80%; max-width: 300px; padding: 30px; font-size: 32px; font-weight: 900; border: none; border-radius: 15px; cursor: pointer; color: white; box-shadow: 0 8px 15px rgba(0,0,0,0.2); transition: transform 0.1s; }
@@ -941,22 +967,26 @@
 
 
 <div id="longPressPopup" class="lp-popup" style="display:none;">
-    <div class="lp-header">기능 선택</div>
-        <div class="lp-body">
-    <button id="btnToggleTime" class="lp-btn" style="background: #2196F3; margin-bottom: 4px; color: white;" onclick="toggleTimeConfirmed()">
-        연락됨
+    <div class="lp-body">
+    <button id="btnToggleBoarding" class="lp-btn" style="background: #2196F3; color: white;" onclick="toggleGroupBoarding()">
+        탑승 완료
     </button>
-    <button id="btnToggleBoarding" class="lp-btn" onclick="toggleGroupBoarding()">
-        탑승 완료 처리
-    </button>
-    <button class="lp-btn" style="background: #D32F2F; margin-top: 4px; color: white;" onclick="handleNoShow()">
+    <button class="lp-btn" style="background: #D32F2F; color: white;" onclick="handleNoShow()">
         노쇼 안녕
+    </button>
+    <button id="btnOpenWhatsApp" class="lp-btn" style="background: #25D366; color: white;" onclick="openGuestWhatsApp()">
+        와츠앱 열기
+    </button>
+    <button id="btnToggleNoReview" class="lp-btn" style="border: none; font-weight: 900;" onclick="toggleGroupNoReview()">
+        후기 안씀
     </button>
 </div>
 
 
     <button class="lp-close" onclick="closeLongPopup()">닫기</button>
 </div>
+
+
 
 <textarea id="clipboardHelper" style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; opacity:0; pointer-events:none;"></textarea>
 
@@ -2700,8 +2730,12 @@ function createSeatElement(parent, seatNum, seatMap, maxSeats, busNum) {
   if (data && data.isBoarded) {
       seatDiv.classList.add('boarded');
   }
+  if (data && data.isNoReview) {
+      seatDiv.classList.add('no-review');
+  }
 
   if(seatNum <= 4 && maxSeats > 14) {
+
     if (data) renderSeatContent(seatDiv, data, seatNum, busNum);
     else { seatDiv.classList.add('emergency'); renderSeatContent(seatDiv, null, seatNum, busNum); }
   } else {
@@ -4207,8 +4241,9 @@ function toggleBoarding(el, gid) {
 function openLongPopup(el, data, busNum) {
     lpTarget = { 
         repNum: data.repNum, 
+        phone: data.phone,
         currentStatus: data.isBoarded || false,
-        timeStatus: JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}')[data.repNum]?.connected || false,
+        noReviewStatus: data.isNoReview || false,
         busNum: busNum,
         seatIdx: parseInt(el.dataset.idx)
     };
@@ -4216,7 +4251,6 @@ function openLongPopup(el, data, busNum) {
     
     const popup = document.getElementById('longPressPopup');
     const btn = document.getElementById('btnToggleBoarding');
-    const btnTime = document.getElementById('btnToggleTime');
     
     if (lpTarget.currentStatus) {
         btn.innerText = "탑승 취소";
@@ -4226,22 +4260,30 @@ function openLongPopup(el, data, busNum) {
         btn.classList.remove('cancel-mode');
     }
 
-    if (lpTarget.timeStatus) {
-        btnTime.innerText = "연락됨 취소";
-        btnTime.classList.add('cancel-mode');
-    } else {
-        btnTime.innerText = "연락됨";
-        btnTime.classList.remove('cancel-mode');
+    const btnNoReview = document.getElementById('btnToggleNoReview');
+    if (btnNoReview) {
+        if (lpTarget.noReviewStatus) {
+            btnNoReview.innerText = "후기 안씀 취소";
+            btnNoReview.style.background = "#757575";
+            btnNoReview.style.color = "white";
+            btnNoReview.style.textShadow = "none";
+        } else {
+            btnNoReview.innerText = "후기 안씀";
+            btnNoReview.style.background = "repeating-linear-gradient(45deg, #000, #000 10px, #FFD700 10px, #FFD700 20px)";
+            btnNoReview.style.color = "white";
+            btnNoReview.style.textShadow = "1px 1px 2px black";
+        }
     }
 
     const rect = el.getBoundingClientRect();
 
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     popup.style.top = (rect.top + scrollTop - 50) + 'px'; 
-    popup.style.left = (rect.left + rect.width/2 - 80) + 'px'; 
+    popup.style.left = (rect.left + rect.width/2 - 53) + 'px'; /* 축소된 너비(106px)의 절반으로 위치 조정 */
     
     popup.style.display = 'flex';
 }
+
 
 
 // [추가] 팝업 닫기
@@ -4335,7 +4377,39 @@ function handleNoShow() {
     }
 }
 
+function openGuestWhatsApp() {
+    if (!lpTarget || !lpTarget.phone) {
+        alert("전화번호 정보가 없습니다.");
+        return;
+    }
+    const cleanPhone = lpTarget.phone.replace(/[^0-9]/g, '');
+    const waLink = `https://wa.me/${cleanPhone}`;
+    window.open(waLink, '_blank');
+    closeLongPopup();
+}
+
+function toggleGroupNoReview() {
+    if (!lpTarget) return;
+    
+    const targetRep = lpTarget.repNum;
+    const newStatus = !lpTarget.noReviewStatus;
+    
+    [currentSeatMap1, currentSeatMap2].forEach(map => {
+        map.forEach(seat => {
+            if (seat && seat.repNum === targetRep) {
+                seat.isNoReview = newStatus;
+            }
+        });
+    });
+
+    saveSeatMap();
+    refreshDisplay();
+    closeLongPopup();
+}
+// 이 줄 위에 넣으세요
+
  function checkRailbikeMode(raw) {
+
     if (raw.includes('강촌') || raw.includes('가평')) {
         document.getElementById('railbikePanel').style.display = 'block';
     } else {
