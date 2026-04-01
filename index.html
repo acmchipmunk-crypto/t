@@ -3347,19 +3347,12 @@ function getAppIconHtml(rawMsg, appType, encodedText) {
 
 
 function updateMsgStatus(gid, type, checked, memo) {
-
     let statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
-
     if(!statusData[gid]) statusData[gid] = { contacted: false, connected: false, memo: "", lunchMemo: "" };
-
     if(type === 'contacted') statusData[gid].contacted = checked;
-
     if(type === 'connected') statusData[gid].connected = checked;
-
     if(type === 'memo' && memo !== null) statusData[gid].memo = memo;
-
     if(type === 'lunchMemo' && memo !== null) statusData[gid].lunchMemo = memo;
-
     localStorage.setItem(lsKey('bus_msgStatus'), JSON.stringify(statusData));
     syncToServer();
 
@@ -3370,9 +3363,12 @@ function updateMsgStatus(gid, type, checked, memo) {
         const isFit = (rawSize === 'FIT');
         let busSize = isFit ? (currentSeatMap1.length - 1) : parseInt(rawSize);
         redrawAll(busSize, isFit);
+        updateBikeVisuals();
+        // 이 줄 위에 넣으세요
         window.scrollTo(0, scrollY);
     }
 }
+
 
 
 
