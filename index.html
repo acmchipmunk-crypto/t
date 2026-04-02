@@ -261,9 +261,10 @@
 
   .msg-section { margin-top: 20px; border-top: 2px solid #333; padding-top: 10px; }
 
-  .msg-card { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .msg-card { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 6px 8px; margin-bottom: 4px; display: flex; flex-direction: column; box-shadow: 0 1px 3px rgba(0,0,0,0.05); gap: 4px; }
 
-  .msg-check-area { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: 8px; width: 45px; gap: 8px; }
+  .msg-check-area { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 4px; flex-shrink: 0; }
+
 
   .check-box-wrapper { display: flex; flex-direction: column; align-items: center; }
 
@@ -275,7 +276,7 @@
 
   .chk-sent { accent-color: #2196f3; } .chk-conn { accent-color: #f44336; } 
 
-  .msg-info { flex: 1; margin-right: 5px; min-width: 0; }
+  .msg-info { width: 100%; min-width: 0; }
 
   .msg-group-row { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
 
@@ -291,10 +292,15 @@
 
   .msg-seats { font-size: 14px; font-weight: bold; color: #d32f2f; margin-top: 4px; }
 
-    .msg-memo-input { width: 100%; margin-top: 5px; border: 2px solid #d3d3d3; border-radius: 6px; font-weight: bold; font-size: 12px; padding: 6px 8px; background: #fafafa; box-sizing: border-box; }
+    .msg-memo-input { width: 100%; height: 45px; margin-top: 4px; border: 2px solid #d3d3d3; border-radius: 6px; font-weight: bold; font-size: 14px; padding: 6px; background: #fafafa; box-sizing: border-box; resize: vertical; }
+
+    
+    .btn-copy-inline { cursor: pointer; font-size: 16px; margin-left: 4px; filter: grayscale(100%); transition: transform 0.1s; display: inline-block; vertical-align: middle; }
+    .btn-copy-inline:active { transform: scale(0.8); }
 
 
   .option-card-wrapper {
+
     display: flex;
     gap: 4px;
     margin-top: 10px;
@@ -323,11 +329,12 @@
     color: #333;
   }
 
-  .msg-card {
-    flex-wrap: wrap;
+    .msg-card {
+    /* flex-wrap 제거됨 (세로 배치로 변경) */
   }
 
   .opt-card.off {
+
     background-color: #eeeeee !important;
     color: #bdbdbd !important;
     border-color: #e0e0e0 !important;
@@ -355,11 +362,10 @@
   .lunch-btn-reset { background-color: #757575; }
   .lunch-memo-input { width: 100%; margin-top: 4px; border: 2px solid #FF9800; border-radius: 6px; font-weight: bold; font-size: 12px; padding: 6px 8px; background: #FFF3E0; box-sizing: border-box; color: #E65100; }
 
-  .msg-actions { display: grid; grid-template-columns: 45px 45px; gap: 5px; align-items: center; justify-content: center; }
+  .msg-actions { display: flex; flex-direction: row; gap: 5px; align-items: center; justify-content: space-between; width: 100%; }
+  .msg-actions > * { flex: 1; min-width: 0; box-sizing: border-box; }
 
-
-
-  .btn-action { width: 45px; height: 45px; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-decoration: none; font-size: 10px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; text-align: center; line-height: 1.2; transition: transform 0.1s; }
+  .btn-action { height: 45px; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-decoration: none; font-size: 10px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; text-align: center; line-height: 1.2; transition: transform 0.1s; }
 
   .btn-action:active { transform: scale(0.95); }
 
@@ -1806,7 +1812,7 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
 
              note = parts[10] || "";
 
-        } else {
+                } else {
 
              productName = parts[2] || "";
 
@@ -1824,9 +1830,11 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
 
              note = parts[12] || "";
 
-             resNoForOrigin = customId; 
+             resNoForOrigin = parts[3] || ""; 
 
         }
+
+
 
     }
 
@@ -1947,7 +1955,7 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
 
 
 
-                                return {
+                                                                return {
       id: customId, originalId: originalOrder, name: name, 
       phone: parsedInfo.fullNumber, 
       count: count, location: location, note: note,
@@ -1958,12 +1966,14 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
 
 
       originTag: originTag, 
+      resNo: resNoForOrigin,
 
 
 
 
       options: { lift: optLift, gear: optGear, clothes: optClothes, lesson: optLesson }
     };
+
 
 
 
@@ -2096,18 +2106,21 @@ function createGroupsFromEntries(entries) {
             isBike: currentGroupMembers.some(m => m.isBike),
 
 
-            memberBikeList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isBike)),
+                                                memberBikeList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isBike)),
 
                         isSkiTour: currentGroupMembers.some(m => !m.isSancheoneo),
-
+            note: currentGroupMembers.map(m => m.note).filter(n => n && n.trim() !== '').join(', '),
 
                         email: rep.email,
+
             originTag: combinedOrigin, 
+            resNo: rep.resNo,
             options: { lift: gLift, gear: gGear, clothes: gClothes, lesson: gLesson },
             isBoarded: false,
             offOptions: [],
             memberNames: [...new Set(currentGroupMembers.map(m => m.name))]
         });
+
 
 
 
@@ -3159,7 +3172,8 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
 
         let waBtnClass = hasPhone ? 'btn-action btn-wa-send' : 'btn-action btn-wa-send disabled';
 
-                let isContacted = statusData[gid]?.contacted || false; let isConnected = statusData[gid]?.connected || false; let memoText = statusData[gid]?.memo || "";
+                                let isContacted = statusData[gid]?.contacted || false; let isConnected = statusData[gid]?.connected || false;
+        let memoText = statusData[gid]?.memo !== undefined ? statusData[gid].memo : (g.note || "");
         let lunchMemoText = statusData[gid]?.lunchMemo || "";
 
         
@@ -3237,18 +3251,57 @@ if (g.isBike) extraTags += `<span class="day-tag tag-bike" style="margin-left:5p
 
 
 
-                card.innerHTML = `
-     <div class="msg-check-area">
-        <div class="check-box-wrapper"><label class="msg-check-label label-sent">연락함</label><input type="checkbox" class="msg-check-input chk-sent" onchange="updateMsgStatus('${gid}', 'contacted', this.checked, null)" ${isContacted ? 'checked' : ''}></div>
-        <div class="check-box-wrapper"><label class="msg-check-label label-connected">연락됨</label><input type="checkbox" class="msg-check-input chk-conn" onchange="updateMsgStatus('${gid}', 'connected', this.checked, null)" ${isConnected ? 'checked' : ''}></div>
+                                                                                                                                
+                                                                                                                                        card.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; border-bottom: 1px solid #e0e0e0; padding-bottom: 4px; margin-bottom: 4px;">
+        <div style="display: flex; align-items: center; gap: 4px;">
+            <span class="msg-group" style="background-color: ${groupBgColor}; color: ${groupTextColor}; font-size: 30px; font-weight: 900; border-radius: 8px; padding: 4px 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">${uiGroupNum}</span>
+            <span style="display: inline-flex; flex-direction: column; gap: 2px;">
+                <div style="display: flex; gap: 4px; flex-wrap: wrap;">${langTag}${extraTags}</div>
+            </span>
+        </div>
+
+        
+        <div style="flex: 1; text-align: center; padding: 0 8px;">
+            <div style="font-size: 16px; font-weight: 900; color: #b71c1c; word-break: break-all; line-height: 1.2;">Seat: ${seatStr}</div>
+        </div>
+
+        <div class="msg-check-area" style="display: flex; flex-direction: column; gap: 2px; align-items: flex-end; justify-content: center;">
+            <div style="display: flex; align-items: center; gap: 4px;">
+                <label class="msg-check-label label-sent" style="margin: 0; font-size: 13px; font-weight: 900; color: #1976d2;">연락함</label>
+                <input type="checkbox" class="msg-check-input chk-sent" onchange="updateMsgStatus('${gid}', 'contacted', this.checked, null)" ${isContacted ? 'checked' : ''} style="transform: scale(1.6); margin: 0; cursor: pointer;">
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+                <label class="msg-check-label label-connected" style="margin: 0; font-size: 13px; font-weight: 900; color: #d32f2f;">연락됨</label>
+                <input type="checkbox" class="msg-check-input chk-conn" onchange="updateMsgStatus('${gid}', 'connected', this.checked, null)" ${isConnected ? 'checked' : ''} style="transform: scale(1.6); margin: 0; cursor: pointer;">
+            </div>
+        </div>
     </div>
-        <div class="msg-info">
-                <div class="msg-group-row"><span class="msg-group" style="background-color: ${groupBgColor}; color: ${groupTextColor};">${uiGroupNum}</span>${getOriginBadgeHtml(g.originTag)}${langTag}${extraTags}</div>
-        <div class="msg-seats">Seat: ${seatStr}</div>
-        <div style="font-size: 18px; margin-top: 5px; line-height: 1.4; color: #333;">${namesHtml}</div>
-        <input type="text" class="msg-memo-input" placeholder="메모" value="${memoText}" onchange="updateMsgStatus('${gid}', 'memo', null, this.value)">
-        <div class="hidden-msg">${msgText}</div>
+
+    <div class="msg-info">
+        <div style="font-size: 14px; line-height: 1.2; color: #333; background: #f8f9fa; padding: 4px 6px; border-radius: 8px; border: 1px solid #cfd8dc; margin-bottom: 2px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                <div><span style="font-size: 12px; color: #757575; display: inline-block; width: 35px;">이름:</span> <b style="font-size: 15px;">${g.memberNames.join(', ')}</b></div>
+                <span class="btn-copy-inline" onclick="copyOnly(this, '${g.memberNames.join(', ').replace(/'/g, "\\'")}')" style="font-size: 16px; margin: 0;">📄</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                <div style="display: flex; align-items: center;"><span style="font-size: 12px; color: #757575; display: inline-block; width: 35px;">예약:</span> <span style="font-size: 13px; font-weight: bold; color: #1565c0; background: #e3f2fd; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">${getOriginBadgeHtml(g.originTag)} ${g.resNo || '없음'}</span></div>
+                ${g.resNo ? `<span class="btn-copy-inline" onclick="copyOnly(this, '${g.resNo}')" style="font-size: 16px; margin: 0;">📄</span>` : ''}
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                <div><span style="font-size: 12px; color: #757575; display: inline-block; width: 35px;">전화:</span> <b style="font-size: 14px;">${g.phone || '없음'}</b></div>
+                ${g.phone ? `<span class="btn-copy-inline" onclick="copyOnly(this, '${g.phone}')" style="font-size: 16px; margin: 0;">📄</span>` : ''}
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div><span style="font-size: 12px; color: #757575; display: inline-block; width: 35px;">앱:</span> <b style="font-size: 14px;">${g.messenger || '없음'}</b></div>
+                ${g.messenger ? `<span class="btn-copy-inline" onclick="copyOnly(this, '${g.messenger.replace(/'/g, "\\'")}')" style="font-size: 16px; margin: 0;">📄</span>` : ''}
+            </div>
+        </div>
     </div>
+
+
+
+
 
 
     <div class="msg-actions">
@@ -3257,8 +3310,12 @@ if (g.isBike) extraTags += `<span class="day-tag tag-bike" style="margin-left:5p
         ${emailBtnHtml}
         ${appIconHtml}
     </div>
+
+    <textarea class="msg-memo-input" placeholder="메모 (자동 입력 및 수정 가능)" onchange="updateMsgStatus('${gid}', 'memo', null, this.value)">${memoText}</textarea>
+    <div class="hidden-msg">${msgText}</div>
     ${optionHtml}
 `;
+
 
         msgList.appendChild(card);
 
