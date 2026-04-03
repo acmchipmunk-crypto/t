@@ -1697,23 +1697,30 @@ function copyOnly(el, text) { copyToClipboard(text, el); }
 
 // =========================================
 
-function findCount(parts) {
+    function findCount(parts) {
 
-  for (let i = 0; i < parts.length - 1; i++) {
+      for (let i = 0; i < parts.length - 1; i++) {
 
-    if (parts[i].includes('중국어') || parts[i].includes('영어')) {
+        if (parts[i].includes('중국어') || parts[i].includes('영어')) {
 
-      let n = parseInt(parts[i+1]);
+          let match = parts[i+1].match(/\d+/g);
 
-      if (!isNaN(n)) return n;
+          if (match) {
+
+            let n = match.reduce((sum, val) => sum + parseInt(val, 10), 0);
+
+            if (!isNaN(n)) return n;
+
+          }
+
+        }
+
+      }
+
+      return 1;
 
     }
 
-  }
-
-  return 1;
-
-}
 
 
 
@@ -2223,9 +2230,24 @@ function runAI() {
     const direction = document.querySelector('input[name="direction"]:checked').value;
 
 
-    const lines = raw.trim().split('\n');
+        let rawLines = raw.trim().split('\n');
+    let lines = [];
+    let tempLine = "";
+    for (let i = 0; i < rawLines.length; i++) {
+        let l = rawLines[i];
+        let isNewRow = l.includes('\t') || l.match(/\s{2,}/) || l.trim() === '' || /^(no\.|total|엑셀|\d+|[a-z가-힣]+:)/i.test(l.trim());
+        if (isNewRow) {
+            if (tempLine) lines.push(tempLine);
+            tempLine = l;
+        } else {
+            if (tempLine) tempLine += " " + l.trim();
+            else tempLine = l;
+        }
+    }
+    if (tempLine) lines.push(tempLine);
 
     const rawLower = raw.toLowerCase();
+
 
     const isGlobalSki = rawLower.includes('ski') || rawLower.includes('snowboard') || rawLower.includes('스키') || rawLower.includes('스노우');
 
@@ -3602,9 +3624,24 @@ function manualBatchAdd() {
     const rawLower = rawBatch.toLowerCase();
 
     const isGlobalSki = rawLower.includes('ski') || rawLower.includes('snowboard') || rawLower.includes('스키') || rawLower.includes('스노우');
-    const lines = rawBatch.split('\n');
+        let rawLines = rawBatch.split('\n');
+    let lines = [];
+    let tempLine = "";
+    for (let i = 0; i < rawLines.length; i++) {
+        let l = rawLines[i];
+        let isNewRow = l.includes('\t') || l.match(/\s{2,}/) || l.trim() === '' || /^(no\.|total|엑셀|\d+|[a-z가-힣]+:)/i.test(l.trim());
+        if (isNewRow) {
+            if (tempLine) lines.push(tempLine);
+            tempLine = l;
+        } else {
+            if (tempLine) tempLine += " " + l.trim();
+            else tempLine = l;
+        }
+    }
+    if (tempLine) lines.push(tempLine);
     
     let entries = [];
+
     let startIdx = (msgListGroups.length > 0) ? msgListGroups.length + 1 : 1;
 
     lines.forEach((line, i) => {
