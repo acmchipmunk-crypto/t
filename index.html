@@ -1622,7 +1622,7 @@ function copyAndOpen(el, text, schemeKey, encodedText) {
 function copyLunchMemos(btn) {
     let statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
     let resultText = "";
-    let totals = { '매움': 0, '안매움': 0, '치즈': 0, '볶음밥': 0 };
+    let totals = {};
     let hasData = false;
     
     msgListGroups.forEach(g => {
@@ -1632,27 +1632,44 @@ function copyLunchMemos(btn) {
             let countryName = CONFIG.COUNTRY_MAP[g.country] || g.country;
             let uiGroupNum = g.msgNum.replace(/[a-zA-Z]/g, '');
             
-            let groupOrders = { '매움': 0, '안매움': 0, '치즈': 0, '볶음밥': 0 };
+            let groupOrders = {};
+            let otherTexts = [];
             let parts = lunchMemoText.split(',');
             parts.forEach(p => {
                 let m = p.trim().match(/(.+?)(\d+)$/);
                 if (m) {
                     let name = m[1].trim();
                     let cnt = parseInt(m[2]);
-                    if (groupOrders[name] !== undefined) {
-                        groupOrders[name] += cnt;
-                        totals[name] += cnt;
-                    }
+                    if (!groupOrders[name]) groupOrders[name] = 0;
+                    groupOrders[name] += cnt;
+                    
+                    if (!totals[name]) totals[name] = 0;
+                    totals[name] += cnt;
+                } else if (p.trim() !== "") {
+                    otherTexts.push(p.trim());
                 }
             });
             
             let orderStrArr = [];
-            if (groupOrders['매움'] > 0) orderStrArr.push("매움 " + groupOrders['매움']);
-            if (groupOrders['안매움'] > 0) orderStrArr.push("안매움 " + groupOrders['안매움']);
-            if (groupOrders['치즈'] > 0) orderStrArr.push("치즈 " + groupOrders['치즈']);
-            if (groupOrders['볶음밥'] > 0) orderStrArr.push("볶음밥 " + groupOrders['볶음밥']);
+            const standardOrder = ['매움', '안매움', '치즈', '볶음밥'];
+            standardOrder.forEach(item => {
+                if (groupOrders[item] > 0) {
+                    orderStrArr.push(item + " " + groupOrders[item]);
+                    delete groupOrders[item];
+                }
+            });
             
-            let orderLine = orderStrArr.length > 0 ? orderStrArr.join(', ') : lunchMemoText.trim();
+            for (let name in groupOrders) {
+                if (groupOrders[name] > 0) {
+                    orderStrArr.push(name + " " + groupOrders[name]);
+                }
+            }
+            
+            if (otherTexts.length > 0) {
+                orderStrArr.push(otherTexts.join(', '));
+            }
+            
+            let orderLine = orderStrArr.join(', ');
             
             resultText += uiGroupNum + "번팀 (" + g.count + "명)(" + countryName + ")\n" + orderLine + "\n\n";
         }
@@ -1670,16 +1687,26 @@ function copyLunchMemos(btn) {
     
     resultText += "\n[전체 총합]\n";
     let totalArr = [];
-    if (totals['매움'] > 0) totalArr.push("매움 " + totals['매움']);
-    if (totals['안매움'] > 0) totalArr.push("안매움 " + totals['안매움']);
-    if (totals['치즈'] > 0) totalArr.push("치즈 " + totals['치즈']);
-    if (totals['볶음밥'] > 0) totalArr.push("볶음밥 " + totals['볶음밥']);
+    const standardOrder = ['매움', '안매움', '치즈', '볶음밥'];
+    standardOrder.forEach(item => {
+        if (totals[item] > 0) {
+            totalArr.push(item + " " + totals[item]);
+            delete totals[item];
+        }
+    });
+    
+    for (let name in totals) {
+        if (totals[name] > 0) {
+            totalArr.push(name + " " + totals[name]);
+        }
+    }
     
     resultText += totalArr.join(', ') + "\n";
     resultText += "버스 총원: " + totalPeople + "명";
     
     copyToClipboard(resultText.trim(), btn);
 }
+
 
 
 
