@@ -950,9 +950,13 @@
 
 <div id="longPressPopup" class="lp-popup" style="display:none;">
     <div class="lp-body">
+    <button id="btnToggleConnected" class="lp-btn" style="background: #FF9800; color: white;" onclick="toggleTimeConfirmed()">
+        연락됨
+    </button>
     <button id="btnToggleBoarding" class="lp-btn" style="background: #2196F3; color: white;" onclick="toggleGroupBoarding()">
         탑승 완료
     </button>
+
     <button class="lp-btn" style="background: #D32F2F; color: white;" onclick="handleNoShow()">
         노쇼 안녕
     </button>
@@ -4336,11 +4340,15 @@ function toggleBoarding(el, gid) {
     saveSeatMap();
 }
 function openLongPopup(el, data, busNum) {
+    let statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
+    let isConn = statusData[data.repNum]?.connected || false;
+
     lpTarget = { 
         repNum: data.repNum, 
         phone: data.phone,
         currentStatus: data.isBoarded || false,
         noReviewStatus: data.isNoReview || false,
+        timeStatus: isConn,
         busNum: busNum,
         seatIdx: parseInt(el.dataset.idx)
     };
@@ -4348,8 +4356,18 @@ function openLongPopup(el, data, busNum) {
     
     const popup = document.getElementById('longPressPopup');
     const btn = document.getElementById('btnToggleBoarding');
+    const btnConn = document.getElementById('btnToggleConnected');
     
+    if (lpTarget.timeStatus) {
+        btnConn.innerText = "연락 취소";
+        btnConn.classList.add('cancel-mode');
+    } else {
+        btnConn.innerText = "연락됨";
+        btnConn.classList.remove('cancel-mode');
+    }
+
     if (lpTarget.currentStatus) {
+
         btn.innerText = "탑승 취소";
         btn.classList.add('cancel-mode');
     } else {
