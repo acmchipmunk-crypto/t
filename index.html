@@ -828,7 +828,7 @@
 <div class="v11-card">
   <span class="v11-section-label">8. 새로운 명단 추가</span>
 
-  <div class="v11-btn-group">
+    <div class="v11-btn-group">
       <textarea id="manualBatchData" placeholder="여러 줄 명단 붙여넣기..."></textarea>
       <button class="btn-manual btn-add v11-ui-element" style="width: 70px; border:none; font-size: 12px !important;" onclick="manualBatchAdd()">명단추가</button>
   </div>
@@ -841,23 +841,10 @@
 
 
 
-<div class="v11-card" style="background: #f1f8e9; border: 2px dashed #689f38;">
-    <span class="v11-section-label" style="color:#33691e; font-size:16px;">💡 스마트 변수 가이드</span>
-    <div style="font-size: 12px; color: #333; line-height: 1.6; margin-top: 5px;">
-        <b>[전부 발송 (기본)]</b><br>
-        [버스] [그룹] [인원수] [좌석] [출발시간] [탑승지]<br><br>
-        <b>[조건부 발송 (해당 손님에게만 문구 자동 생성)]</b><br>
-        <span style="color:#e65100; font-weight:bold;">[신발]</span> 스키/보드 손님용 사이즈 확인 링크<br>
-        <span style="color:#e65100; font-weight:bold;">[보드]</span> 보드 손님용 부츠 영상 링크<br>
-        <span style="color:#e65100; font-weight:bold;">[바이크]</span> 바이크 일정 중 지정 바이크가 <b>없는</b> 손님 조인 안내<br>
-        <span style="color:#e65100; font-weight:bold;">[짐]</span> FIT 모드 손님용 짐/유모차 불가 경고<br>
-        <span style="color:#e65100; font-weight:bold;">[Day1]</span> Day 1 손님 전용 안내<br>
-        <span style="color:#e65100; font-weight:bold;">[Day2]</span> Day 2, Day 3 복귀/숙박 손님 전용 안내
-    </div>
-</div>
-
 <div class="v11-card" style="background: #fff9c4; border: 1px solid #fbc02d;">
+
   <span class="v11-section-label">영어 템플릿</span>
+
   <textarea id="englishTemplate" style="height: 300px; font-size: 16px; margin-top:5px; border-color:#fbc02d;" placeholder="여기에 영어 템플릿을 작성하세요..." onchange="saveTemplates()"></textarea>
 </div>
 
@@ -977,9 +964,31 @@
 <textarea id="clipboardHelper" style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; opacity:0; pointer-events:none;"></textarea>
 
 
+<div class="v11-card" style="background: #f1f8e9; border: 2px dashed #689f38; margin-top: 20px;">
+    <span class="v11-section-label" style="color:#33691e; font-size:16px;">💡 스마트 변수 가이드</span>
+    <div style="font-size: 12px; color: #333; line-height: 1.6; margin-top: 5px;">
+        <b>[전부 발송 (기본)]</b><br>
+        [버스] [그룹] [인원수] [좌석] [출발시간] [탑승지]<br><br>
+        <b>[조건부 발송 (해당 손님에게만 문구 자동 생성)]</b><br>
+        <span style="color:#e65100; font-weight:bold;">[신발]</span> 스키/보드 손님용 사이즈 확인 링크<br>
+        <span style="color:#e65100; font-weight:bold;">[보드]</span> 보드 손님용 부츠 영상 링크<br>
+        <span style="color:#e65100; font-weight:bold;">[바이크]</span> 바이크 일정 중 지정 바이크가 <b>없는</b> 손님 조인 안내<br>
+        <span style="color:#e65100; font-weight:bold;">[짐]</span> FIT 모드 손님용 짐/유모차 불가 경고<br>
+        <span style="color:#e65100; font-weight:bold;">[Day1]</span> Day 1 손님 전용 안내<br>
+        <span style="color:#e65100; font-weight:bold;">[Day2]</span> Day 2, Day 3 복귀/숙박 손님 전용 안내<br>
+        <span style="color:#e65100; font-weight:bold;">[남이섬]</span> 남이섬 안내 링크 (N.jpg)<br>
+        <span style="color:#e65100; font-weight:bold;">[알파카]</span> 알파카 안내 링크 (A.jpg)<br>
+        <span style="color:#e65100; font-weight:bold;">[쁘띠]</span> 쁘띠 프랑스 안내 링크 (F.png)<br>
+        <span style="color:#e65100; font-weight:bold;">[이탈리아]</span> 이탈리아 마을 안내 링크 (I.png)<br>
+        <span style="color:#e65100; font-weight:bold;">[수목원]</span> 수목원 안내 링크 (s.png)
+    </div>
+</div>
+
+
 <div class="badge-legend">
   <div class="legend-title" style="margin-bottom: 8px;">🚩 예약처 마크 안내</div>
   <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; font-size: 13px;">
+
     <div><span class="origin-badge badge-klook">K</span> Klook</div>
     <div><span class="origin-badge badge-kkday">K</span> KKday</div>
     <div><span class="origin-badge badge-trip">T</span> Trip.com</div>
@@ -1930,7 +1939,7 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
         zipCount = count;
     }
 
-    let isHanbok = false;
+        let isHanbok = false;
     let hanbokCount = 0;
     let hanbokMatch = line.match(/한복체험\s*X\s*(\d+)/i);
     if (hanbokMatch) {
@@ -1946,6 +1955,11 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
     }
 
     let isBike = (line.includes('지정바이크'));
+    let isNami = line.includes('남이섬') || lineLower.includes('nami');
+    let isAlpaca = line.includes('알파카') || lineLower.includes('alpaca');
+    let isPetite = line.includes('쁘띠') || lineLower.includes('petite');
+    let isItalian = line.includes('이탈리아') || lineLower.includes('italian');
+    let isGarden = line.includes('수목원') || line.includes('아침고요') || lineLower.includes('garden');
 
     let lowerP = productName.toLowerCase();
 
@@ -1954,6 +1968,7 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
 
 
     if (lowerP.includes('day1') || lowerP.includes('day 1')) { paxType = 'D1'; }
+
 
     else if (lowerP.includes('day2') || lowerP.includes('day 2')) { paxType = 'D2'; }
 
@@ -1999,11 +2014,12 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
       count: count, location: location, note: note,
       country: parsedInfo.country, langContext: langContext, gender: gender, appType: appType, messenger: messengerCol, isGrouped: false,
                         paxType: paxType, isStay: isStay, isBoard: isBoard, isSki: isSki, isNoLesson: isNoLesson,
-                                                                        isSancheoneo: !isSkiTour, isHot: isHot, isMoving: isMoving, isChair: isChair, isSightseeing: isSightseeing, isSled: isSled, isShuttle: isShuttle, isBest: isBest, isZip: isZip, zipCount: zipCount, isHanbok: isHanbok, hanbokCount: hanbokCount, isBike: isBike, email: emailAddr,
+                                                                                    isSancheoneo: !isSkiTour, isHot: isHot, isMoving: isMoving, isChair: isChair, isSightseeing: isSightseeing, isSled: isSled, isShuttle: isShuttle, isBest: isBest, isZip: isZip, zipCount: zipCount, isHanbok: isHanbok, hanbokCount: hanbokCount, isBike: isBike, isNami: isNami, isAlpaca: isAlpaca, isPetite: isPetite, isItalian: isItalian, isGarden: isGarden, email: emailAddr,
 
 
 
       originTag: originTag, 
+
       resNo: resNoForOrigin,
 
 
@@ -2132,7 +2148,7 @@ function createGroupsFromEntries(entries) {
                 }
                 return arr;
             }),
-            isHanbok: currentGroupMembers.some(m => m.isHanbok),
+                        isHanbok: currentGroupMembers.some(m => m.isHanbok),
             memberHanbokList: currentGroupMembers.flatMap(m => {
                 let arr = Array(m.count).fill(false);
                 if (m.isHanbok) {
@@ -2145,9 +2161,15 @@ function createGroupsFromEntries(entries) {
 
 
                                                 memberBikeList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isBike)),
+            isNami: currentGroupMembers.some(m => m.isNami),
+            isAlpaca: currentGroupMembers.some(m => m.isAlpaca),
+            isPetite: currentGroupMembers.some(m => m.isPetite),
+            isItalian: currentGroupMembers.some(m => m.isItalian),
+            isGarden: currentGroupMembers.some(m => m.isGarden),
 
                         isSkiTour: currentGroupMembers.some(m => !m.isSancheoneo),
             note: currentGroupMembers.map(m => m.note).filter(n => n && n.trim() !== '').join(', '),
+
 
                         email: rep.email,
 
@@ -3125,13 +3147,13 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
         
         // --- 1. 조건부 발송 변수 세팅 ---
         
-        // [신발] 스키/보드 손님 확인 링크
+                // [신발] 스키/보드 손님 확인 링크
         let varShoe = "";
         if ((g.isSki || g.isBoard) && g.paxType !== 'D2' && g.paxType !== 'D3') {
             if (g.langContext === 'CN') {
-                varShoe = "\n\n👟 請確認您的鞋子尺寸 (毫米):\nacmchipmunk-crypto.github.io/t/s.html";
+                varShoe = "\n\n👟 請確認您的鞋子尺寸 (毫米):\nhttps://acmchipmunk-crypto.github.io/t/s.html";
             } else {
-                varShoe = "\n\n👟 You must check your shoe size (millimeter):\nacmchipmunk-crypto.github.io/t/s.html";
+                varShoe = "\n\n👟 You must check your shoe size (millimeter):\nhttps://acmchipmunk-crypto.github.io/t/s.html";
             }
         }
 
@@ -3177,7 +3199,7 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
             }
         }
 
-        // [Day2] Day 2, Day 3 복귀/숙박 손님 전용 안내
+                // [Day2] Day 2, Day 3 복귀/숙박 손님 전용 안내
         let varDay2 = "";
         if (g.paxType === 'D2' || g.paxType === 'D3') {
             let dayLabel = (g.paxType === 'D3') ? "Day 3" : "Day 2";
@@ -3196,7 +3218,54 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
             }
         }
 
-        // --- 2. 변수 치환 적용 ---
+                let varNami = "";
+        if (g.isNami) {
+            if (g.langContext === 'CN') {
+                varNami = "\n🚢 南怡岛指南与地图：https://acmchipmunk-crypto.github.io/t/N.jpg";
+            } else {
+                varNami = "\n🚢 Nami Island Guide & Map: https://acmchipmunk-crypto.github.io/t/N.jpg";
+            }
+        }
+
+        let varAlpaca = "";
+        if (g.isAlpaca) {
+            if (g.langContext === 'CN') {
+                varAlpaca = "\n🦙 羊驼乐园指南：https://acmchipmunk-crypto.github.io/t/A.jpg";
+            } else {
+                varAlpaca = "\n🦙 Alpaca World Guide: https://acmchipmunk-crypto.github.io/t/A.jpg";
+            }
+        }
+
+        let varPetite = "";
+        if (g.isPetite) {
+            if (g.langContext === 'CN') {
+                varPetite = "\n🇫🇷 小法国村信息：https://acmchipmunk-crypto.github.io/t/F.png";
+            } else {
+                varPetite = "\n🇫🇷 Petite France Info: https://acmchipmunk-crypto.github.io/t/F.png";
+            }
+        }
+
+        let varItalian = "";
+        if (g.isItalian) {
+            if (g.langContext === 'CN') {
+                varItalian = "\n🇮🇹 意大利村信息：https://acmchipmunk-crypto.github.io/t/I.png";
+            } else {
+                varItalian = "\n🇮🇹 Italian Village Info: https://acmchipmunk-crypto.github.io/t/I.png";
+            }
+        }
+
+                let varGarden = "";
+        if (g.isGarden) {
+            if (g.langContext === 'CN') {
+                varGarden = "\n🌺 晨静树木园：https://acmchipmunk-crypto.github.io/t/s.png";
+            } else {
+                varGarden = "\n🌺 Garden of Morning Calm: https://acmchipmunk-crypto.github.io/t/s.png";
+            }
+        }
+
+
+
+              // --- 2. 변수 치환 적용 ---
         msgText = baseTemplate
             .replace(/\[버스\]/g, busNo)
             .replace(/\[그룹\]/g, g.repNum)
@@ -3204,18 +3273,24 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
             .replace(/\[좌석\]/g, isFit ? "" : seatStr) 
             .replace(/\[출발시간\]/g, userTime)
             .replace(/\[탑승지\]/g, userPlace)
-            .replace(/\[신발\]/g, varShoe)
-            .replace(/\[보드\]/g, varBoard)
-            .replace(/\[바이크\]/g, varBike)
-            .replace(/\[짐\]/g, varLuggage)
-            .replace(/\[Day1\]/g, varDay1)
-            .replace(/\[Day2\]/g, varDay2);
+            .replace(/\n?\[신발\]/g, varShoe)
+            .replace(/\n?\[보드\]/g, varBoard)
+            .replace(/\n?\[바이크\]/g, varBike)
+            .replace(/\n?\[짐\]/g, varLuggage)
+            .replace(/\n?\[Day1\]/g, varDay1)
+            .replace(/\n?\[Day2\]/g, varDay2)
+            .replace(/\n?\[남이섬\]/g, varNami)
+            .replace(/\n?\[알파카\]/g, varAlpaca)
+            .replace(/\n?\[쁘띠\]/g, varPetite)
+            .replace(/\n?\[이탈리아\]/g, varItalian)
+            .replace(/\n?\[수목원\]/g, varGarden);
 
 
 
 
 
         let waNumber = g.phone; 
+
 
         let hasPhone = (waNumber && waNumber.length > 5);
 
