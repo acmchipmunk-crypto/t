@@ -192,7 +192,8 @@
 
 
 
-  .bus-date { font-size: 1.0rem; color: #555; margin-top: 6px; font-weight: 800; }
+  .bus-date { height: 0; overflow: hidden; margin: 0; opacity: 0; }
+
 
   .bus-title-label { background: #333; color: #fff; display:inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.9rem; margin-bottom: 5px; font-weight: bold; }
 
@@ -214,7 +215,8 @@
 
   .seat.emergency { border: 2px dashed #ff9800; background-color: #fff8e1; } 
 
-  .seat.selected { border: 3px solid #ff0000; transform: scale(1.05); z-index: 20; box-shadow: 0 0 10px rgba(255,0,0,0.5); }
+  .seat.selected { border: 3px solid #ff0000; transform: scale(1.25); z-index: 20; box-shadow: 0 0 10px rgba(255,0,0,0.5); }
+
 
   .seat.synced-general { background-color: #e0e0e0 !important; border: 1px solid #bdbdbd; opacity: 0.8; }
 
@@ -242,6 +244,14 @@
 .tag-shuttle { background-color: #8e8ebf; border: 1px solid white; font-weight:900; color: black; }
 .tag-sled { background-color: #81d4fa; border: 1px solid white; font-weight:900; color: black; }
 .tag-sight { background-color: #a5d6a7; border: 1px solid white; font-weight:900; color: black; }
+.tag-best { background-color: #ccff00; border: 1px solid white; font-weight:900; color: black; }
+.tag-zip { background-color: #00FFCC; border: 1px solid white; font-weight:900; color: black; }
+.tag-hanbok { background: linear-gradient(135deg, blue, yellow, red); border: 1px solid white; font-weight:900; color: black; text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff; }
+
+.tag-bike { background-color: #FFEB33; border: 1px solid white; font-weight:900; color: black; }
+
+.tag-bike { background-color: #FFEB33; border: 1px solid white; font-weight:900; color: black; }
+
 
 
 
@@ -251,9 +261,10 @@
 
   .msg-section { margin-top: 20px; border-top: 2px solid #333; padding-top: 10px; }
 
-  .msg-card { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .msg-card { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 6px 8px; margin-bottom: 4px; display: flex; flex-direction: column; box-shadow: 0 1px 3px rgba(0,0,0,0.05); gap: 4px; }
 
-  .msg-check-area { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-right: 8px; width: 45px; gap: 8px; }
+  .msg-check-area { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 4px; flex-shrink: 0; }
+
 
   .check-box-wrapper { display: flex; flex-direction: column; align-items: center; }
 
@@ -265,7 +276,7 @@
 
   .chk-sent { accent-color: #2196f3; } .chk-conn { accent-color: #f44336; } 
 
-  .msg-info { flex: 1; margin-right: 5px; min-width: 0; }
+  .msg-info { width: 100%; min-width: 0; }
 
   .msg-group-row { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
 
@@ -281,9 +292,15 @@
 
   .msg-seats { font-size: 14px; font-weight: bold; color: #d32f2f; margin-top: 4px; }
 
-  .msg-memo-input { width: 100%; margin-top: 5px; border: none; border-bottom: 1px solid #ccc; font-size: 12px; padding: 5px 2px; background: #fafafa; }
+    .msg-memo-input { width: 100%; height: 45px; margin-top: 4px; border: 2px solid #d3d3d3; border-radius: 6px; font-weight: bold; font-size: 14px; padding: 6px; background: #fafafa; box-sizing: border-box; resize: vertical; }
+
+    
+    .btn-copy-inline { cursor: pointer; font-size: 16px; margin-left: 4px; filter: grayscale(100%); transition: transform 0.1s; display: inline-block; vertical-align: middle; }
+    .btn-copy-inline:active { transform: scale(0.8); }
+
 
   .option-card-wrapper {
+
     display: flex;
     gap: 4px;
     margin-top: 10px;
@@ -312,11 +329,12 @@
     color: #333;
   }
 
-  .msg-card {
-    flex-wrap: wrap;
+    .msg-card {
+    /* flex-wrap 제거됨 (세로 배치로 변경) */
   }
 
   .opt-card.off {
+
     background-color: #eeeeee !important;
     color: #bdbdbd !important;
     border-color: #e0e0e0 !important;
@@ -331,14 +349,23 @@
   .lang-tag { font-size: 10px; padding: 2px 4px; border-radius: 3px; font-weight: bold; }
 
 
-  .lang-CN { background: #fce4ec; color: #c2185b; }
+    .lang-CN { background: #fce4ec; color: #c2185b; }
 
   .lang-EN { background: #e3f2fd; color: #1565c0; }
 
-  .msg-actions { display: grid; grid-template-columns: 45px 45px; gap: 5px; align-items: center; justify-content: center; }
+  .lunch-btn-group { display: flex; gap: 4px; margin-top: 5px; width: 100%; grid-column: 1 / -1; }
+  .lunch-btn { flex: 1; padding: 6px 2px; border-radius: 6px; font-size: 12px; font-weight: 900; color: white; border: none; cursor: pointer; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+  .lunch-btn-mild { background-color: #8D6E63; }
+  .lunch-btn-spicy { background-color: #E53935; }
+  .lunch-btn-cheese { background-color: #FDD835; color: #333; }
+  .lunch-btn-rice { background-color: #43A047; }
+  .lunch-btn-reset { background-color: #757575; }
+  .lunch-memo-input { width: 100%; margin-top: 4px; border: 2px solid #FF9800; border-radius: 6px; font-weight: bold; font-size: 12px; padding: 6px 8px; background: #FFF3E0; box-sizing: border-box; color: #E65100; }
 
+  .msg-actions { display: flex; flex-direction: row; gap: 5px; align-items: center; justify-content: space-between; width: 100%; }
+  .msg-actions > * { flex: 1; min-width: 0; box-sizing: border-box; }
 
-  .btn-action { width: 45px; height: 45px; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-decoration: none; font-size: 10px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; text-align: center; line-height: 1.2; transition: transform 0.1s; }
+  .btn-action { height: 45px; border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-decoration: none; font-size: 10px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); cursor: pointer; text-align: center; line-height: 1.2; transition: transform 0.1s; }
 
   .btn-action:active { transform: scale(0.95); }
 
@@ -512,24 +539,14 @@
     position: absolute;
     z-index: 10000;
     background: white;
-    width: 160px; /* 카드보다 큼 */
-    height: 230px; /* 카드 2배 정도 높이 */
+    width: 106px; /* 폭을 기존의 2/3로 축소 */
+    height: auto; /* 내용에 맞게 자동 조절 */
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     border: 2px solid #3f51b5;
-}
-
-
-.lp-header {
-    background: #3f51b5;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 6px;
-    text-align: center;
 }
 
 .lp-body {
@@ -551,9 +568,10 @@
     font-size: 14px;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    min-height: 40px; /* 버튼 최소 높이 확보 */
 }
 .lp-btn.cancel-mode {
-    background: #757575; /* 취소 모드일 때 회색 */
+    background: #757575 !important; /* 취소 모드일 때 회색 우선 적용 */
 }
 
 /* 빈 공간 (나중에 기능 추가) */
@@ -569,7 +587,7 @@
 }
 
 .lp-close {
-    background: #f44336;
+    background: #757575; /* 차분한 회색으로 변경 */
     color: white;
     border: none;
     padding: 8px;
@@ -577,13 +595,26 @@
     cursor: pointer;
 }
 
+
 .seat.boarded {
-    opacity: 0.7 !important; /* 투명하게 */
-    border: 2px solid #333 !important; /* 테두리 강조 */
-    /* 색상 유지, 그레이스케일 없음, 체크마크 없음 */
+    border: 3px dashed #c05252 !important;
 }
 
+/* [수정] 후기 안씀: 카드 배경색과 대비되는 5px 라운드 테두리 효과 */
+.seat.no-review {
+    border: 5px solid #FF0055 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 0 10px rgba(255, 0, 85, 0.4) !important;
+}
+
+
+
+
+
+
+
 #entryScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f2f5; z-index: 9998; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; overflow-y: auto; }
+
 #roomSelectScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0f2f5; z-index: 9998; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 20px; overflow-y: auto; padding-top: 80px; padding-bottom: 60px; box-sizing: border-box; }
 
 .big-btn { width: 80%; max-width: 300px; padding: 30px; font-size: 32px; font-weight: 900; border: none; border-radius: 15px; cursor: pointer; color: white; box-shadow: 0 8px 15px rgba(0,0,0,0.2); transition: transform 0.1s; }
@@ -609,6 +640,33 @@
 #floatingBackBtn:active { transform: scale(0.95); }
 
 #resetPwBtn { margin-top: 30px; padding: 10px 20px; background: #757575; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.bus-grid { position: relative; }
+#railbikePanel { background: #e0f7fa; border: 2px solid #00bcd4; border-radius: 12px; padding: 10px; margin-bottom: 10px; display: none; }
+.rb-header { font-size: 16px; font-weight: 900; color: #00838f; margin-bottom: 8px; text-align: center; }
+.rb-controls { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px; margin-bottom: 10px; }
+.rb-btn { padding: 6px 2px; font-size: 11px; font-weight: 900; border: 2px solid transparent; border-radius: 6px; cursor: pointer; transition: all 0.2s; text-align: center; word-break: keep-all; line-height: 1.2; }
+.rb-btn-4 { background: #ffffff; color: #ff9800; border-color: #ff9800; }
+.rb-btn-4.active { background: #ff9800; color: #ffffff; transform: scale(0.95); box-shadow: inset 0 3px 6px rgba(0,0,0,0.3); }
+.rb-btn-2 { background: #ffffff; color: #00bfa5; border-color: #00bfa5; }
+.rb-btn-2.active { background: #00bfa5; color: #ffffff; transform: scale(0.95); box-shadow: inset 0 3px 6px rgba(0,0,0,0.3); }
+.rb-btn-reset { background: #ffebee; color: #f44336; border-color: #ef9a9a; font-size: 10px; }
+.rb-btn-undo { background: #f5f5f5; color: #757575; border-color: #e0e0e0; font-size: 10px; }
+
+.rb-stats { display: flex; gap: 8px; justify-content: center; margin-bottom: 12px; }
+.rb-stat-box { flex: 1; padding: 12px 5px; border-radius: 8px; font-size: 16px; font-weight: 900; text-align: center; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.rb-stat-box-4 { background: linear-gradient(135deg, #ffb74d, #f57c00); }
+.rb-stat-box-2 { background: linear-gradient(135deg, #4db6ac, #00897b); }
+.rb-stat-box-unassigned { background: linear-gradient(135deg, #f5f5f5, #bdbdbd); color: #333; }
+
+.rb-badge { position: absolute; color: white; font-size: 12px; font-weight: 900; padding: 4px 6px; border-radius: 6px; z-index: 25; box-shadow: 0 2px 4px rgba(0,0,0,0.5); border: 1px solid white; text-shadow: 1px 1px 1px black; transform: translate(-50%, -50%); opacity: 0.7; }
+
+.rb-badge-4 { background: #ff9800; }
+.rb-badge-2 { background: #00bfa5; }
+.rb-line { position: absolute; z-index: 15; transform-origin: 0 50%; pointer-events: none; opacity: 0.5; }
+.rb-dot { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 14px; height: 14px; border-radius: 50%; z-index: 12; pointer-events: none; }
+
+.rb-dot-4 { background-color: rgba(255, 152, 0, 0.4); }
+.rb-dot-2 { background-color: rgba(0, 191, 165, 0.4); }
 
 </style>
 
@@ -620,9 +678,11 @@
 <button id="floatingBackBtn" onclick="goBack()">⬅️<br>뒤로</button>
 
 <div id="entryScreen">
-    <button class="big-btn btn-general" onclick="enterRoom('일반투어')">일반투어</button>
+    <button class="big-btn btn-general" onclick="enterRoom('일반투어 (가)')">일반투어 (가)</button>
+    <button class="big-btn btn-general" style="margin-top: 15px;" onclick="enterRoom('일반투어 (나)')">일반투어 (나)</button>
     <button class="big-btn btn-ski" onclick="checkSkiAuth()">스키투어</button>
 </div>
+
 
 <div id="roomSelectScreen" style="display:none;">
     <div style="font-size: 24px; font-weight: 900; color: #333; margin-bottom: 10px;">스키투어 그룹 선택</div>
@@ -639,13 +699,17 @@
     <button id="resetPwBtn" onclick="resetPassword()">비밀번호 초기화</button>
 </div>
 
-<div id="lockScreen" style="display:none;">
-    <h2 style="margin-bottom:20px;">🔒 비밀번호</h2>
-    <input type="password" id="lockInput" placeholder="Password" maxlength="6" inputmode="numeric">
-    <button id="lockBtn" onclick="unlock()">ENTER</button>
-</div>
-
 <div id="mainAppScreen" style="display:none;">
+
+<div id="lockScreen" style="display:none;">
+
+    <h2 style="margin-bottom:20px;">🔒 비밀번호</h2>
+
+    <input type="password" id="lockInput" placeholder="Password" maxlength="6" inputmode="numeric">
+
+    <button id="lockBtn" onclick="unlock()">ENTER</button>
+
+</div>
 
 
 
@@ -689,35 +753,21 @@
 
 <div class="v11-title" id="mainRoomTitle" style="font-size: 36px; padding: 15px; letter-spacing: 2px;">일반투어</div>
 
-
 <div class="v11-card">
-  <span class="v11-section-label">1. 기본 정보</span>
-  <p class="v11-section-desc">가이드와 버스 정보를 설정합니다.</p>
-  <div class="guide-panel">
-      <div class="guide-input-group">
-          <label style="font-weight:bold; font-size:10px; color:#ef6c00;">가이드</label>
-          <input type="text" id="guideNameInput" class="guide-input v11-ui-element" value="Mr. Shin" oninput="saveGuideName()">
-      </div>
-      <div class="guide-input-group">
-          <label style="font-weight:bold; font-size:10px; color:#0277bd;">버스</label>
-          <input type="text" id="busNumberInput" class="guide-input v11-ui-element" value="4044" oninput="saveGuideName()">
-      </div>
-  </div>
-</div>
+  <span class="v11-section-label">2. 출발시간 및 버스번호 설정</span>
 
-<div class="v11-card">
-  <span class="v11-section-label">2. 출발 시간 설정</span>
-  <p class="v11-section-desc">픽업 시간은 메시지에 자동으로 포함됩니다.</p>
   <div class="time-setting-panel">
-    <div class="time-input-group"><label>홍대</label><input type="text" id="timeHongdae" class="v11-ui-element" style="width:100%;" value="06:40" onchange="saveTimeInput()"></div>
-    <div class="time-input-group"><label>명동</label><input type="text" id="timeMyeongdong" class="v11-ui-element" style="width:100%;" value="07:10" onchange="saveTimeInput()"></div>
-    <div class="time-input-group"><label>동대문</label><input type="text" id="timeDongdaemun" class="v11-ui-element" style="width:100%;" value="07:20" onchange="saveTimeInput()"></div>
+    <div class="time-input-group"><label>홍대</label><input type="text" id="timeHongdae" class="v11-ui-element" style="width:100%;" value="06:40" onchange="updateTimeSequence('H')"></div>
+    <div class="time-input-group"><label>명동</label><input type="text" id="timeMyeongdong" class="v11-ui-element" style="width:100%;" value="07:10" onchange="updateTimeSequence('M')"></div>
+    <div class="time-input-group"><label>동대문</label><input type="text" id="timeDongdaemun" class="v11-ui-element" style="width:100%;" value="07:20" onchange="updateTimeSequence('D')"></div>
+    <div class="time-input-group"><label>버스번호</label><input type="text" id="busNumberInput" class="v11-ui-element" style="width:100%;" value="" oninput="saveGuideName()"></div>
   </div>
 </div>
+
+
 
 <div class="v11-card">
   <span class="v11-section-label">3. 데이터 입력</span>
-  <p class="v11-section-desc">명단 전체를 복사해서 그대로 붙여넣으세요.</p>
   <textarea id="rawData" placeholder="여기에 명단 데이터 붙여넣기..." oninput="saveTextInput()"></textarea>
   <div class="size-selector" style="margin-top:2px; font-size: 11px; padding: 2px;">
     <label><input type="radio" name="busSize" value="44" checked onchange="saveTextInput()"> 44인승</label>
@@ -728,7 +778,6 @@
 
 <div class="v11-card">
   <span class="v11-section-label">4. 배치 우선순위</span>
-  <p class="v11-section-desc">좌석 배치 기준을 선택합니다.</p>
   <div class="control-panel" style="margin-top:0; border-top:none; padding-top:0;">
     <div class="priority-display" id="priorityView" style="font-size: 11px; min-height: 12px;">우선순위: 없음</div>
     <div class="control-group" style="gap: 2px;">
@@ -736,7 +785,10 @@
       <label class="chk-label"><input type="checkbox" class="criteria" value="CN" onchange="updatePriority(this)"> 중어</label>
       <label class="chk-label"><input type="checkbox" class="criteria" value="EN" onchange="updatePriority(this)"> 영어</label>
       <label class="chk-label"><input type="checkbox" class="criteria" value="G4" onchange="updatePriority(this)"> 4인↑</label>
-      <label class="chk-label"><input type="checkbox" class="criteria" value="HD" onchange="updatePriority(this)"> 홍대</label>
+      
+      <label class="chk-label"><input type="checkbox" class="criteria" value="ODD" onchange="updatePriority(this)"> 홀수</label>
+
+<label class="chk-label"><input type="checkbox" class="criteria" value="HD" onchange="updatePriority(this)"> 홍대</label>
       <label class="chk-label"><input type="checkbox" class="criteria" value="MY" onchange="updatePriority(this)"> 명동</label>
       <label class="chk-label"><input type="checkbox" class="criteria" value="DDM" onchange="updatePriority(this)"> 동대</label>
     </div>
@@ -749,7 +801,6 @@
 
 <div class="v11-card" style="background: #e8eaf6; border: 1px solid #3f51b5;">
   <span class="v11-section-label">5. 자동 배치 실행</span>
-  <p class="v11-section-desc">선택한 조건으로 좌석을 자동 배치합니다.</p>
   <div class="v11-btn-group">
       <button class="btn-clear v11-ui-element" style="flex:1;" onclick="clearData()">🗑 초기화</button>
       <button class="btn-run v11-ui-element" style="background: #3f51b5; color: white; border:none; flex:3;" onclick="runAI()">🤖 자동 배치 실행 (Run)</button>
@@ -759,7 +810,6 @@
 
 <div class="v11-card">
   <span class="v11-section-label">6. 연락처 저장</span>
-  <p class="v11-section-desc">손님 연락처를 휴대폰에 저장합니다.</p>
   <div class="v11-btn-group">
       <input type="text" id="vcardDate" class="v11-ui-element" style="width:80px;" placeholder="YYMMDD" onchange="checkDateChange()">
       <button class="btn-vcard v11-ui-element" style="flex:1; border:none;" onclick="downloadVCard()">📞 연락처 저장(.vcf)</button>
@@ -767,26 +817,20 @@
 </div>
 
 <div class="v11-card">
-  <span class="v11-section-label">7. 현장 추가 or 삭제 </span>
-  <p class="v11-section-desc">배치 후 좌석을 개별로 추가·조정할 때 사용합니다.</p>
-  <div class="v11-btn-group">
-      <input type="text" id="manualGroupNum" class="manual-input v11-ui-element" style="flex:1;" placeholder="No. or Name">
-      <button class="btn-manual btn-add v11-ui-element" style="width:45px; border:none;" onclick="manualAddGroup()">+</button>
-      <button class="btn-manual btn-del v11-ui-element" style="width:45px; background:#f44336; border:none;" onclick="manualDelGroup()">-</button>
+  <span class="v11-section-label">7. 현장 추가 및 삭제</span>
+  <div class="manual-control-panel" style="margin-top: 5px;">
+      <input type="text" id="manualGroupNum" class="manual-input v11-ui-element" placeholder="그룹번호 입력">
+      <button class="btn-manual btn-add v11-ui-element" onclick="manualAddGroup()">+</button>
+      <button class="btn-manual btn-del v11-ui-element" onclick="manualDelGroup()">-</button>
   </div>
 </div>
 
 <div class="v11-card">
   <span class="v11-section-label">8. 새로운 명단 추가</span>
-  <p class="v11-section-desc">추가된 명단만 복사 해서 입력 하세요</p>
-  <div class="v11-btn-group">
+
+    <div class="v11-btn-group">
       <textarea id="manualBatchData" placeholder="여러 줄 명단 붙여넣기..."></textarea>
       <button class="btn-manual btn-add v11-ui-element" style="width: 70px; border:none; font-size: 12px !important;" onclick="manualBatchAdd()">명단추가</button>
-  </div>
-  <div class="v11-manual-box">
-      <div style="font-size: 10px; color: #1a237e; font-weight: 700; text-align:center;">
-          💡 기존 좌석 유지 / 빈 자리에 순차 배치
-      </div>
   </div>
 </div>
 
@@ -794,12 +838,27 @@
 
 
 
+
+
+
+<div class="v11-card" style="background: #fff9c4; border: 1px solid #fbc02d;">
+
+  <span class="v11-section-label">영어 템플릿</span>
+
+  <textarea id="englishTemplate" style="height: 300px; font-size: 16px; margin-top:5px; border-color:#fbc02d;" placeholder="여기에 영어 템플릿을 작성하세요..." onchange="saveTemplates()"></textarea>
+</div>
+
+<div class="v11-card" style="background: #e3f2fd; border: 1px solid #90caf9;">
+  <span class="v11-section-label">중국어 템플릿</span>
+  <textarea id="chineseTemplate" style="height: 300px; font-size: 16px; margin-top:5px; border-color:#90caf9;" placeholder="여기에 중국어 템플릿을 작성하세요..." onchange="saveTemplates()"></textarea>
+</div>
 
 
 <div class="v11-card">
   <span class="v11-section-label">9. 좌석배치표 정리 이미지 저장</span>
-  <p class="v11-section-desc">좌석 배치 결과를 탭하여 정리하고 이미지로 저장합니다</p>
 </div>
+
+
 
 <div class="capture-wrapper">
   <div id="captureArea1">
@@ -835,39 +894,64 @@
   </div>
 </div>
 
+<div id="railbikePanel">
+    <div class="rb-header">🚲  레일바이크 모드</div>
+    <div class="rb-controls">
+                <button id="btnRb4" class="rb-btn rb-btn-4" onclick="toggleBikeMode(4)">OFF 4인승 지정</button>
+        <button id="btnRb2" class="rb-btn rb-btn-2" onclick="toggleBikeMode(2)">OFF 2인승 지정</button>
 
-<div class="v11-card" style="background: #fff9c4; border: 1px solid #fbc02d;">
-  <span class="v11-section-label">10. 가이드 개인공지</span>
-  <p class="v11-section-desc">가이드 개인이 추가 하고 싶은 메세지을 입력합니다</p>
-  <textarea id="specialNotice" style="height: 100px; margin-top:5px; border-color:#fbc02d;" placeholder="예: 비가 오니 우산을 챙기세요. (이 내용은 전송 메시지 중간에 삽입됩니다)" oninput="saveSpecialNotice()"></textarea>
+        <button class="rb-btn rb-btn-undo" onclick="undoBikeGroup()">↩️ 한번 되돌리기</button>
+        <button class="rb-btn rb-btn-reset" onclick="if(confirm('지정된 바이크를 모두 초기화하시겠습니까?')) resetBikeGroups()">🗑️ 바이크지정 초기화</button>
+    </div>
+    <div class="rb-stats">
+        <div class="rb-stat-box rb-stat-box-4">4인승: <span id="countRb4">0</span>대</div>
+        <div class="rb-stat-box rb-stat-box-2">2인승: <span id="countRb2">0</span>대</div>
+        <div class="rb-stat-box rb-stat-box-unassigned">미지정: <span id="countRbUnassigned">0</span>명</div>
+    </div>
 </div>
+
+
+
+
+
+
 
 <div class="msg-section" id="msgSection" style="display:none;">
     <div class="v11-card">
       <span class="v11-section-label">11. 메시지 발송 & 체크</span>
-      <p class="v11-section-desc">손님에게 메시지를 보내고 체크합니다.</p>
+      <div class="v11-btn-group" style="margin-top: 5px;">
+          <button class="btn-run v11-ui-element" style="background: #e65100; color: white; border:none; flex:1;" onclick="copyLunchMemos(this)">🍱 점심 주문 일괄 복사</button>
+      </div>
     </div>
     <div id="msgList"></div>
 </div>
 
 
-    <div class="info-text" style="margin-bottom:15px; text-align:center;">Send 버튼을 누르면 WhatsApp이 열립니다.</div>
+
+
 
         <div id="msgList"></div>
 
 </div>
 
+
 <div id="longPressPopup" class="lp-popup" style="display:none;">
-    <div class="lp-header">기능 선택</div>
-        <div class="lp-body">
-    <button id="btnToggleTime" class="lp-btn" style="background: #2196F3; margin-bottom: 4px; color: white;" onclick="toggleTimeConfirmed()">
-        연락됨 (Time)
+    <div class="lp-body">
+    <button id="btnToggleConnected" class="lp-btn" style="background: #FF9800; color: white;" onclick="toggleTimeConfirmed()">
+        연락됨
     </button>
-    <button id="btnToggleBoarding" class="lp-btn" onclick="toggleGroupBoarding()">
-        탑승 완료 처리
+    <button id="btnToggleBoarding" class="lp-btn" style="background: #2196F3; color: white;" onclick="toggleGroupBoarding()">
+        탑승 완료
     </button>
-    <button class="lp-btn" style="background: #D32F2F; margin-top: 4px; color: white;" onclick="handleNoShow()">
-        노쇼 안녕 (Delete)
+
+    <button class="lp-btn" style="background: #D32F2F; color: white;" onclick="handleNoShow()">
+        노쇼 안녕
+    </button>
+    <button id="btnOpenWhatsApp" class="lp-btn" style="background: #25D366; color: white;" onclick="openGuestWhatsApp()">
+        와츠앱 열기
+    </button>
+    <button id="btnToggleNoReview" class="lp-btn" style="border: none; font-weight: 900;" onclick="toggleGroupNoReview()">
+        후기 안씀
     </button>
 </div>
 
@@ -875,132 +959,102 @@
     <button class="lp-close" onclick="closeLongPopup()">닫기</button>
 </div>
 
+
+
 <textarea id="clipboardHelper" style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; opacity:0; pointer-events:none;"></textarea>
 
 
-<div class="badge-legend">
-
-  <div class="legend-title">🚩 예약처별 후기 작성 가이드 (가이드용)</div>
-
-  <!-- Klook -->
-  <div style="margin-bottom:12px;">
-    <div>
-      <span class="origin-badge badge-klook">K</span>
-      <b>Klook</b> · <b style="color:#2e7d32;">당일 가능</b>
+<div class="v11-card" style="background: #f1f8e9; border: 2px dashed #689f38; margin-top: 20px;">
+    <span class="v11-section-label" style="color:#33691e; font-size:16px;">💡 스마트 변수 가이드</span>
+    <div style="font-size: 12px; color: #333; line-height: 1.6; margin-top: 5px;">
+        <b>[전부 발송 (기본)]</b><br>
+        [버스] [그룹] [인원수] [좌석] [출발시간] [탑승지]<br><br>
+        <b>[조건부 발송 (해당 손님에게만 문구 자동 생성)]</b><br>
+        <span style="color:#e65100; font-weight:bold;">[신발]</span> 스키/보드 손님용 사이즈 확인 링크<br>
+        <span style="color:#e65100; font-weight:bold;">[보드]</span> 보드 손님용 부츠 영상 링크<br>
+        <span style="color:#e65100; font-weight:bold;">[바이크]</span> 바이크 일정 중 지정 바이크가 <b>없는</b> 손님 조인 안내<br>
+        <span style="color:#e65100; font-weight:bold;">[짐]</span> FIT 모드 손님용 짐/유모차 불가 경고<br>
+        <span style="color:#e65100; font-weight:bold;">[Day1]</span> Day 1 손님 전용 안내<br>
+        <span style="color:#e65100; font-weight:bold;">[Day2]</span> Day 2, Day 3 복귀/숙박 손님 전용 안내<br>
+        <span style="color:#e65100; font-weight:bold;">[남이섬]</span> 남이섬 안내 링크 (N.jpg)<br>
+        <span style="color:#e65100; font-weight:bold;">[알파카]</span> 알파카 안내 링크 (A.jpg)<br>
+        <span style="color:#e65100; font-weight:bold;">[쁘띠]</span> 쁘띠 프랑스 안내 링크 (F.png)<br>
+        <span style="color:#e65100; font-weight:bold;">[이탈리아]</span> 이탈리아 마을 안내 링크 (I.png)<br>
+        <span style="color:#e65100; font-weight:bold;">[수목원]</span> 수목원 안내 링크 (s.png)
     </div>
-    <div style="font-size:12px; margin-top:4px;">
-      투어가 ‘사용 완료’ 처리되면 당일 후기 작성 가능,  
-      복귀 버스나 하차 직전에 바로 요청하는 것이 가장 효과적
-    </div>
-  </div>
-
-  <!-- KKday -->
-  <div style="margin-bottom:12px;">
-    <div>
-      <span class="origin-badge badge-kkday">K</span>
-      <b>KKday</b> · <b style="color:#d32f2f;">다음 날 가능</b>
-    </div>
-    <div style="font-size:12px; margin-top:4px;">
-      투어 종료 다음 날부터 후기 활성화,  
-      당일 현장 요청보다는 다음 날 메시지 요청이 안정적
-    </div>
-  </div>
-
-  <!-- Trip.com -->
-  <div style="margin-bottom:12px;">
-    <div>
-      <span class="origin-badge badge-trip">T</span>
-      <b>Trip.com</b> · <b style="color:#f9a825;">상품별 상이</b>
-    </div>
-    <div style="font-size:12px; margin-top:4px;">
-      일부 상품은 당일 가능하나 다수는 종료 후 일정 시간 필요,  
-      가능 여부 확인 후 요청 권장
-    </div>
-  </div>
-
-  <!-- GetYourGuide -->
-  <div style="margin-bottom:12px;">
-    <div>
-      <span class="origin-badge badge-gyg">G</span>
-      <b>GetYourGuide</b> · <b style="color:#2e7d32;">당일 가능</b>
-    </div>
-    <div style="font-size:12px; margin-top:4px;">
-      투어 종료 후 몇 시간 내 이메일로 후기 링크 발송,  
-      당일 저녁 “이메일 확인” 안내 시 작성률 높음
-    </div>
-  </div>
-
-  <!-- Qike -->
-  <div style="margin-bottom:12px;">
-    <div>
-      <span class="origin-badge badge-qike">Q</span>
-      <b>Qike</b> · <b style="color:#f9a825;">상품별 상이</b>
-    </div>
-    <div style="font-size:12px; margin-top:4px;">
-      플랫폼·판매자 설정에 따라 상이,  
-      위챗 소통 기반이라 만족도 높을 경우 당일 요청 성공 사례 있음
-    </div>
-  </div>
-
-  <!-- Trazy -->
-  <div style="margin-bottom:12px;">
-    <div>
-      <span class="origin-badge badge-trazy">Z</span>
-      <b>Trazy</b> · <b style="color:#f9a825;">상품별 상이</b>
-    </div>
-    <div style="font-size:12px; margin-top:4px;">
-      대부분 종료 후 후기 활성화,  
-      상품 세팅에 따라 시점 다르므로 당일 강요는 비추천
-    </div>
-  </div>
-
-  <!-- 기타 -->
-  <div>
-    <div>
-      <span class="origin-badge badge-etc">미</span>
-      <b>기타 / 현장</b> · <b style="color:#2e7d32;">즉시 가능</b>
-    </div>
-    <div style="font-size:12px; margin-top:4px;">
-      플랫폼 후기 없음,  
-      구글맵 리뷰·SNS 태그·가이드 이름 언급 요청이 가장 현실적
-    </div>
-  </div>
-
 </div>
+
+
+<div class="badge-legend">
+  <div class="legend-title" style="margin-bottom: 8px;">🚩 예약처 마크 안내</div>
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; font-size: 13px;">
+
+    <div><span class="origin-badge badge-klook">K</span> Klook</div>
+    <div><span class="origin-badge badge-kkday">K</span> KKday</div>
+    <div><span class="origin-badge badge-trip">T</span> Trip.com</div>
+    <div><span class="origin-badge badge-gyg">G</span> GYG</div>
+    <div><span class="origin-badge badge-qike">Q</span> Qike</div>
+    <div><span class="origin-badge badge-trazy">Z</span> Trazy</div>
+    <div><span class="origin-badge badge-etc">미</span> 기타/현장</div>
+  </div>
+</div>
+
 
 
 
 <div class="manual-section">
+    <div class="manual-title" style="color:#1a237e;">📘 투어마스터 좌석 카드 해부도 (가이드용)</div>
+    
+    <div style="margin-bottom: 25px;">
+        <div style="font-weight: 900; color: #00695c; margin-bottom: 10px; font-size:14px;">1. 배경색 (픽업지 및 상태)</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <div class="seat" style="width: 55px; height: 55px; background-color: #C8E6C9; position: relative;"><span class="seat-num">1</span><div class="grp-id" style="font-size:14px; margin-top:12px;">홍대</div></div>
+            <div class="seat" style="width: 55px; height: 55px; background-color: #BBDEFB; position: relative;"><span class="seat-num">2</span><div class="grp-id" style="font-size:14px; margin-top:12px;">명동</div></div>
+            <div class="seat" style="width: 55px; height: 55px; background-color: #E1BEE7; position: relative;"><span class="seat-num">3</span><div class="grp-id" style="font-size:13px; margin-top:12px;">동대문</div></div>
+            <div class="seat" style="width: 55px; height: 55px; background-color: #FFF9C4; position: relative;"><span class="seat-num">4</span><div class="grp-id" style="font-size:11px; margin-top:12px;">숙박/복귀</div></div>
+            <div class="seat" style="width: 55px; height: 55px; background-color: #E0E0E0; position: relative;"><span class="seat-num">5</span><div class="grp-id" style="font-size:14px; margin-top:12px;">기타</div></div>
+        </div>
+    </div>
 
-    <div class="manual-title">📘 투어마스터 사용 설명서</div>
+    <div style="margin-bottom: 25px;">
+        <div style="font-weight: 900; color: #00695c; margin-bottom: 10px; font-size:14px;">2. 테두리 및 텍스트 (상태 및 언어)</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <div class="seat boarded" style="width: 55px; height: 55px; background-color: #ffffff; position: relative;"><span class="seat-num">6</span><div class="grp-id" style="font-size:10px; color:#333; margin-top:12px;">탑승완료<br>(점선)</div></div>
+            <div class="seat selected" style="width: 55px; height: 55px; background-color: #ffffff; position: relative;"><span class="seat-num">7</span><div class="grp-id" style="font-size:10px; color:#333; margin-top:12px;">선택됨<br>(확대)</div></div>
+            <div class="seat" style="width: 55px; height: 55px; background-color: #ffffff; position: relative;"><span class="seat-num">8</span><div class="grp-id" style="font-size:14px; color:#0055CC; margin-top:12px;">영어(파랑)</div></div>
+            <div class="seat" style="width: 55px; height: 55px; background-color: #ffffff; position: relative;"><span class="seat-num">9</span><div class="grp-id" style="font-size:12px; color:#333; text-decoration:line-through rgba(255, 255, 0, 0.7); margin-top:12px;">연락됨</div></div>
+        </div>
+    </div>
 
-    <ul class="manual-list">
+    <div style="margin-bottom: 25px;">
+        <div style="font-weight: 900; color: #00695c; margin-bottom: 10px; font-size:14px;">3. 우측 상단 모서리 마크 (스키투어 전용)</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <div class="seat" style="width: 55px; height: 55px; background-color: #ffffff; position: relative;"><span class="seat-num">10</span><div class="ski-mark"></div><div class="grp-id" style="font-size:14px; margin-top:12px;">스키</div></div>
+            <div class="seat" style="width: 55px; height: 55px; background-color: #ffffff; position: relative;"><span class="seat-num">11</span><div class="board-mark"></div><div class="grp-id" style="font-size:14px; margin-top:12px;">보드</div></div>
+            <div class="seat" style="width: 55px; height: 55px; background-color: #ffffff; position: relative;"><span class="seat-num">12</span><div class="no-lesson-mark"></div><div class="ski-mark"></div><div class="grp-id" style="font-size:10px; margin-top:12px;">노강습<br>(노란배경)</div></div>
+        </div>
+    </div>
 
-        <li><span>1단계 기본 정보 설정:</span> 가이드 성함과 버스 번호는 모든 대고객 메시지와 연락처 파일명의 기준이 됩니다. 여기서 입력된 정보는 이후 생성되는 이미지와 메시지에 자동으로 반영되어 가이드의 전문성을 높여줍니다.</li>
-
-        <li><span>2단계 출발 시간 설정:</span> 각 픽업 포인트별 시간을 정확히 입력하면, 손님에게 발송되는 개별 안내 메시지에 해당 시간이 자동으로 매칭됩니다. 가이드가 일일이 시간을 계산하여 입력하는 실수를 원천적으로 방지합니다.</li>
-
-        <li><span>3단계 데이터 입력:</span> 현장에서 수신한 카톡이나 엑셀 명단을 가공 없이 그대로 붙여넣으세요. 선택한 버스 인승(44/45/FIT)에 따라 최적화된 좌석 그리드가 생성되며, 이는 효율적인 인원 관리를 위한 첫 단추가 됩니다.</li>
-
-        <li><span>4단계 배치 우선순위 설정:</span> 언어별, 인원별, 픽업지별 조건을 체크하여 AI에게 배치 힌트를 제공하세요. 앞쪽 혹은 뒤쪽 선호 옵션을 통해 노약자나 특정 그룹의 특이사항을 좌석 배치에 즉각 반영할 수 있습니다.</li>
-
-        <li><span>5단계 자동 배치 실행:</span> [Run] 버튼을 누르는 순간 모든 데이터가 분석되어 최적의 좌석 배치 초안이 확정됩니다. 이 단계에서 전체 인원 구성과 차량 내 밀집도를 시각적으로 한눈에 파악할 수 있습니다.</li>
-
-        <li><span>6단계 연락처 저장:</span> 확정된 명단을 기반으로 VCF 파일을 생성하여 휴대폰에 저장하세요. 김화 실장님 바보. 투어 당일 모르는 번호로 오는 전화를 즉시 식별하고, 메신저 앱과 연동하기 위한 실무상의 필수 절차입니다.</li>
-
-        <li><span>7단계 현장 추가:</span> 자동 배치 완료 후 발생하는 갑작스러운 현장 예약(Walk-in)은 전용 추가 버튼을 활용하세요. 기존에 확정된 전체 좌석 구조를 흐트러뜨리지 않고 빈자리에만 스마트하게 인원을 배정합니다.</li>
-
-        <li><span>8단계 명단 추가:</span> 투어 직전 추가된 여러 명의 리스트가 있다면 '명단 추가' 기능을 사용하세요. 이미 배치가 끝난 상황에서도 기존 손님들의 자리를 유지하면서, 새로운 명단만 빈 좌석에 순차적으로 채워 넣습니다.</li>
-
-        <li><span>9단계 좌석배치표 정리 & 스샷 저장:</span> 탭 기능을 이용해 최종 좌석을 정리한 후 이미지로 저장하세요. 이 스크린샷은 기사님과의 원활한 소통을 돕고, 승차 시 발생할 수 있는 손님들 간의 혼선을 방지하는 결정적인 도구가 됩니다.</li>
-
-        <li><span>10단계 가이드 개인공지:</span> 투어 당일의 날씨, 변경된 주의사항 등 오늘만 필요한 특별 메시지를 관리하세요. 고정된 안내 문구와 분리하여 관리함으로써 손님에게 전달해야 할 핵심 정보를 누락 없이 전달할 수 있습니다.</li>
-
-        <li><span>11단계 메시지 발송 체크:</span> 생성된 개별 메시지의 [Send] 버튼을 눌러 발송하고 체크박스로 기록하세요. 많은 인원을 응대할 때 발생하기 쉬운 중복 발송이나 누락을 막아주는 마지막 안전장치입니다.</li>
-
-    </ul>
-
+    <div style="margin-bottom: 10px;">
+        <div style="font-weight: 900; color: #00695c; margin-bottom: 10px; font-size:14px;">4. 하단 상태 및 옵션 태그</div>
+        <div style="background: #f5f5f5; padding: 12px; border-radius: 8px; font-size: 13px; line-height: 2.2; border: 1px solid #e0e0e0;">
+            <span class="day-tag tag-zip">Z</span> 짚라인 &nbsp;
+            <span class="day-tag tag-hanbok">한</span> 한복체험 &nbsp;
+            <span class="day-tag tag-bike">지</span> 지정바이크 &nbsp;<br>
+            <span class="day-tag tag-d1">D1</span> 1일차 &nbsp;
+            <span class="day-tag tag-d2">D2</span> 2일차 &nbsp;
+            <span class="day-tag tag-d3">D3</span> 3일차 &nbsp;<br>
+            <span class="day-tag tag-hot">H</span> HOT &nbsp;
+            <span class="day-tag tag-moving">무</span> 무빙워크 &nbsp;
+            <span class="day-tag tag-shuttle">셔</span> 셔틀 &nbsp;
+            <span class="day-tag tag-sled">썰</span> 눈썰매 &nbsp;<br>
+            <span class="day-tag tag-sight">관</span> 관광리프트 &nbsp;
+            <span class="day-tag tag-best">노리</span> 리프트미포함
+        </div>
+    </div>
 </div>
+
+
 
 </div>
 
@@ -1014,7 +1068,7 @@
  */
 
 const CONFIG = {
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxBJvMKvIlVNXd3JYGOmq8CFVvCBR3CZt9Kua6MwuKqASKGwrZltbSEpsMsW7TOHu9E/exec";
+
     BOOTS_YOUTUBE: "https://youtu.be/J9S0q1QKoOY?si=pfaS60b3IJOEBgAG",
 
     COLORS: {
@@ -1126,6 +1180,9 @@ let priorityQueue = [];
 let audioCtx = null;
 let lpTimer = null; // 롱프레스 타이머
 let lpTarget = null; // 롱프레스 대상 정보
+let activeBikeType = 0;
+let currentBikeSeats = [];
+let bikeGroups = [];
 
 let currentActiveRoom = '';
 let currentScreenMode = 'entry'; 
@@ -1138,7 +1195,7 @@ function saveScreenState() {
 function goBack() {
     if (currentScreenMode === 'main') {
         forceSaveAllData();
-        if (currentActiveRoom === '일반투어') {
+        if (currentActiveRoom === '일반투어 (가)' || currentActiveRoom === '일반투어 (나)') {
             showEntryScreen();
         } else {
             showRoomSelectScreen();
@@ -1147,6 +1204,7 @@ function goBack() {
         showEntryScreen();
     }
 }
+
 
 function showEntryScreen() {
     currentScreenMode = 'entry';
@@ -1204,22 +1262,20 @@ function enterRoom(roomName) {
     currentScreenMode = 'main';
     saveScreenState();
     document.getElementById('mainRoomTitle').innerText = roomName;
+    
     document.getElementById('entryScreen').style.display = 'none';
     document.getElementById('roomSelectScreen').style.display = 'none';
     document.getElementById('lockScreen').style.display = 'none';
     document.getElementById('mainAppScreen').style.display = 'block';
     document.getElementById('floatingBackBtn').style.display = 'flex';
-    if (roomName === '일반투어') {
+
+    if (roomName === '일반투어 (가)' || roomName === '일반투어 (나)') {
         loadAllDataForRoom();
     } else {
         document.getElementById('paxInfo').innerText = "서버 데이터 불러오는 중...";
-        fetch(GAS_URL + "?room=" + encodeURIComponent(roomName))
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(result) {
-            if (result.status === 'success' && result.data) {
-                let parsedData = JSON.parse(result.data);
+        google.script.run.withSuccessHandler(function(serverData) {
+            if (serverData) {
+                let parsedData = JSON.parse(serverData);
                 for (let key in parsedData) {
                     localStorage.setItem(currentActiveRoom + '_' + key, parsedData[key]);
                 }
@@ -1227,13 +1283,10 @@ function enterRoom(roomName) {
             loadAllDataForRoom();
             document.getElementById('paxInfo').innerText = "준비됨";
             startPolling();
-        })
-        .catch(function(error) {
-            loadAllDataForRoom();
-            document.getElementById('paxInfo').innerText = "통신 에러";
-        });
+        }).loadSkiTourData(roomName);
     }
 }
+
 
 
 function lsKey(key) {
@@ -1257,21 +1310,20 @@ function loadAllDataForRoom() {
     document.getElementById('priorityView').innerText = "우선순위: 없음";
     document.getElementById('paxInfo').innerText = "준비됨";
 
-    loadTextInput(); 
+        loadTextInput(); 
     loadGuideName(); 
-    document.getElementById('specialNotice').value = localStorage.getItem(lsKey('bus_specialNotice')) || "";
+    document.getElementById('englishTemplate').value = localStorage.getItem(lsKey('bus_englishTemplate')) || "";
+    document.getElementById('chineseTemplate').value = localStorage.getItem(lsKey('bus_chineseTemplate')) || "";
 
-    const savedTimes = JSON.parse(localStorage.getItem(lsKey('bus_times')) || '{}');
+        const savedTimes = JSON.parse(localStorage.getItem(lsKey('bus_times')) || '{}');
+
     if(savedTimes.h) document.getElementById('timeHongdae').value = savedTimes.h;
     if(savedTimes.m) document.getElementById('timeMyeongdong').value = savedTimes.m;
     if(savedTimes.d) document.getElementById('timeDongdaemun').value = savedTimes.d;
     
     loadSeatMap();
+    loadBikeGroups();
 }
-
-
-
-
 
 
 // =========================================
@@ -1436,7 +1488,7 @@ function combinePhoneAndMessenger(phoneCol, messengerCol) {
 
     
 
-    let targetBody = "";
+        let targetBody = "";
 
     let isMessengerValid = false;
 
@@ -1446,7 +1498,11 @@ function combinePhoneAndMessenger(phoneCol, messengerCol) {
 
         targetBody = cleanMsgCol.replace(/[^0-9]/g, '');
 
-        isMessengerValid = true;
+        if (targetBody.length > 0) {
+
+            isMessengerValid = true;
+
+        }
 
     } 
 
@@ -1457,6 +1513,7 @@ function combinePhoneAndMessenger(phoneCol, messengerCol) {
         targetBody = rawPhoneDigits;
 
     }
+
 
     
 
@@ -1562,17 +1619,107 @@ function fallbackCopy(text, el) {
 
 
 
-function copyAndOpen(el, text, schemeKey) {
+function copyAndOpen(el, text, schemeKey, encodedText) {
 
     copyToClipboard(text, el);
 
     let scheme = CONFIG.SCHEMES[schemeKey];
 
-    if (schemeKey === 'viber') { const cleanNum = text.replace(/[^0-9]/g, ''); scheme = `viber://chat?number=${cleanNum}`; }
+    if (schemeKey === 'viber') { const cleanNum = text.replace(/[^0-9]/g, ''); scheme = `viber://chat?number=${cleanNum}&draft=${encodedText}`; }
 
     if (scheme) { setTimeout(() => { try { window.location.href = scheme; } catch(e) {} }, 300); }
 
 }
+
+
+function copyLunchMemos(btn) {
+    let statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
+    let resultText = "";
+    let totals = {};
+    let hasData = false;
+    
+    msgListGroups.forEach(g => {
+        let lunchMemoText = statusData[g.repNum]?.lunchMemo || "";
+        if (lunchMemoText.trim() !== "") {
+            hasData = true;
+            let countryName = CONFIG.COUNTRY_MAP[g.country] || g.country;
+            let uiGroupNum = g.msgNum.replace(/[a-zA-Z]/g, '');
+            
+            let groupOrders = {};
+            let otherTexts = [];
+            let parts = lunchMemoText.split(',');
+            parts.forEach(p => {
+                let m = p.trim().match(/(.+?)(\d+)$/);
+                if (m) {
+                    let name = m[1].trim();
+                    let cnt = parseInt(m[2]);
+                    if (!groupOrders[name]) groupOrders[name] = 0;
+                    groupOrders[name] += cnt;
+                    
+                    if (!totals[name]) totals[name] = 0;
+                    totals[name] += cnt;
+                } else if (p.trim() !== "") {
+                    otherTexts.push(p.trim());
+                }
+            });
+            
+            let orderStrArr = [];
+            const standardOrder = ['매움', '안매움', '치즈', '볶음밥'];
+            standardOrder.forEach(item => {
+                if (groupOrders[item] > 0) {
+                    orderStrArr.push(item + " " + groupOrders[item]);
+                    delete groupOrders[item];
+                }
+            });
+            
+            for (let name in groupOrders) {
+                if (groupOrders[name] > 0) {
+                    orderStrArr.push(name + " " + groupOrders[name]);
+                }
+            }
+            
+            if (otherTexts.length > 0) {
+                orderStrArr.push(otherTexts.join(', '));
+            }
+            
+            let orderLine = orderStrArr.join(', ');
+            
+            resultText += uiGroupNum + "번팀 (" + g.count + "명)(" + countryName + ")\n" + orderLine + "\n\n";
+        }
+    });
+    
+    if (!hasData) {
+        alert("복사할 점심 주문 데이터가 없습니다.");
+        return;
+    }
+    
+    let totalPeople = 0;
+    for (let i = 1; i < currentSeatMap1.length; i++) {
+        if (currentSeatMap1[i]) totalPeople++;
+    }
+    
+    resultText += "\n[전체 총합]\n";
+    let totalArr = [];
+    const standardOrder = ['매움', '안매움', '치즈', '볶음밥'];
+    standardOrder.forEach(item => {
+        if (totals[item] > 0) {
+            totalArr.push(item + " " + totals[item]);
+            delete totals[item];
+        }
+    });
+    
+    for (let name in totals) {
+        if (totals[name] > 0) {
+            totalArr.push(name + " " + totals[name]);
+        }
+    }
+    
+    resultText += totalArr.join(', ') + "\n";
+    resultText += "버스 총원: " + totalPeople + "명";
+    
+    copyToClipboard(resultText.trim(), btn);
+}
+
 
 
 
@@ -1590,23 +1737,30 @@ function copyOnly(el, text) { copyToClipboard(text, el); }
 
 // =========================================
 
-function findCount(parts) {
+    function findCount(parts) {
 
-  for (let i = 0; i < parts.length - 1; i++) {
+      for (let i = 0; i < parts.length - 1; i++) {
 
-    if (parts[i].includes('중국어') || parts[i].includes('영어')) {
+        if (parts[i].includes('중국어') || parts[i].includes('영어')) {
 
-      let n = parseInt(parts[i+1]);
+          let match = parts[i+1].match(/\d+/g);
 
-      if (!isNaN(n)) return n;
+          if (match) {
+
+            let n = match.reduce((sum, val) => sum + parseInt(val, 10), 0);
+
+            if (!isNaN(n)) return n;
+
+          }
+
+        }
+
+      }
+
+      return 1;
 
     }
 
-  }
-
-  return 1;
-
-}
 
 
 
@@ -1636,9 +1790,12 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
 
 
 
-    let firstCol = parts[0] || "";
+                let firstCol = parts[0] || "";
 
-    if (firstCol === 'No.' || firstCol.includes('예약번호') || firstCol.toLowerCase().startsWith('total') || firstCol.includes('엑셀')) return null;
+    if (firstCol === 'No.' || firstCol.includes('예약번호') || firstCol.toLowerCase().startsWith('total') || firstCol.includes('엑셀') || line.includes('FALSE') || parts.filter(p => p.trim() !== '' && p.trim() !== '0').length < 3) return null;
+
+
+
 
 
 
@@ -1702,7 +1859,7 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
 
              note = parts[10] || "";
 
-        } else {
+                } else {
 
              productName = parts[2] || "";
 
@@ -1720,9 +1877,11 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
 
              note = parts[12] || "";
 
-             resNoForOrigin = customId; 
+             resNoForOrigin = parts[3] || ""; 
 
         }
+
+
 
     }
 
@@ -1761,15 +1920,55 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
     let isMoving = (line.includes('무빙') && !line.includes('리프트'));
     let isChair = (productName.includes('리프트') && !productName.includes('관광'));
 
-    let isSightseeing = (line.includes('관광'));
+     let isSightseeing = (line.includes('관광'));
     let isSled = (line.includes('스노우힐'));
     let isShuttle = (line.includes('셔틀'));
-  
+  let isBest = (line.includes('BEST'));
+        let isZip = false;
+    let zipCount = 0;
+    let zipMatch = line.match(/Zipwire\s*X\s*(\d+)/i);
+    if (zipMatch) {
+        isZip = true;
+        zipCount = parseInt(zipMatch[1], 10);
+        if (zipCount > count) {
+            alert("[" + name + "]님의 집라인 인원(" + zipCount + "명)이 총 인원(" + count + "명)을 초과했습니다.");
+            zipCount = count;
+        }
+    } else if (line.toLowerCase().includes('zip') || line.includes('집라인') || line.includes('짚라인')) {
+        isZip = true;
+        zipCount = count;
+    }
+
+        let isHanbok = false;
+    let hanbokCount = 0;
+    let hanbokMatch = line.match(/한복체험\s*X\s*(\d+)/i);
+    if (hanbokMatch) {
+        isHanbok = true;
+        hanbokCount = parseInt(hanbokMatch[1], 10);
+        if (hanbokCount > count) {
+            alert("[" + name + "]님의 한복체험 인원(" + hanbokCount + "명)이 총 인원(" + count + "명)을 초과했습니다.");
+            hanbokCount = count;
+        }
+    } else if (line.includes('한복체험') || line.includes('한복')) {
+        isHanbok = true;
+        hanbokCount = count;
+    }
+
+    let isBike = (line.includes('지정바이크'));
+    let isNami = line.includes('남이섬') || lineLower.includes('nami');
+    let isAlpaca = line.includes('알파카') || lineLower.includes('alpaca');
+    let isPetite = line.includes('쁘띠') || lineLower.includes('petite');
+    let isItalian = line.includes('이탈리아') || lineLower.includes('italian');
+    let isGarden = line.includes('수목원') || line.includes('아침고요') || lineLower.includes('garden');
+
     let lowerP = productName.toLowerCase();
 
 
 
+
+
     if (lowerP.includes('day1') || lowerP.includes('day 1')) { paxType = 'D1'; }
+
 
     else if (lowerP.includes('day2') || lowerP.includes('day 2')) { paxType = 'D2'; }
 
@@ -1809,18 +2008,26 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
 
 
 
-                                return {
+                                                                return {
       id: customId, originalId: originalOrder, name: name, 
       phone: parsedInfo.fullNumber, 
       count: count, location: location, note: note,
       country: parsedInfo.country, langContext: langContext, gender: gender, appType: appType, messenger: messengerCol, isGrouped: false,
-                  paxType: paxType, isStay: isStay, isBoard: isBoard, isSki: isSki, isNoLesson: isNoLesson,
-      isSancheoneo: !isSkiTour, isHot: isHot, isMoving: isMoving, isChair: isChair, isSightseeing: isSightseeing, isSled: isSled, isShuttle: isShuttle, email: emailAddr,
+                        paxType: paxType, isStay: isStay, isBoard: isBoard, isSki: isSki, isNoLesson: isNoLesson,
+                                                                                    isSancheoneo: !isSkiTour, isHot: isHot, isMoving: isMoving, isChair: isChair, isSightseeing: isSightseeing, isSled: isSled, isShuttle: isShuttle, isBest: isBest, isZip: isZip, zipCount: zipCount, isHanbok: isHanbok, hanbokCount: hanbokCount, isBike: isBike, isNami: isNami, isAlpaca: isAlpaca, isPetite: isPetite, isItalian: isItalian, isGarden: isGarden, email: emailAddr,
+
+
 
       originTag: originTag, 
 
+      resNo: resNoForOrigin,
+
+
+
+
       options: { lift: optLift, gear: optGear, clothes: optClothes, lesson: optLesson }
     };
+
 
 
 
@@ -1916,9 +2123,12 @@ function createGroupsFromEntries(entries) {
             isSancheoneo: rep.isSancheoneo, 
 
 
-            isHot: currentGroupMembers.some(m => m.isHot),
+                        isHot: currentGroupMembers.some(m => m.isHot),
             memberHotList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isHot)),
+            isBest: currentGroupMembers.some(m => m.isBest),
+            memberBestList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isBest)),
             isMoving: currentGroupMembers.some(m => m.isMoving),
+
             memberMovingList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isMoving)),
             isChair: currentGroupMembers.some(m => m.isChair),
             memberChairCount: currentGroupMembers.reduce((sum, m) => sum + (m.isChair ? m.count : 0), 0),
@@ -1926,18 +2136,51 @@ function createGroupsFromEntries(entries) {
                         isSightseeingCount: currentGroupMembers.reduce((sum, m) => sum + (m.isSightseeing ? m.count : 0), 0),
             isSledCount: currentGroupMembers.reduce((sum, m) => sum + (m.isSled ? m.count : 0), 0),
             memberSledList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isSled)),
-            memberSightseeingList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isSightseeing)),
+                        memberSightseeingList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isSightseeing)),
             isShuttle: currentGroupMembers.some(m => m.isShuttle),
             memberShuttleList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isShuttle)),
+                                                                                                isZip: currentGroupMembers.some(m => m.isZip),
+            memberZipList: currentGroupMembers.flatMap(m => {
+                let arr = Array(m.count).fill(false);
+                if (m.isZip) {
+                    let zCount = m.zipCount > 0 ? m.zipCount : m.count;
+                    for(let i=0; i<Math.min(zCount, m.count); i++) arr[i] = true;
+                }
+                return arr;
+            }),
+                        isHanbok: currentGroupMembers.some(m => m.isHanbok),
+            memberHanbokList: currentGroupMembers.flatMap(m => {
+                let arr = Array(m.count).fill(false);
+                if (m.isHanbok) {
+                    let hCount = m.hanbokCount > 0 ? m.hanbokCount : m.count;
+                    for(let i=0; i<Math.min(hCount, m.count); i++) arr[i] = true;
+                }
+                return arr;
+            }),
+            isBike: currentGroupMembers.some(m => m.isBike),
+
+
+                                                memberBikeList: currentGroupMembers.flatMap(m => Array(m.count).fill(m.isBike)),
+            isNami: currentGroupMembers.some(m => m.isNami),
+            isAlpaca: currentGroupMembers.some(m => m.isAlpaca),
+            isPetite: currentGroupMembers.some(m => m.isPetite),
+            isItalian: currentGroupMembers.some(m => m.isItalian),
+            isGarden: currentGroupMembers.some(m => m.isGarden),
 
                         isSkiTour: currentGroupMembers.some(m => !m.isSancheoneo),
+            note: currentGroupMembers.map(m => m.note).filter(n => n && n.trim() !== '').join(', '),
+
+
                         email: rep.email,
+
             originTag: combinedOrigin, 
+            resNo: rep.resNo,
             options: { lift: gLift, gear: gGear, clothes: gClothes, lesson: gLesson },
             isBoarded: false,
             offOptions: [],
             memberNames: [...new Set(currentGroupMembers.map(m => m.name))]
         });
+
 
 
 
@@ -1965,6 +2208,7 @@ function calculateScore(grp) {
         if (criteria === 'EN' && grp.langContext === 'EN') match = true;
 
         if (criteria === 'G4' && grp.count >= 4) match = true;
+        if (criteria === 'ODD' && grp.count % 2 !== 0) match = true;
 
         if (criteria === 'HD' && grp.location.includes('홍대')) match = true;
 
@@ -2023,7 +2267,7 @@ if (CONFIG.COUNTRY_MAP[grp.country]) nation = CONFIG.COUNTRY_MAP[grp.country].su
 
 function runAI() {
 
-    saveTextInput(); saveTimeInput(); saveGuideName();
+    saveTextInput(); saveTimeInput(); saveGuideName(); saveTemplates();
 
     localStorage.removeItem(lsKey('bus_seatMap'));
 
@@ -2031,31 +2275,32 @@ function runAI() {
 
     let raw = document.getElementById('rawData').value;
 
+    checkRailbikeMode(raw);
 
-    // 따옴표 안에 있는 줄바꿈(\r\n) 뿐만 아니라 탭(\t)도 공백으로 바꿔서 칸 밀림 방지
-raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
-
-
-
-    // [수정] FIT 모드 분기 처리
-
-    let rawSizeVal = document.querySelector('input[name="busSize"]:checked').value;
-
-    const isFit = (rawSizeVal === 'FIT');
-
-    
-
-    // FIT인 경우 초기값 0, 아니면 parseInt
-
-    let busSize = isFit ? 0 : parseInt(rawSizeVal);
-
+    raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
 
 
     const direction = document.querySelector('input[name="direction"]:checked').value;
 
-    const lines = raw.trim().split('\n');
+
+        let rawLines = raw.trim().split('\n');
+    let lines = [];
+    let tempLine = "";
+    for (let i = 0; i < rawLines.length; i++) {
+        let l = rawLines[i];
+        let isNewRow = l.includes('\t') || l.match(/\s{2,}/) || l.trim() === '' || /^(no\.|total|엑셀|\d+|[a-z가-힣]+:)/i.test(l.trim());
+        if (isNewRow) {
+            if (tempLine) lines.push(tempLine);
+            tempLine = l;
+        } else {
+            if (tempLine) tempLine += " " + l.trim();
+            else tempLine = l;
+        }
+    }
+    if (tempLine) lines.push(tempLine);
 
     const rawLower = raw.toLowerCase();
+
 
     const isGlobalSki = rawLower.includes('ski') || rawLower.includes('snowboard') || rawLower.includes('스키') || rawLower.includes('스노우');
 
@@ -2127,27 +2372,21 @@ raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
 
 
 
-    msgListGroups = createGroupsFromEntries(entries);
+        msgListGroups = createGroupsFromEntries(entries);
 
+        let totalGoing = msgListGroups.filter(g => g.paxType === 'General' || g.paxType === 'D1').reduce((sum, g) => sum + g.count, 0);
 
-
-    // [추가] FIT 모드일 경우: 배정 대상 인원수만큼 busSize 자동 설정
-
-    if (isFit) {
-
-        let totalGoing = msgListGroups
-
-            .filter(g => g.paxType === 'General' || g.paxType === 'D1')
-
-            .reduce((sum, g) => sum + g.count, 0);
-
-        
-
-        busSize = totalGoing > 0 ? totalGoing : 1; 
-
+    let currentSizeVal = document.querySelector('input[name="busSize"]:checked').value;
+    if (totalGoing <= 15) {
+        document.querySelector('input[name="busSize"][value="FIT"]').checked = true;
+    } else if (currentSizeVal === 'FIT') {
+        document.querySelector('input[name="busSize"][value="44"]').checked = true;
     }
 
+    let rawSizeVal = document.querySelector('input[name="busSize"]:checked').value;
 
+    const isFit = (rawSizeVal === 'FIT');
+    let busSize = isFit ? (totalGoing > 0 ? totalGoing : 1) : parseInt(rawSizeVal);
 
     let listGoing = msgListGroups.filter(g => g.paxType === 'General' || g.paxType === 'D1');
 
@@ -2179,28 +2418,44 @@ raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
                                                 let individualBoard = (grp.memberBoardList && grp.memberBoardList[i]) ? true : false;
                 let individualSki = (grp.memberSkiList && grp.memberSkiList[i]) ? true : false;
                 let individualNoLesson = (grp.memberNoLessonList && grp.memberNoLessonList[i]) ? true : false;
-                let individualHot = (grp.memberHotList && grp.memberHotList[i]) ? true : false;
+                                let individualHot = (grp.memberHotList && grp.memberHotList[i]) ? true : false;
+                let individualBest = (grp.memberBestList && grp.memberBestList[i]) ? true : false;
 
                 let individualMoving = (grp.memberMovingList && grp.memberMovingList[i]) ? true : false;
 
+
                 let individualShuttle = (grp.memberShuttleList && grp.memberShuttleList[i]) ? true : false;
-                let individualSled = (grp.memberSledList && grp.memberSledList[i]) ? true : false;
-                let individualSight = (grp.memberSightseeingList && grp.memberSightseeingList[i]) ? true : false;
+                                let individualSled = (grp.memberSledList && grp.memberSledList[i]) ? true : false;
+                                let individualSight = (grp.memberSightseeingList && grp.memberSightseeingList[i]) ? true : false;
+                                let individualZip = (grp.memberZipList && grp.memberZipList[i]) ? true : false;
+                let individualHanbok = (grp.memberHanbokList && grp.memberHanbokList[i]) ? true : false;
+                let individualBike = (grp.memberBikeList && grp.memberBikeList[i]) ? true : false;
+
+
 
                 // 해당 좌석(seatNum)에 개별 속성을 부여하여 셔틀 손님에게 보드 마크가 붙지 않게 합니다.
-                                                currentSeatMap1[seatNum] = { 
+
+                                                                                                currentSeatMap1[seatNum] = { 
                     ...grp, 
                     isBoard: individualBoard,
                     isSki: individualSki,
                     isNoLesson: individualNoLesson,
                     isHot: individualHot, 
+                    isBest: individualBest,
 
                     isMoving: individualMoving, 
 
-                    isShuttle: individualShuttle,
-                    isSled: individualSled,
-                    isSightseeing: individualSight
+
+                                        isShuttle: individualShuttle,
+                                        isSled: individualSled,
+                                        isSightseeing: individualSight,
+                    isZip: individualZip,
+                    isHanbok: individualHanbok,
+                    isBike: individualBike
                 }; 
+
+
+
 
 
                 currentSeqIdx++;
@@ -2272,11 +2527,13 @@ raw = raw.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
 
 
 
-    saveSeatMap(); redrawAll(busSize, isFit); // [수정] isFit 전달
+        saveSeatMap(); redrawAll(busSize, isFit); // [수정] isFit 전달
 
     renderMessages(msgListGroups, currentSeatMap1, currentSeatMap2, isFit); // [수정] isFit 전달
 
+    updateBikeVisuals();
 }
+
 
 
 
@@ -2356,7 +2613,10 @@ function renderFitBus(seatMap, gridId, busNum) {
 
     grid.style.gridTemplateColumns = "repeat(4, 1fr)";
 
+    grid.style.gridAutoRows = "auto";
+
     grid.style.gap = "4px";
+
 
 
 
@@ -2534,8 +2794,12 @@ function createSeatElement(parent, seatNum, seatMap, maxSeats, busNum) {
   if (data && data.isBoarded) {
       seatDiv.classList.add('boarded');
   }
+  if (data && data.isNoReview) {
+      seatDiv.classList.add('no-review');
+  }
 
   if(seatNum <= 4 && maxSeats > 14) {
+
     if (data) renderSeatContent(seatDiv, data, seatNum, busNum);
     else { seatDiv.classList.add('emergency'); renderSeatContent(seatDiv, null, seatNum, busNum); }
   } else {
@@ -2596,10 +2860,15 @@ function renderSeatContent(el, data, num, busNum) {
     else if (len > 3) fSize = "22px";   
 
     // --- [수정된 부분] 영어 손님일 경우 글자색을 진한 파랑으로 설정 ---
-        let textColor = (data.langContext === 'EN') ? '#000099' : '#333';
-    let textDeco = data.isTimeConfirmed ? 'line-through' : 'none';
+            let textColor = (data.langContext === 'EN') ? '#0055CC' : '#333';
+    let statusDataForDeco = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
+    let isConnectedDeco = statusDataForDeco[data.repNum]?.connected || false;
+            let textDeco = isConnectedDeco ? 'line-through rgba(255, 255, 0, 0.7)' : 'none';
+
+
 
     let originBadgeHtml = getOriginBadgeHtml(data.originTag);
+
     let cleanNation = data.subInfo ? data.subInfo.replace(/\(.\)/g, '') : "";
     
             let tagsHtml = "";
@@ -2616,12 +2885,20 @@ function renderSeatContent(el, data, num, busNum) {
     }
 
     if (data.isHot) tagsHtml += `<span class="day-tag tag-hot">H</span>`;
+if (data.isBest) tagsHtml += `<span class="day-tag tag-best">노리</span>`;
 if (data.isMoving) tagsHtml += `<span class="day-tag tag-moving">무</span>`;
+
 if (data.isShuttle) tagsHtml += `<span class="day-tag tag-shuttle">셔</span>`; 
 if (data.isSled) tagsHtml += `<span class="day-tag tag-sled">썰</span>`;
 if (data.isSightseeing) tagsHtml += `<span class="day-tag tag-sight">관</span>`;
+if (data.isZip) tagsHtml += `<span class="day-tag tag-zip">Z</span>`;
+if (data.isHanbok) tagsHtml += `<span class="day-tag tag-hanbok">한</span>`;
+if (data.isBike) tagsHtml += `<span class="day-tag tag-bike">지</span>`;
+
 
     if (data.paxType === 'D1') tagsHtml += `<span class="day-tag tag-d1">D1</span>`;
+
+
 
 
     if (data.paxType === 'D2') tagsHtml += `<span class="day-tag tag-d2">D2</span>`;
@@ -2636,6 +2913,10 @@ if (data.isSightseeing) tagsHtml += `<span class="day-tag tag-sight">관</span>`
 
 
 function handleSeatClick(el, busNum, seatIdx, busSize) {
+    if (activeBikeType > 0) {
+        handleBikeSeatClick(busNum, seatIdx, el);
+        return;
+    }
 
     if(selectedSeat.idx === -1) { 
 
@@ -2667,11 +2948,25 @@ function handleSeatClick(el, busNum, seatIdx, busSize) {
 
         }
 
+        bikeGroups.forEach(group => {
+            group.seats.forEach(s => {
+                if (s.busNum === sourceBus) {
+                    if (s.seatIdx === sourceIdx) {
+                        s.seatIdx = targetIdx;
+                    } else if (s.seatIdx === targetIdx) {
+                        s.seatIdx = sourceIdx;
+                    }
+                }
+            });
+        });
+        saveBikeGroups();
+
         resetSelection(); refreshDisplay();
 
     }
 
 }
+
 
 
 
@@ -2740,15 +3035,18 @@ function refreshDisplay() {
 
 
 
-    saveSeatMap(); 
+        saveSeatMap(); 
 
     redrawAll(busSize, isFit); 
 
     renderMessages(msgListGroups, currentSeatMap1, currentSeatMap2, isFit);
 
+    updateBikeVisuals();
+
     window.scrollTo(0, scrollY);
 
 }
+
 
 
 
@@ -2768,25 +3066,23 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
 
     
 
-    const statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
-
-    const guideName = document.getElementById('guideNameInput').value || "Mr. Shin";
+        const statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
 
 
-    const busNo = document.getElementById('busNumberInput').value || "";
+        const busNo = document.getElementById('busNumberInput').value || "";
 
-    
+    const rawData = document.getElementById('rawData').value || "";
 
     const tH = document.getElementById('timeHongdae').value;
+
 
     const tM = document.getElementById('timeMyeongdong').value;
 
     const tD = document.getElementById('timeDongdaemun').value;
 
-    const specialMsg = document.getElementById('specialNotice').value;
+    const engTemplate = document.getElementById('englishTemplate').value || "";
 
-    const finalSpecial = specialMsg ? `\n\n${specialMsg}\n` : "";
-
+    const chnTemplate = document.getElementById('chineseTemplate').value || "";
 
 
     allGroups.sort((a, b) => {
@@ -2802,7 +3098,7 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
     allGroups.forEach((g, idx) => {
     
             let groupBgColor = getPickColor(g);
-        let groupTextColor = (g.langContext === 'EN') ? '#000099' : '#333';
+        let groupTextColor = (g.langContext === 'EN') ? '#3333FF' : '#333';
 
 
         let seatStr = ""; let targetMap = (g.paxType === 'D2' || g.paxType === 'D3') ? seatMap2 : seatMap1;
@@ -2821,132 +3117,180 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
 
 
 
-        let gid = g.repNum; let msgText = ""; let langTag = "";
+                     let gid = g.repNum; let msgText = ""; let langTag = "";
 
+        let loc = g.location || "";
+        let userTime = "";
+        let userPlaceEN = "";
+        let userPlaceCN = "";
+
+        if (loc.includes('홍대') || loc.includes('Hongik')) { 
+            userTime = tH; 
+            userPlaceEN = "Hongik Univ.s.t Exit 8"; 
+            userPlaceCN = "弘大入口站 8號出口";
+        } else if (loc.includes('명동') || loc.includes('Myeongdong')) { 
+            userTime = tM; 
+            userPlaceEN = "Myeongdong s.t Exit 3"; 
+            userPlaceCN = "明洞站 3號出口";
+        } else if (loc.includes('동대문')) { 
+            userTime = tD; 
+            userPlaceEN = "Dongdaemun History Culture park s.t Exit 11"; 
+            userPlaceCN = "東大門歷史文化公園站 11號出口";
+        } else { 
+            userTime = `${tH} / ${tM} / ${tD}`; 
+            userPlaceEN = "Hongik Univ. Exit 8 / Myeongdong Exit 3 / Dongdaemun Exit 11"; 
+            userPlaceCN = "弘大 8號 / 明洞 3號 / 東大門 11號";
+        }
+
+        let userPlace = (g.langContext === 'CN') ? userPlaceCN : userPlaceEN;
+        let baseTemplate = (g.langContext === 'CN') ? chnTemplate : engTemplate;
         
+        // --- 1. 조건부 발송 변수 세팅 ---
+        
+                // [신발] 스키/보드 손님 확인 링크
+        let varShoe = "";
+        if ((g.isSki || g.isBoard) && g.paxType !== 'D2' && g.paxType !== 'D3') {
+            if (g.langContext === 'CN') {
+                varShoe = "\n\n👟 請確認您的鞋子尺寸 (毫米):\nhttps://acmchipmunk-crypto.github.io/t/s.html";
+            } else {
+                varShoe = "\n\n👟 You must check your shoe size (millimeter):\nhttps://acmchipmunk-crypto.github.io/t/s.html";
+            }
+        }
 
-        const priceList_CN = `[Price List]\n\nS. 积极心态（包含）\n\nA. 缆车 + 装备\n   周末 70,000 / 平日 60,000\nB. 头盔 20,000\nC. 护具 15,000\nD. 滑雪服 20,000\nE. 雪橇 30,000\nF. 观光缆车 20,000\n\n*(刷卡 Card +10%)`;
+        // [보드] 스노우보드 손님용 부츠 영상
+        let varBoard = "";
+        if (g.isBoard && g.paxType !== 'D2' && g.paxType !== 'D3') {
+            if (g.langContext === 'CN') {
+                varBoard = `\n\n📺 如何穿單板滑雪鞋:\n${CONFIG.BOOTS_YOUTUBE}`;
+            } else {
+                varBoard = `\n\n📺 How to wear Snowboard boots:\n${CONFIG.BOOTS_YOUTUBE}`;
+            }
+        }
 
-        const priceList_EN = `[Price List]\n\nS. Positive mindset (Included)\n\nA. Lift + Gear\n   Weekend 70,000 / Weekday 60,000\nB. Helmet 20,000\nC. Guard 15,000\nD. Ski Clothes 20,000\nE. Sled 30,000\nF. Sightseeing Lift 20,000\n\n*(Card payment +10%)`;
+        // [바이크] 레일바이크 미지정 손님 (조인 안내)
+        let varBike = "";
+        if (rawData.includes('강촌') || rawData.includes('가평')) {
+            if (!g.isBike) {
+                if (g.langContext === 'CN') {
+                    varBike = "\n*无指定自行车，将与其他队伍共乘";
+                } else {
+                    varBike = "\n*No designated bike. You may share with others";
+                }
+            }
+        }
 
+        // [짐] FIT 모드 큰 짐 경고
+        let varLuggage = "";
+        if (isFit) {
+            if (g.langContext === 'CN') {
+                varLuggage = "\n*大件行李和婴儿车不允许携带。";
+            } else {
+                varLuggage = "\n*Large luggage and strollers are not allowed.";
+            }
+        }
+        
+        // [Day1] Day 1 전용 안내
+        let varDay1 = "";
+        if (g.paxType === 'D1') {
+            if (g.langContext === 'CN') {
+                varDay1 = "\n*(Day1) 今天的行程结束后，大巴将返回首尔。";
+            } else {
+                varDay1 = "\n*(Day1) After today's tour, the bus will return to Seoul.";
+            }
+        }
 
-
-
-        // FIT 모드에서도 그룹 번호(Group)는 표시되도록 수정합니다.
-let groupLine = `Group: ${g.msgNum}\n`; 
-let seatLine = isFit ? "" : `Seat: ${seatStr}\n`; // 좌석 번호는 FIT 모드에서 의미가 없으므로 제외 유지
-let busLine = isFit ? "" : `\nbus no : ${busNo}`;
-
-
-
-
+                // [Day2] Day 2, Day 3 복귀/숙박 손님 전용 안내
+        let varDay2 = "";
         if (g.paxType === 'D2' || g.paxType === 'D3') {
-
-            let isReturnGuest = (g.paxType === 'D2' || g.paxType === 'D3');
-
-            let dayLabel = isReturnGuest ? (g.paxType === 'D3' ? "Day 3" : "Day 2") : "Day 1";
-
-            let step3_EN = "3. Gathering (15:40)\n📍 Lobby (With luggage)";
-
-            let step3_CN = "3. 集合 Gathering (15:40)\n📍 酒店大厅 (带上所有行李)";
-
-            
-
-            if (g.isStay) { 
-
-                step3_EN = "3. Stay Guest\n📍 No Bus (Enjoy Skiing!)"; 
-
-                step3_CN = "3. 续住 (Stay)\n📍 No Bus (Enjoy Skiing!)"; 
-
-            }
-
-
-
-                        if(g.langContext === 'CN') {
-
-                langTag = "";
-
-                msgText = `[${dayLabel}/- ${guideName}]\n${groupLine}${seatLine}\n1. 退房 (11:00 前)\n*行李寄放一楼大厅 \n⚠️ 迟交罚款 : 10,000 / 30分\n\n2. Klook 休息室 (10:00)\n👉 付款 & 领取缆车票 \n\n${step3_CN}\n\n${priceList_CN}`;
-
+            let dayLabel = (g.paxType === 'D3') ? "Day 3" : "Day 2";
+            if (g.langContext === 'CN') {
+                if (g.isStay) {
+                    varDay2 = `\n\n🌙 续住 (Stay)\n📍 No Bus (Enjoy Skiing!)`;
+                } else {
+                    varDay2 = `\n\n🌙 ${dayLabel} 归程 Return\n1. 出发 Departure (17:00)\n📍 综合售票处旁 巴士停车场`;
+                }
             } else {
-
-                langTag = "";
-
-                msgText = `[${dayLabel}/Return Guide - ${guideName}]\n${groupLine}${seatLine}\n1. Check-out (Until 11:00)\n*Leave bags at Lobby\n⚠️ Late Penalty: 10,000 KRW / 30min\n\n2. Klook Lounge (10:00)\n👉 Payment & Get Lift Card\n\n${step3_EN}\n\n${priceList_EN}`;
-
+                if (g.isStay) {
+                    varDay2 = `\n\n🌙 Stay Guest\n📍 No Bus (Enjoy Skiing!)`;
+                } else {
+                    varDay2 = `\n\n🌙 ${dayLabel} Return\n1. Departure (17:00)\n📍 Bus Parking Lot next to Ticket Office`;
+                }
             }
+        }
 
-
-        } 
-
-        else {
-
-             let pickupInfo = ""; let loc = g.location ? g.location.trim() : "";
-
-             
-
-             if(g.langContext === 'CN') {
-
-                langTag = "";
-
-                if (loc.includes('홍대')) { pickupInfo = `❗️${tH} 弘大入口站 8號出口`; } 
-
-                else if (loc.includes('명동')) { pickupInfo = `❗️${tM} 明洞站 3號出口`; } 
-
-                else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} 東大門歷史文化公園站 11號出口`; } 
-
-                else { pickupInfo = `❗️${tH} 弘대 8번 / ❗️${tM} 명동 3번 / ❗️${tD} 동대문 11번`; }
-
-                
-
-                msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n*為了避開交通堵塞，我們會準時出發。\n*遲到恕不退款。\n*車內只允許飲用白水。\n*不包含餐費。\n\n👉 如果收到信息，麻煩回覆 “您所了解的出發時間”, 讓我們知道噢,謝謝😊。\n大巴號: ${busNo}\n家庭號: ${g.repNum}\n座位號: ${seatStr}`;
-
-
+                let varNami = "";
+        if (g.isNami) {
+            if (g.langContext === 'CN') {
+                varNami = "\n🚢 南怡岛指南与地图：https://acmchipmunk-crypto.github.io/t/N.jpg";
             } else {
-
-                langTag = "";
-
-                if (loc.includes('홍대') || loc.includes('Hongik')) { pickupInfo = `❗️${tH} Hongik Univ.s.t Exit 8`; } 
-
-                else if (loc.includes('명동') || loc.includes('Myeongdong')) { pickupInfo = `❗️${tM} Myeongdong s.t Exit 3`; } 
-
-                else if (loc.includes('동대문')) { pickupInfo = `❗️${tD} Dongdaemun History Culture park s.t Exit 11`; } 
-
-                else { pickupInfo = `❗️${tH} Hongik Univ. Exit 8 / ❗️${tM} Myeongdong Exit 3 / ❗️${tD} Dongdaemun History & Culture Park Station Exit 11`; }
-
-                
-
-                msgText = `[${guideName}]\n${pickupInfo}${finalSpecial}\n\n*We depart early to avoid traffic.\n*There is no refund if you are late.\n*Only water is allowed on the bus.\n*Meals are not included.\n\n👉 Reply "Your departure time" to confirm\nbus no : ${busNo}\nGroup: ${g.repNum}\nSeat: ${seatStr}`;
-
+                varNami = "\n🚢 Nami Island Guide & Map: https://acmchipmunk-crypto.github.io/t/N.jpg";
             }
+        }
 
+        let varAlpaca = "";
+        if (g.isAlpaca) {
+            if (g.langContext === 'CN') {
+                varAlpaca = "\n🦙 羊驼乐园指南：https://acmchipmunk-crypto.github.io/t/A.jpg";
+            } else {
+                varAlpaca = "\n🦙 Alpaca World Guide: https://acmchipmunk-crypto.github.io/t/A.jpg";
+            }
+        }
+
+        let varPetite = "";
+        if (g.isPetite) {
+            if (g.langContext === 'CN') {
+                varPetite = "\n🇫🇷 小法国村信息：https://acmchipmunk-crypto.github.io/t/F.png";
+            } else {
+                varPetite = "\n🇫🇷 Petite France Info: https://acmchipmunk-crypto.github.io/t/F.png";
+            }
+        }
+
+        let varItalian = "";
+        if (g.isItalian) {
+            if (g.langContext === 'CN') {
+                varItalian = "\n🇮🇹 意大利村信息：https://acmchipmunk-crypto.github.io/t/I.png";
+            } else {
+                varItalian = "\n🇮🇹 Italian Village Info: https://acmchipmunk-crypto.github.io/t/I.png";
+            }
+        }
+
+                let varGarden = "";
+        if (g.isGarden) {
+            if (g.langContext === 'CN') {
+                varGarden = "\n🌺 晨静树木园：https://acmchipmunk-crypto.github.io/t/s.png";
+            } else {
+                varGarden = "\n🌺 Garden of Morning Calm: https://acmchipmunk-crypto.github.io/t/s.png";
+            }
         }
 
 
 
-               if (g.isBoard && g.paxType !== 'D2' && g.paxType !== 'D3') {
-    if (g.langContext === 'CN') {
-        // 중국어: 단판설화(Snowboard boots) 안내
-        msgText += `\n\n📺 如何穿單板滑雪鞋:\n${CONFIG.BOOTS_YOUTUBE}`;
-    } else {
-        // 영어: Snowboard boots 명확히 표기
-        msgText += `\n\n📺 How to wear Snowboard boots:\n${CONFIG.BOOTS_YOUTUBE}`;
-    }
-}
+              // --- 2. 변수 치환 적용 ---
+        msgText = baseTemplate
+            .replace(/\[버스\]/g, busNo)
+            .replace(/\[그룹\]/g, g.repNum)
+            .replace(/\[인원수\]/g, g.count)
+            .replace(/\[좌석\]/g, isFit ? "" : seatStr) 
+            .replace(/\[출발시간\]/g, userTime)
+            .replace(/\[탑승지\]/g, userPlace)
+            .replace(/\n?\[신발\]/g, varShoe)
+            .replace(/\n?\[보드\]/g, varBoard)
+            .replace(/\n?\[바이크\]/g, varBike)
+            .replace(/\n?\[짐\]/g, varLuggage)
+            .replace(/\n?\[Day1\]/g, varDay1)
+            .replace(/\n?\[Day2\]/g, varDay2)
+            .replace(/\n?\[남이섬\]/g, varNami)
+            .replace(/\n?\[알파카\]/g, varAlpaca)
+            .replace(/\n?\[쁘띠\]/g, varPetite)
+            .replace(/\n?\[이탈리아\]/g, varItalian)
+            .replace(/\n?\[수목원\]/g, varGarden);
 
-        
-        if (g.isSkiTour && g.paxType !== 'D2' && g.paxType !== 'D3') {
-    if (g.langContext === 'CN') {
-        msgText += `\n\n👟 請確認您的鞋子尺寸 (毫米):\nacmchipmunk-crypto.github.io/t/s.html`;
-    } else {
-        msgText += `\n\n👟 You must check your shoe size (millimeter):\nacmchipmunk-crypto.github.io/t/s.html`;
-    }
-}
 
 
 
 
         let waNumber = g.phone; 
+
 
         let hasPhone = (waNumber && waNumber.length > 5);
 
@@ -2956,11 +3300,14 @@ let busLine = isFit ? "" : `\nbus no : ${busNo}`;
 
         let waBtnClass = hasPhone ? 'btn-action btn-wa-send' : 'btn-action btn-wa-send disabled';
 
-        let isContacted = statusData[gid]?.contacted || false; let isConnected = statusData[gid]?.connected || false; let memoText = statusData[gid]?.memo || "";
+                                let isContacted = statusData[gid]?.contacted || false; let isConnected = statusData[gid]?.connected || false;
+        let memoText = statusData[gid]?.memo !== undefined ? statusData[gid].memo : (g.note || "");
+        let lunchMemoText = statusData[gid]?.lunchMemo || "";
 
         
 
-        let appIconHtml = getAppIconHtml(g.messenger, g.appType);
+                let appIconHtml = getAppIconHtml(g.messenger, g.appType, encodedText);
+
 
         
 
@@ -2970,12 +3317,16 @@ if (g.paxType === 'D1') extraTags += `<span class="day-tag tag-d1" style="margin
         if (g.paxType === 'D2') extraTags += `<span class="day-tag tag-d2" style="margin-left:5px;">[D2]</span>`;
 
 
-        if (g.paxType === 'D3') extraTags += `<span class="day-tag tag-d3" style="margin-left:5px;">[D3]</span>`;
+                     if (g.paxType === 'D3') extraTags += `<span class="day-tag tag-d3" style="margin-left:5px;">[D3]</span>`;
 
+if (g.isZip) extraTags += `<span class="day-tag tag-zip" style="margin-left:5px;">Z</span>`;
+if (g.isHanbok) extraTags += `<span class="day-tag tag-hanbok" style="margin-left:5px;">한</span>`;
+if (g.isBike) extraTags += `<span class="day-tag tag-bike" style="margin-left:5px;">지</span>`;
 
         
 
         let emailBtnHtml = g.email ? `<div class="btn-action btn-copy-mail" onclick="copyAndOpen(this, '${g.email}', 'mail')">Mail<br>Copy</div>` : "";
+
 
 
 
@@ -2988,9 +3339,23 @@ if (g.paxType === 'D1') extraTags += `<span class="day-tag tag-d1" style="margin
 
                 let card = document.createElement('div'); card.className = 'msg-card';
 
-                let optionHtml = "";
+                                                                let optionHtml = "";
 
-        if (g.isSkiTour) {
+                if (!g.isSkiTour) {
+            let gid = g.repNum;
+            optionHtml = `
+                <div class="lunch-btn-group">
+                    <button class="lunch-btn lunch-btn-spicy" onclick="addLunchItem('${gid}', '매움')">매움</button>
+                    <button class="lunch-btn lunch-btn-mild" onclick="addLunchItem('${gid}', '안매움')">안매움</button>
+                    <button class="lunch-btn lunch-btn-cheese" onclick="addLunchItem('${gid}', '치즈')">치즈</button>
+                    <button class="lunch-btn lunch-btn-rice" onclick="addLunchItem('${gid}', '볶음밥')">볶음밥</button>
+                    <button class="lunch-btn lunch-btn-reset" onclick="resetLunch('${gid}')">다시작성</button>
+                </div>
+                <input type="text" id="lunchMemo_${gid}" class="lunch-memo-input" placeholder="점심 주문" value="${lunchMemoText}" onchange="updateMsgStatus('${gid}', 'lunchMemo', null, this.value)">
+            `;
+        } else if (g.isSkiTour) {
+
+
             let pickupColor = groupBgColor;
             let gid = g.repNum;
 
@@ -3014,17 +3379,57 @@ if (g.paxType === 'D1') extraTags += `<span class="day-tag tag-d1" style="margin
 
 
 
-        card.innerHTML = `
-     <div class="msg-check-area">
-        <div class="check-box-wrapper"><label class="msg-check-label label-sent">연락함</label><input type="checkbox" class="msg-check-input chk-sent" onchange="updateMsgStatus('${gid}', 'contacted', this.checked, null)" ${isContacted ? 'checked' : ''}></div>
-        <div class="check-box-wrapper"><label class="msg-check-label label-connected">연락됨</label><input type="checkbox" class="msg-check-input chk-conn" onchange="updateMsgStatus('${gid}', 'connected', this.checked, null)" ${isConnected ? 'checked' : ''}></div>
+                                                                                                                                
+                                                                                                                                        card.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; border-bottom: 1px solid #e0e0e0; padding-bottom: 4px; margin-bottom: 4px;">
+        <div style="display: flex; align-items: center; gap: 4px;">
+            <span class="msg-group" style="background-color: ${groupBgColor}; color: ${groupTextColor}; font-size: 30px; font-weight: 900; border-radius: 8px; padding: 4px 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">${uiGroupNum}</span>
+            <span style="display: inline-flex; flex-direction: column; gap: 2px;">
+                <div style="display: flex; gap: 4px; flex-wrap: wrap;">${langTag}${extraTags}</div>
+            </span>
+        </div>
+
+        
+        <div style="flex: 1; text-align: center; padding: 0 8px;">
+            <div style="font-size: 16px; font-weight: 900; color: #b71c1c; word-break: break-all; line-height: 1.2;">Seat: ${seatStr}</div>
+        </div>
+
+        <div class="msg-check-area" style="display: flex; flex-direction: column; gap: 2px; align-items: flex-end; justify-content: center;">
+            <div style="display: flex; align-items: center; gap: 4px;">
+                <label class="msg-check-label label-sent" style="margin: 0; font-size: 13px; font-weight: 900; color: #1976d2;">연락함</label>
+                <input type="checkbox" class="msg-check-input chk-sent" onchange="updateMsgStatus('${gid}', 'contacted', this.checked, null)" ${isContacted ? 'checked' : ''} style="transform: scale(1.6); margin: 0; cursor: pointer;">
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+                <label class="msg-check-label label-connected" style="margin: 0; font-size: 13px; font-weight: 900; color: #d32f2f;">연락됨</label>
+                <input type="checkbox" class="msg-check-input chk-conn" onchange="updateMsgStatus('${gid}', 'connected', this.checked, null)" ${isConnected ? 'checked' : ''} style="transform: scale(1.6); margin: 0; cursor: pointer;">
+            </div>
+        </div>
     </div>
-        <div class="msg-info">
-        <div class="msg-group-row"><span class="msg-group" style="background-color: ${groupBgColor}; color: ${groupTextColor};">${uiGroupNum}</span>${getOriginBadgeHtml(g.originTag)}${langTag}${extraTags}</div>
-        <div class="msg-seats">Seat: ${seatStr}</div>
-        <div style="font-size: 18px; margin-top: 5px; line-height: 1.4; color: #333;">${namesHtml}</div>
-        <div class="hidden-msg">${msgText}</div>
+
+    <div class="msg-info">
+        <div style="font-size: 14px; line-height: 1.2; color: #333; background: #f8f9fa; padding: 4px 6px; border-radius: 8px; border: 1px solid #cfd8dc; margin-bottom: 2px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                <div><span style="font-size: 12px; color: #757575; display: inline-block; width: 35px;">이름:</span> <b style="font-size: 15px;">${g.memberNames.join(', ')}</b></div>
+                <span class="btn-copy-inline" onclick="copyOnly(this, '${g.memberNames.join(', ').replace(/'/g, "\\'")}')" style="font-size: 16px; margin: 0;">📄</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                <div style="display: flex; align-items: center;"><span style="font-size: 12px; color: #757575; display: inline-block; width: 35px;">예약:</span> <span style="font-size: 13px; font-weight: bold; color: #1565c0; background: #e3f2fd; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">${getOriginBadgeHtml(g.originTag)} ${g.resNo || '없음'}</span></div>
+                ${g.resNo ? `<span class="btn-copy-inline" onclick="copyOnly(this, '${g.resNo}')" style="font-size: 16px; margin: 0;">📄</span>` : ''}
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                <div><span style="font-size: 12px; color: #757575; display: inline-block; width: 35px;">전화:</span> <b style="font-size: 14px;">${g.phone || '없음'}</b></div>
+                ${g.phone ? `<span class="btn-copy-inline" onclick="copyOnly(this, '${g.phone}')" style="font-size: 16px; margin: 0;">📄</span>` : ''}
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div><span style="font-size: 12px; color: #757575; display: inline-block; width: 35px;">앱:</span> <b style="font-size: 14px;">${g.messenger || '없음'}</b></div>
+                ${g.messenger ? `<span class="btn-copy-inline" onclick="copyOnly(this, '${g.messenger.replace(/'/g, "\\'")}')" style="font-size: 16px; margin: 0;">📄</span>` : ''}
+            </div>
+        </div>
     </div>
+
+
+
+
 
 
     <div class="msg-actions">
@@ -3033,9 +3438,11 @@ if (g.paxType === 'D1') extraTags += `<span class="day-tag tag-d1" style="margin
         ${emailBtnHtml}
         ${appIconHtml}
     </div>
+
+    <textarea class="msg-memo-input" placeholder="메모 (자동 입력 및 수정 가능)" onchange="updateMsgStatus('${gid}', 'memo', null, this.value)">${memoText}</textarea>
+    <div class="hidden-msg">${msgText}</div>
     ${optionHtml}
 `;
-
 
 
         msgList.appendChild(card);
@@ -3046,7 +3453,7 @@ if (g.paxType === 'D1') extraTags += `<span class="day-tag tag-d1" style="margin
 
 
 
-function getAppIconHtml(rawMsg, appType) {
+function getAppIconHtml(rawMsg, appType, encodedText) {
 
     if (!rawMsg) return `<div class="btn-action logo-none">X</div>`;
 
@@ -3116,7 +3523,7 @@ function getAppIconHtml(rawMsg, appType) {
 
         if (schemeKey) {
 
-            return `<div class="btn-action ${appClass}" onclick="copyAndOpen(this, '${copyValue}', '${schemeKey}')">${appName}<br>Copy</div>`;
+            return `<div class="btn-action ${appClass}" onclick="copyAndOpen(this, '${copyValue}', '${schemeKey}', '${encodedText}')">${appName}<br>Copy</div>`;
 
         } else {
 
@@ -3135,20 +3542,29 @@ function getAppIconHtml(rawMsg, appType) {
 
 
 function updateMsgStatus(gid, type, checked, memo) {
-
     let statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
-
-    if(!statusData[gid]) statusData[gid] = { contacted: false, connected: false, memo: "" };
-
+    if(!statusData[gid]) statusData[gid] = { contacted: false, connected: false, memo: "", lunchMemo: "" };
     if(type === 'contacted') statusData[gid].contacted = checked;
-
     if(type === 'connected') statusData[gid].connected = checked;
-
-    if(memo !== null) statusData[gid].memo = memo;
-
+    if(type === 'memo' && memo !== null) statusData[gid].memo = memo;
+    if(type === 'lunchMemo' && memo !== null) statusData[gid].lunchMemo = memo;
     localStorage.setItem(lsKey('bus_msgStatus'), JSON.stringify(statusData));
     syncToServer();
+
+
+    if(type === 'connected') {
+        const scrollY = window.scrollY;
+        let rawSize = localStorage.getItem(lsKey('bus_size')) || "44";
+        const isFit = (rawSize === 'FIT');
+        let busSize = isFit ? (currentSeatMap1.length - 1) : parseInt(rawSize);
+        redrawAll(busSize, isFit);
+        updateBikeVisuals();
+        // 이 줄 위에 넣으세요
+        window.scrollTo(0, scrollY);
+    }
 }
+
+
 
 
 
@@ -3306,14 +3722,32 @@ function manualDelGroup() {
 }
 
 function manualBatchAdd() {
-    const rawBatch = document.getElementById('manualBatchData').value.trim();
+    let rawBatch = document.getElementById('manualBatchData').value.trim();
     if (!rawBatch) return;
 
+    rawBatch = rawBatch.replace(/"([^"]*)"/g, (match, p1) => p1.replace(/[\r\n\t]+/g, ' '));
+
     const rawLower = rawBatch.toLowerCase();
+
     const isGlobalSki = rawLower.includes('ski') || rawLower.includes('snowboard') || rawLower.includes('스키') || rawLower.includes('스노우');
-    const lines = rawBatch.split('\n');
+        let rawLines = rawBatch.split('\n');
+    let lines = [];
+    let tempLine = "";
+    for (let i = 0; i < rawLines.length; i++) {
+        let l = rawLines[i];
+        let isNewRow = l.includes('\t') || l.match(/\s{2,}/) || l.trim() === '' || /^(no\.|total|엑셀|\d+|[a-z가-힣]+:)/i.test(l.trim());
+        if (isNewRow) {
+            if (tempLine) lines.push(tempLine);
+            tempLine = l;
+        } else {
+            if (tempLine) tempLine += " " + l.trim();
+            else tempLine = l;
+        }
+    }
+    if (tempLine) lines.push(tempLine);
     
     let entries = [];
+
     let startIdx = (msgListGroups.length > 0) ? msgListGroups.length + 1 : 1;
 
     lines.forEach((line, i) => {
@@ -3330,20 +3764,51 @@ function manualBatchAdd() {
     const busSize = isFit ? (currentSeatMap1.length - 1) : parseInt(busSizeVal);
     const seatSequence = generateSeatSequence(999, busSize, isFit);
 
-    newGroups.forEach(grp => {
+        newGroups.forEach(grp => {
         grp.color = getPickColor(grp);
         setGroupMeta(grp);
         msgListGroups.push(grp);
-
         let seatedCount = 0;
-        for (let sNum of seatSequence) {
-            if (seatedCount >= grp.count) break;
-            if (currentSeatMap1[sNum] === null) {
-                currentSeatMap1[sNum] = { ...grp };
-                seatedCount++;
+        if (grp.paxType === 'D2' || grp.paxType === 'D3') {
+            toggleMap2(true);
+            if (!grp.isStay) {
+                for (let sNum of seatSequence) {
+                    if (seatedCount >= grp.count) break;
+                    if (currentSeatMap2[sNum] === null) {
+                        currentSeatMap2[sNum] = { ...grp };
+                        seatedCount++;
+                    }
+                }
+            }
+        } else {
+            for (let sNum of seatSequence) {
+                if (seatedCount >= grp.count) break;
+                if (currentSeatMap1[sNum] === null) {
+                    currentSeatMap1[sNum] = { ...grp };
+                    if (grp.paxType === 'General') {
+                        if (currentSeatMap2[sNum] === null) {
+                            let cloned = { ...grp };
+                            cloned.color = '#e0e0e0';
+                            cloned.isSynced = true;
+                            currentSeatMap2[sNum] = cloned;
+                        } else {
+                            for (let i of seatSequence) {
+                                if (currentSeatMap2[i] === null) {
+                                    let cloned = { ...grp };
+                                    cloned.color = '#e0e0e0';
+                                    cloned.isSynced = true;
+                                    currentSeatMap2[i] = cloned;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    seatedCount++;
+                }
             }
         }
     });
+
 
     document.getElementById('manualBatchData').value = "";
     refreshDisplay();
@@ -3353,42 +3818,35 @@ let syncTimer = null;
 let pollTimer = null;
 
 function syncToServer() {
-    if (currentActiveRoom === '일반투어') return;
+    if (currentActiveRoom === '일반투어 (가)' || currentActiveRoom === '일반투어 (나)') return;
     clearTimeout(syncTimer);
     syncTimer = setTimeout(() => {
-        let roomData = {
+                let roomData = {
             'bus_seatMap': localStorage.getItem(currentActiveRoom + '_bus_seatMap') || '',
             'bus_lastDate': localStorage.getItem(currentActiveRoom + '_bus_lastDate') || '',
             'bus_rawData': localStorage.getItem(currentActiveRoom + '_bus_rawData') || '',
             'bus_size': localStorage.getItem(currentActiveRoom + '_bus_size') || '44',
             'bus_times': localStorage.getItem(currentActiveRoom + '_bus_times') || '{}',
-            'bus_guideName': localStorage.getItem(currentActiveRoom + '_bus_guideName') || '',
             'bus_number': localStorage.getItem(currentActiveRoom + '_bus_number') || '',
-            'bus_specialNotice': localStorage.getItem(currentActiveRoom + '_bus_specialNotice') || '',
-            'bus_msgStatus': localStorage.getItem(currentActiveRoom + '_bus_msgStatus') || '{}'
+            'bus_englishTemplate': localStorage.getItem(currentActiveRoom + '_bus_englishTemplate') || '',
+            'bus_chineseTemplate': localStorage.getItem(currentActiveRoom + '_bus_chineseTemplate') || '',
+            'bus_msgStatus': localStorage.getItem(currentActiveRoom + '_bus_msgStatus') || '{}',
+            'bus_bikeGroups': localStorage.getItem(currentActiveRoom + '_bus_bikeGroups') || '[]'
         };
-        fetch(GAS_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-                roomName: currentActiveRoom,
-                data: JSON.stringify(roomData)
-            })
-        });
+
+        google.script.run.saveSkiTourData(currentActiveRoom, JSON.stringify(roomData));
+
     }, 1500);
 }
 
 
+
 function startPolling() {
-    if (currentActiveRoom === '일반투어') return;
+    if (currentActiveRoom === '일반투어 (가)' || currentActiveRoom === '일반투어 (나)') return;
     clearInterval(pollTimer);
     pollTimer = setInterval(() => {
-        fetch(GAS_URL + "?room=" + encodeURIComponent(currentActiveRoom))
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(result) {
-            if (result.status === 'success' && result.data) {
-                let serverData = result.data;
+        google.script.run.withSuccessHandler(function(serverData) {
+            if (serverData) {
                 let parsedData = JSON.parse(serverData);
                 let localSeatMap = localStorage.getItem(currentActiveRoom + '_bus_seatMap');
                 if (localSeatMap !== parsedData['bus_seatMap']) {
@@ -3400,9 +3858,10 @@ function startPolling() {
                     window.scrollTo(0, scrollY);
                 }
             }
-        });
+        }).loadSkiTourData(currentActiveRoom);
     }, 1000);
 }
+
 
 
 function saveSeatMap() { 
@@ -3427,18 +3886,52 @@ function saveTimeInput() {
     syncToServer();
 }
 
+function updateTimeSequence(source) {
+    let hInput = document.getElementById('timeHongdae');
+    let mInput = document.getElementById('timeMyeongdong');
+    let dInput = document.getElementById('timeDongdaemun');
+
+    function parseTime(val) {
+        let parts = val.split(':');
+        if (parts.length !== 2) return null;
+        let h = parseInt(parts[0], 10);
+        let m = parseInt(parts[1], 10);
+        if (isNaN(h) || isNaN(m)) return null;
+        return h * 60 + m;
+    }
+
+    function formatTime(mins) {
+        mins = ((mins % 1440) + 1440) % 1440;
+        let h = Math.floor(mins / 60);
+        let m = mins % 60;
+        return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+    }
+
+    if (source === 'M') {
+        let baseMins = parseTime(mInput.value);
+        if (baseMins === null) return;
+        hInput.value = formatTime(baseMins - 30);
+        dInput.value = formatTime(baseMins + 10);
+    }
+    saveTimeInput();
+}
+
+
+
 function saveGuideName() { 
-    localStorage.setItem(lsKey('bus_guideName'), document.getElementById('guideNameInput').value);
     localStorage.setItem(lsKey('bus_number'), document.getElementById('busNumberInput').value);
     if(msgListGroups.length > 0) refreshDisplay(); 
     syncToServer();
 }
 
-function saveSpecialNotice() { 
-    localStorage.setItem(lsKey('bus_specialNotice'), document.getElementById('specialNotice').value); 
+
+function saveTemplates() { 
+    localStorage.setItem(lsKey('bus_englishTemplate'), document.getElementById('englishTemplate').value); 
+    localStorage.setItem(lsKey('bus_chineseTemplate'), document.getElementById('chineseTemplate').value); 
     if(msgListGroups.length > 0) refreshDisplay(); 
     syncToServer();
 }
+
 
 
 
@@ -3473,17 +3966,22 @@ function loadSeatMap() {
 
 function loadTextInput() { const savedData = localStorage.getItem(lsKey('bus_rawData')); if(savedData) document.getElementById('rawData').value = savedData; const savedSize = localStorage.getItem(lsKey('bus_size')); if(savedSize) { const radios = document.getElementsByName('busSize'); for(let r of radios) { if(r.value === savedSize) r.checked = true; } } else { document.querySelector('input[name="busSize"][value="44"]').checked = true; } }
 
-function loadGuideName() { const savedGuide = localStorage.getItem(lsKey('bus_guideName')); if(savedGuide) document.getElementById('guideNameInput').value = savedGuide; const savedBus = localStorage.getItem(lsKey('bus_number')); if(savedBus) document.getElementById('busNumberInput').value = savedBus; }
+function loadGuideName() { const savedBus = localStorage.getItem(lsKey('bus_number')); if(savedBus) document.getElementById('busNumberInput').value = savedBus; }
+
 
 function clearData() {
     if(confirm('초기화하시겠습니까?')) {
+        resetBikeGroups();
         document.getElementById('rawData').value = '';
-        document.querySelector('input[name="busSize"][value="44"]').checked = true;
+
+                document.querySelector('input[name="busSize"][value="44"]').checked = true;
         localStorage.removeItem(lsKey('bus_rawData'));
         localStorage.removeItem(lsKey('bus_size'));
         localStorage.removeItem(lsKey('bus_seatMap'));
         localStorage.removeItem(lsKey('bus_msgStatus'));
+        localStorage.removeItem(lsKey('bus_bikeGroups'));
         currentSeatMap1 = [];
+
         currentSeatMap2 = [];
         msgListGroups = [];
         priorityQueue = [];
@@ -3510,6 +4008,8 @@ function clearData() {
 
 function updateHeader1(seatMap) {
     let counts = { '홍대':0, '명동':0, '동대문':0, '현장':0, '기타':0 }; 
+    let boarded = { '홍대':0, '명동':0, '동대문':0, '현장':0 };
+    let lang = { 'EN':0, 'CN':0 };
     let total = 0;
     let teamSet = new Set(); 
 
@@ -3519,18 +4019,33 @@ function updateHeader1(seatMap) {
             total++; 
             let loc = seat.location || '';
             
-            // 1. 픽업지 카운트
-            if(loc.includes('홍대')) counts['홍대']++;
-            else if(loc.includes('명동')) counts['명동']++;
-            else if(loc.includes('동대문')) counts['동대문']++;
-            else if(loc.includes('현장')) counts['현장']++;
+            let isHong = loc.includes('홍대');
+            let isMyeong = loc.includes('명동');
+            let isDong = loc.includes('동대문');
+            let isWalkIn = loc.includes('현장');
+            
+            // 1. 픽업지 예약 카운트 상태
+            if(isHong) counts['홍대']++;
+            else if(isMyeong) counts['명동']++;
+            else if(isDong) counts['동대문']++;
+            else if(isWalkIn) counts['현장']++;
             else counts['기타']++;
 
+            // 탑승 완료 카운트 상태
+            if(seat.isBoarded) {
+                if(isHong) boarded['홍대']++;
+                else if(isMyeong) boarded['명동']++;
+                else if(isDong) boarded['동대문']++;
+                else if(isWalkIn) boarded['현장']++;
+            }
+
+            // 언어 비율 카운트 상태
+            if(seat.langContext === 'EN') lang['EN']++;
+            else if(seat.langContext === 'CN') lang['CN']++;
+
             // 2. 팀 번호 파싱 (repNum의 첫 글자가 영어인지 확인)
-            // 데이터 예시: "B1", "C2" -> 첫글자 B, C 추출
             if (seat.repNum) {
                 let firstChar = String(seat.repNum).trim().charAt(0).toUpperCase();
-                // 영문자(A-Z)인 경우에만 팀 번호로 추가
                 if (/[A-Z]/.test(firstChar)) {
                     teamSet.add(firstChar);
                 }
@@ -3538,42 +4053,66 @@ function updateHeader1(seatMap) {
         }
     }
 
+    // 잔여 좌석 수 상태 계산
+    let emptySeats = (seatMap.length - 1) - total;
+    if (emptySeats < 0) emptySeats = 0;
+
     // 3. 데이터 준비
-    let guideName = document.getElementById('guideNameInput').value || "Mr. Shin";
+    let busNo = document.getElementById('busNumberInput').value || "";
     let teamLabel = teamSet.size > 0 ? Array.from(teamSet).sort().join(', ') : ''; 
     
-    // 팀이 있으면 "Mr. Shin (B)", 없으면 "Mr. Shin" 만 표시 ("GUIDE" 글자 삭제됨)
-    let topTitle = teamLabel ? `${guideName} <span style="color:#FF4081;">(${teamLabel})</span>` : guideName;
+    // 날짜 포맷 꾸밈 변경 (예: 2026-03-30 -> 2026년 3월 30일)
+    let rawDate = document.getElementById('dateDisplay1').innerText;
+    let dateMatch = rawDate.match(/(\d{4})-(\d{2})-(\d{2})/);
+    let dateStr = dateMatch ? `${dateMatch[1]}년 ${parseInt(dateMatch[2], 10)}월 ${parseInt(dateMatch[3], 10)}일` : rawDate;
+
+    let topTitle = busNo ? `${dateStr} BUS: ${busNo}` : `${dateStr} BUS: 미정`;
+    if (teamLabel) {
+        topTitle += ` <span style="color:#FF4081;">(${teamLabel})</span>`;
+    }
 
     let tH = document.getElementById('timeHongdae').value;
     let tM = document.getElementById('timeMyeongdong').value;
     let tD = document.getElementById('timeDongdaemun').value;
 
-    // 4. 레이아웃 (글자 크기 대폭 확대)
-    // 줄 1: 이름 + (팀) -> 26px (노란색)
-    const line1 = `<div style="font-size:26px; font-weight:900; color:#FFD54F; margin-bottom:6px; line-height:1.2;">
+    let rawText = document.getElementById('rawData').value.trim();
+    let destTitle = "";
+    if (rawText) {
+        let firstLine = rawText.split('\n')[0];
+        destTitle = firstLine.split('-')[0].replace(/^[a-zA-Z가-힣]+:\s*/, '').trim();
+    }
+    let destHtml = destTitle ? `<div style="font-size:20px; font-weight:900; color:#aed581; margin-top:4px;">🚩 ${destTitle}</div>` : "";
+
+    // 4. 레이아웃
+    const line1 = `<div style="font-size:20px; font-weight:900; color:#FFD54F; margin-bottom:6px; line-height:1.2;">
                       ${topTitle}
+                      ${destHtml}
                    </div>`;
     
-    // 줄 2: 출발 시간 -> 20px (흰색)
     const line2 = `<div style="font-size:20px; color:#fff; margin-bottom:8px; font-weight:bold;">
                       🕒 ${tH} / ${tM} / ${tD}
                    </div>`;
 
-    // 줄 3: 총 인원 및 픽업지 -> 22px / 18px
-    const line3 = `<div style="font-size:22px; font-weight:900; color:white;">
-                      TOTAL: ${total}명 
-                      <div style="font-size:18px; color:#B3E5FC; margin-top:4px; font-weight:bold;">
-                        [ 홍${counts['홍대']} / 명${counts['명동']} / 동${counts['동대문']} / 현${counts['현장']} ]
+    const line3_1 = `<div style="font-size:20px; font-weight:900; color:white; margin-bottom:4px;">
+                      총원: ${total}명 | 잔여: ${emptySeats}석
+                   </div>`;
+
+    const line3_2 = `<div style="font-size:20px; font-weight:900; color:#FFCA28; margin-bottom:6px;">
+                      EN: ${lang['EN']}명 | CN: ${lang['CN']}명
+                   </div>`;
+
+    const line4 = `<div style="background: rgba(0,0,0,0.2); padding: 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                      <div style="font-size:20px; color:#B3E5FC; font-weight:bold; margin-bottom:4px;">
+                        예약 [ 홍${counts['홍대']} / 명${counts['명동']} / 동${counts['동대문']} / 현${counts['현장']} ]
+                      </div>
+                      <div style="font-size:20px; color:#4fc3f7; font-weight:900;">
+                        탑승 [ 홍${boarded['홍대']} / 명${boarded['명동']} / 동${boarded['동대문']} / 현${boarded['현장']} ]
                       </div>
                    </div>`;
 
-    // [수정] 버튼 생성 코드(btnHtml)를 삭제하고, 텍스트만 출력하도록 변경
     document.getElementById('pickupSummary1').innerHTML = 
-        `<div style="text-align:left; display:flex; flex-direction:column;">${line1}${line2}${line3}</div>`;
+        `<div style="text-align:left; display:flex; flex-direction:column;">${line1}${line2}${line3_1}${line3_2}${line4}</div>`;
 }
-
-
 
 
 
@@ -3621,7 +4160,8 @@ function updatePriority(checkbox) {
 
 function updatePriorityDisplay() {
 
-  const map = { 'solo':'혼자', 'CN':'중국어', 'EN':'영어', 'G4':'4인이상', 'HD':'홍대', 'MY':'명동', 'DDM':'동대문' };
+    const map = { 'solo':'혼자', 'CN':'중국어', 'EN':'영어', 'G4':'4인이상', 'HD':'홍대', 'MY':'명동', 'DDM':'동대문', 'ODD':'홀수' };
+
 
   const txt = priorityQueue.map(v => map[v]).join(' > ');
 
@@ -3646,6 +4186,16 @@ function toggleMap2(hasReturnGuests) {
 function downloadImage(num) {
 
   const capture = document.getElementById('captureArea' + num);
+  let clonedPanel = null;
+
+  if (num === 1) {
+    const railbikePanel = document.getElementById('railbikePanel');
+    if (railbikePanel && railbikePanel.style.display !== 'none') {
+      clonedPanel = railbikePanel.cloneNode(true);
+      clonedPanel.style.marginTop = '15px';
+      capture.appendChild(clonedPanel);
+    }
+  }
 
   html2canvas(capture, { scrollY: -window.scrollY }).then(canvas => {
 
@@ -3653,9 +4203,14 @@ function downloadImage(num) {
 
     link.href = canvas.toDataURL(); link.click();
 
+    if (clonedPanel) {
+      capture.removeChild(clonedPanel);
+    }
+
   });
 
 }
+
 
 
 
@@ -3741,10 +4296,12 @@ function forceSaveAllData() {
     if(currentScreenMode !== 'main') return;
     try {
         saveTextInput(); saveGuideName(); saveTimeInput(); checkDateChange();
-        localStorage.setItem(lsKey('bus_specialNotice'), document.getElementById('specialNotice').value);
+        localStorage.setItem(lsKey('bus_englishTemplate'), document.getElementById('englishTemplate').value);
+        localStorage.setItem(lsKey('bus_chineseTemplate'), document.getElementById('chineseTemplate').value);
         syncToServer();
     } catch (e) { console.log("Safe Save:", e); }
 }
+
 
 
 
@@ -3858,42 +4415,65 @@ function toggleBoarding(el, gid) {
     saveSeatMap();
 }
 function openLongPopup(el, data, busNum) {
+    let statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
+    let isConn = statusData[data.repNum]?.connected || false;
+
     lpTarget = { 
         repNum: data.repNum, 
+        phone: data.phone,
         currentStatus: data.isBoarded || false,
-        timeStatus: data.isTimeConfirmed || false,
+        noReviewStatus: data.isNoReview || false,
+        timeStatus: isConn,
         busNum: busNum,
         seatIdx: parseInt(el.dataset.idx)
     };
+
     
     const popup = document.getElementById('longPressPopup');
     const btn = document.getElementById('btnToggleBoarding');
-    const btnTime = document.getElementById('btnToggleTime');
+    const btnConn = document.getElementById('btnToggleConnected');
     
+    if (lpTarget.timeStatus) {
+        btnConn.innerText = "연락 취소";
+        btnConn.classList.add('cancel-mode');
+    } else {
+        btnConn.innerText = "연락됨";
+        btnConn.classList.remove('cancel-mode');
+    }
+
     if (lpTarget.currentStatus) {
-        btn.innerText = "탑승 취소 (Uncheck)";
+
+        btn.innerText = "탑승 취소";
         btn.classList.add('cancel-mode');
     } else {
-        btn.innerText = "탑승 완료 (Check)";
+        btn.innerText = "탑승 완료";
         btn.classList.remove('cancel-mode');
     }
 
-    if (lpTarget.timeStatus) {
-        btnTime.innerText = "연락됨 취소";
-        btnTime.classList.add('cancel-mode');
-    } else {
-        btnTime.innerText = "연락됨 (Time)";
-        btnTime.classList.remove('cancel-mode');
+    const btnNoReview = document.getElementById('btnToggleNoReview');
+    if (btnNoReview) {
+        if (lpTarget.noReviewStatus) {
+            btnNoReview.innerText = "후기 안씀 취소";
+            btnNoReview.style.background = "#757575";
+            btnNoReview.style.color = "white";
+            btnNoReview.style.textShadow = "none";
+        } else {
+            btnNoReview.innerText = "후기 안씀";
+            btnNoReview.style.background = "repeating-linear-gradient(45deg, #000, #000 10px, #FFD700 10px, #FFD700 20px)";
+            btnNoReview.style.color = "white";
+            btnNoReview.style.textShadow = "1px 1px 2px black";
+        }
     }
 
     const rect = el.getBoundingClientRect();
 
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     popup.style.top = (rect.top + scrollTop - 50) + 'px'; 
-    popup.style.left = (rect.left + rect.width/2 - 80) + 'px'; 
+    popup.style.left = (rect.left + rect.width/2 - 53) + 'px'; /* 축소된 너비(106px)의 절반으로 위치 조정 */
     
     popup.style.display = 'flex';
 }
+
 
 
 // [추가] 팝업 닫기
@@ -3929,18 +4509,18 @@ function toggleTimeConfirmed() {
     const targetRep = lpTarget.repNum;
     const newStatus = !lpTarget.timeStatus;
     
-    [currentSeatMap1, currentSeatMap2].forEach(map => {
-        map.forEach(seat => {
-            if (seat && seat.repNum === targetRep) {
-                seat.isTimeConfirmed = newStatus;
-            }
-        });
-    });
+    let statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
+    if(!statusData[targetRep]) {
+        statusData[targetRep] = { contacted: false, connected: false, memo: "" };
+    }
+    statusData[targetRep].connected = newStatus;
+    localStorage.setItem(lsKey('bus_msgStatus'), JSON.stringify(statusData));
+    syncToServer();
 
-    saveSeatMap();
     refreshDisplay();
     closeLongPopup();
 }
+
 
 function handleNoShow() {
     // 롱프레스 타겟이 없으면 실행 안 함
@@ -3987,7 +4567,413 @@ function handleNoShow() {
     }
 }
 
- 
+function openGuestWhatsApp() {
+    if (!lpTarget || !lpTarget.phone) {
+        alert("전화번호 정보가 없습니다.");
+        return;
+    }
+    const cleanPhone = lpTarget.phone.replace(/[^0-9]/g, '');
+    const waLink = `https://wa.me/${cleanPhone}`;
+    window.open(waLink, '_blank');
+    closeLongPopup();
+}
+
+function toggleGroupNoReview() {
+    if (!lpTarget) return;
+    
+    const targetRep = lpTarget.repNum;
+    const newStatus = !lpTarget.noReviewStatus;
+    
+    [currentSeatMap1, currentSeatMap2].forEach(map => {
+        map.forEach(seat => {
+            if (seat && seat.repNum === targetRep) {
+                seat.isNoReview = newStatus;
+            }
+        });
+    });
+
+    saveSeatMap();
+    refreshDisplay();
+    closeLongPopup();
+}
+// 이 줄 위에 넣으세요
+
+ function checkRailbikeMode(raw) {
+
+    if (raw.includes('강촌') || raw.includes('가평')) {
+        document.getElementById('railbikePanel').style.display = 'block';
+    } else {
+        document.getElementById('railbikePanel').style.display = 'none';
+        resetBikeGroups();
+    }
+}
+
+
+function toggleBikeMode(type) {
+    if (currentBikeSeats.length > 0) {
+        completeBikeGroup();
+    }
+    if (activeBikeType === type) {
+        activeBikeType = 0;
+        document.getElementById('btnRb' + type).classList.remove('active');
+        document.getElementById('btnRb' + type).innerText = 'OFF ' + type + '인승 지정';
+        currentBikeSeats = [];
+    } else {
+        activeBikeType = type;
+        document.getElementById('btnRb4').classList.remove('active');
+        document.getElementById('btnRb2').classList.remove('active');
+        document.getElementById('btnRb4').innerText = 'OFF 4인승 지정';
+        document.getElementById('btnRb2').innerText = 'OFF 2인승 지정';
+        document.getElementById('btnRb' + type).classList.add('active');
+        document.getElementById('btnRb' + type).innerText = 'ON ' + type + '인승 지정';
+        currentBikeSeats = [];
+    }
+    updateBikeVisuals();
+}
+
+
+
+
+function handleBikeSeatClick(busNum, seatIdx, el) {
+    let groupRemoved = false;
+    for (let i = bikeGroups.length - 1; i >= 0; i--) {
+        if (bikeGroups[i].seats.some(s => String(s.seatIdx) === String(seatIdx) && String(s.busNum) === String(busNum))) {
+            bikeGroups.splice(i, 1);
+            groupRemoved = true;
+        }
+    }
+    let alreadyIn = currentBikeSeats.findIndex(s => String(s.seatIdx) === String(seatIdx) && String(s.busNum) === String(busNum));
+    if (alreadyIn > -1) {
+        currentBikeSeats.splice(alreadyIn, 1);
+        updateBikeVisuals();
+        if (groupRemoved) {
+            saveBikeGroups();
+        }
+        return;
+    }
+    if (groupRemoved) {
+        saveBikeGroups();
+    }
+    currentBikeSeats.push({ busNum: busNum, seatIdx: seatIdx });
+    updateBikeVisuals();
+    if (currentBikeSeats.length === activeBikeType) {
+        completeBikeGroup();
+    }
+}
+
+
+
+
+function completeBikeGroup() {
+    if (currentBikeSeats.length === 0) return;
+    bikeGroups.push({
+        type: activeBikeType,
+        seats: [...currentBikeSeats]
+    });
+    currentBikeSeats = [];
+    updateBikeVisuals();
+    saveBikeGroups();
+}
+
+
+function undoBikeGroup() {
+    if (bikeGroups.length > 0) {
+        bikeGroups.pop();
+        currentBikeSeats = [];
+        updateBikeVisuals();
+        saveBikeGroups();
+    }
+}
+
+
+function resetBikeGroups() {
+    bikeGroups = [];
+    currentBikeSeats = [];
+    activeBikeType = 0;
+    document.getElementById('btnRb4').classList.remove('active');
+    document.getElementById('btnRb2').classList.remove('active');
+    document.getElementById('btnRb4').innerText = 'OFF 4인승 지정';
+    document.getElementById('btnRb2').innerText = 'OFF 2인승 지정';
+    updateBikeVisuals();
+    saveBikeGroups();
+}
+
+
+
+function updateBikeVisuals() {
+    document.querySelectorAll('.rb-badge').forEach(e => e.remove());
+    document.querySelectorAll('.rb-line').forEach(e => e.remove());
+    document.querySelectorAll('.rb-dot').forEach(e => e.remove());
+    
+    document.querySelectorAll('.seat').forEach(el => {
+        el.style.border = '';
+        el.style.boxShadow = '';
+        if (el.classList.contains('empty')) {
+            el.style.border = '2px dashed #ddd';
+        } else if (el.classList.contains('synced-general')) {
+            el.style.border = '1px solid #bdbdbd';
+        } else if (el.classList.contains('boarded')) {
+            el.style.border = '2px solid #333';
+        } else {
+            el.style.border = '1px solid rgba(0,0,0,0.1)';
+            el.style.boxShadow = '1px 2px 3px rgba(0,0,0,0.1)';
+        }
+    });
+
+    let count4 = 0;
+    let count2 = 0;
+
+    bikeGroups.forEach(group => {
+        let badgeNum = 0;
+        let color = '';
+        let badgeClass = '';
+        let dotClass = '';
+        if (group.type === 4) {
+            count4++;
+            badgeNum = count4;
+            color = '#ff9800';
+            badgeClass = 'rb-badge-4';
+            dotClass = 'rb-dot-4';
+        } else {
+            count2++;
+            badgeNum = count2;
+            color = '#00bfa5';
+            badgeClass = 'rb-badge-2';
+            dotClass = 'rb-dot-2';
+        }
+
+                        let validSeats = 0;
+        let grid = null;
+        let dotsPos = [];
+
+        for (let i = 0; i < group.seats.length; i++) {
+            let s = group.seats[i];
+            let domEl = document.querySelector(`#busGrid${s.busNum} .seat[data-idx="${s.seatIdx}"]`);
+            if (domEl) {
+                let dot = document.createElement('div');
+                dot.className = `rb-dot ${dotClass}`;
+                domEl.appendChild(dot);
+
+                if (!grid) grid = document.getElementById(`busGrid${s.busNum}`);
+                let gridRect = grid.getBoundingClientRect();
+                let rect = domEl.getBoundingClientRect();
+                let cx = rect.left + rect.width / 2 - gridRect.left;
+                let cy = rect.top + rect.height / 2 - gridRect.top;
+                dotsPos.push({x: cx, y: cy});
+                validSeats++;
+
+                if (i > 0) {
+                    let prev = group.seats[i - 1];
+                    let prevEl = document.querySelector(`#busGrid${prev.busNum} .seat[data-idx="${prev.seatIdx}"]`);
+                    if (prevEl && prev.busNum === s.busNum) {
+                        drawLineBetween(prevEl, domEl, color, s.busNum, false);
+                    }
+                }
+            }
+        }
+
+        if (validSeats > 0 && grid) {
+            let centerX, centerY;
+            if (dotsPos.length > 1) {
+                let totalLength = 0;
+                let segments = [];
+                for (let j = 0; j < dotsPos.length - 1; j++) {
+                    let p1 = dotsPos[j];
+                    let p2 = dotsPos[j + 1];
+                    let dist = Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+                    segments.push({ p1: p1, p2: p2, dist: dist });
+                    totalLength += dist;
+                }
+                
+                let targetLength = totalLength / 2;
+                let currentLength = 0;
+                
+                for (let j = 0; j < segments.length; j++) {
+                    let seg = segments[j];
+                    if (currentLength + seg.dist >= targetLength) {
+                        let remain = targetLength - currentLength;
+                        let ratio = seg.dist === 0 ? 0 : remain / seg.dist;
+                        centerX = seg.p1.x + (seg.p2.x - seg.p1.x) * ratio;
+                        centerY = seg.p1.y + (seg.p2.y - seg.p1.y) * ratio;
+                        break;
+                    }
+                    currentLength += seg.dist;
+                }
+            } else {
+                centerX = dotsPos[0].x;
+                centerY = dotsPos[0].y;
+            }
+            let badge = document.createElement('div');
+            badge.className = `rb-badge ${badgeClass}`;
+            if (group.seats.length < group.type) {
+                badge.innerText = badgeNum + '호(미달)';
+            } else {
+                badge.innerText = badgeNum + '호';
+            }
+            badge.style.left = centerX + 'px';
+            badge.style.top = centerY + 'px';
+            
+grid.appendChild(badge);
+        }
+
+
+
+    });
+
+        for (let i = 0; i < currentBikeSeats.length; i++) {
+        let s = currentBikeSeats[i];
+        let color = activeBikeType === 4 ? '#ff9800' : '#00bfa5';
+        let dotClass = activeBikeType === 4 ? 'rb-dot-4' : 'rb-dot-2';
+        let domEl = document.querySelector(`#busGrid${s.busNum} .seat[data-idx="${s.seatIdx}"]`);
+        if (domEl) {
+            let dot = document.createElement('div');
+            dot.className = `rb-dot ${dotClass}`;
+            domEl.appendChild(dot);
+
+            if (i > 0) {
+                let prev = currentBikeSeats[i - 1];
+                let prevEl = document.querySelector(`#busGrid${prev.busNum} .seat[data-idx="${prev.seatIdx}"]`);
+                if (prevEl && prev.busNum === s.busNum) {
+                    drawLineBetween(prevEl, domEl, color, s.busNum, true);
+                }
+            }
+        }
+    }
+
+    let totalPeople = 0;
+    for (let i = 1; i < currentSeatMap1.length; i++) {
+        if (currentSeatMap1[i]) {
+            totalPeople++;
+        }
+    }
+    
+    let assignedPeople = 0;
+    bikeGroups.forEach(group => {
+        assignedPeople += group.seats.length;
+    });
+    assignedPeople += currentBikeSeats.length;
+    
+    let unassignedPeople = totalPeople - assignedPeople;
+    if (unassignedPeople < 0) {
+        unassignedPeople = 0;
+    }
+
+    document.getElementById('countRb4').innerText = count4;
+    document.getElementById('countRb2').innerText = count2;
+    document.getElementById('countRbUnassigned').innerText = unassignedPeople;
+}
+
+
+
+function drawLineBetween(el1, el2, color, busNum, isDash) {
+    let grid = document.getElementById(`busGrid${busNum}`);
+    let gridRect = grid.getBoundingClientRect();
+    let rect1 = el1.getBoundingClientRect();
+    let rect2 = el2.getBoundingClientRect();
+
+    let x1 = rect1.left + rect1.width / 2 - gridRect.left;
+    let y1 = rect1.top + rect1.height / 2 - gridRect.top;
+    let x2 = rect2.left + rect2.width / 2 - gridRect.left;
+    let y2 = rect2.top + rect2.height / 2 - gridRect.top;
+
+    let length = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+    let angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+
+    let line = document.createElement('div');
+    line.className = 'rb-line';
+    line.style.width = length + 'px';
+    line.style.height = '4px';
+    if (isDash) {
+        line.style.borderBottom = `4px dashed ${color}`;
+        line.style.backgroundColor = 'transparent';
+    } else {
+        line.style.backgroundColor = color;
+    }
+    line.style.left = x1 + 'px';
+    line.style.top = (y1 - 2) + 'px';
+    line.style.transform = `rotate(${angle}deg)`;
+    grid.appendChild(line);
+}
+
+function addLunchItem(gid, item) {
+    if (navigator.vibrate) { navigator.vibrate(50); }
+    playPopSound();
+    let inputEl = document.getElementById('lunchMemo_' + gid);
+    if (!inputEl) return;
+    let currentText = inputEl.value.trim();
+    
+    let parts = currentText ? currentText.split(',').map(s => s.trim()) : [];
+    let found = false;
+    
+    for (let i = 0; i < parts.length; i++) {
+        if (parts[i].startsWith(item)) {
+            let numStr = parts[i].substring(item.length).trim();
+            let num = parseInt(numStr);
+            if (isNaN(num)) num = 1;
+            parts[i] = item + (num + 1);
+            found = true;
+            break;
+        }
+    }
+    
+    if (!found) {
+        parts.push(item + "1");
+    }
+    
+    const order = ['매움', '안매움', '치즈', '볶음밥'];
+    parts.sort((a, b) => {
+        let idxA = order.findIndex(o => a.startsWith(o));
+        let idxB = order.findIndex(o => b.startsWith(o));
+        if (idxA === -1) idxA = 999;
+        if (idxB === -1) idxB = 999;
+        return idxA - idxB;
+    });
+    
+    let resultStr = parts.join(', ');
+    inputEl.value = resultStr;
+    updateMsgStatus(gid, 'lunchMemo', null, resultStr);
+}
+
+
+function resetLunch(gid) {
+    if (navigator.vibrate) { navigator.vibrate(50); }
+    playPopSound();
+    let inputEl = document.getElementById('lunchMemo_' + gid);
+    if (!inputEl) return;
+    inputEl.value = "";
+    updateMsgStatus(gid, 'lunchMemo', null, "");
+}
+
+function saveBikeGroups() {
+    localStorage.setItem(lsKey('bus_bikeGroups'), JSON.stringify(bikeGroups));
+    syncToServer();
+}
+
+function loadBikeGroups() {
+    const saved = localStorage.getItem(lsKey('bus_bikeGroups'));
+    if (saved) {
+        try {
+            bikeGroups = JSON.parse(saved);
+        } catch(e) {
+            bikeGroups = [];
+        }
+    } else {
+        bikeGroups = [];
+    }
+    activeBikeType = 0;
+    currentBikeSeats = [];
+    
+    let raw = document.getElementById('rawData').value;
+    if (raw.includes('강촌') || raw.includes('가평')) {
+        document.getElementById('railbikePanel').style.display = 'block';
+    } else {
+        document.getElementById('railbikePanel').style.display = 'none';
+    }
+    
+    updateBikeVisuals();
+}
+
+
 </script>
 
 
