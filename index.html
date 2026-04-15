@@ -1621,15 +1621,72 @@ function fallbackCopy(text, el) {
 
 function copyAndOpen(el, text, schemeKey, encodedText) {
 
-    copyToClipboard(text, el);
+    if (schemeKey !== 'viber') { copyToClipboard(text, el); } else { feedback(el); }
 
     let scheme = CONFIG.SCHEMES[schemeKey];
 
     if (schemeKey === 'viber') { const cleanNum = text.replace(/[^0-9]/g, ''); scheme = `viber://chat?number=${cleanNum}&draft=${encodedText}`; }
 
+    if (schemeKey === 'mail') { 
+        const parentCard = el.closest('.msg-card');
+        const msgGroupColor = parentCard ? parentCard.querySelector('.msg-group').style.color.toUpperCase() : '';
+        // 영어(파란색)는 '255'나 'FF'를 포함하므로, 이들이 없으면 중국어(검정/회색)로 판별
+        const isChineseGuest = msgGroupColor && !msgGroupColor.includes('255') && !msgGroupColor.includes('FF'); 
+
+        const engTemp = (document.getElementById('englishTemplate').value || "").toLowerCase();
+        const chnTemp = (document.getElementById('chineseTemplate').value || "").toLowerCase();
+        const fullTemp = engTemp + " " + chnTemp;
+
+        let guideName = "";
+        let guidePhone = "";
+
+        const profiles = [
+            { keys: ["jenny", "제니", "희재"], name: "Jenny", phone: "+82 10 5345 9295" },
+            { keys: ["sam", "연호"], name: "Sam", phone: "+82 10 8547 0628" },
+            { keys: ["judy", "쥬디", "주디", "현주"], name: "Judy", phone: "+82 10 9152 4355" },
+            { keys: ["roo", "해날"], name: "Roo", phone: "+82 10 3922 4355" },
+            { keys: ["eleven", "일레븐", "시연"], name: "Eleven", phone: "+82 10 2701 4452" },
+            { keys: ["bob", "승규"], name: "Bob", phone: "+82 10 3302 3604" },
+            { keys: ["panda", "팬더", "상흘"], name: "Panda", phone: "+82 10 2854 4452" },
+            { keys: ["shin", "신승호", "미스터신", "mr.shin", "mr. shin"], name: "Mr. Shin", phone: "+82 10 9415 8825" }
+        ];
+
+        for (let p of profiles) {
+            if (p.keys.some(k => {
+                if (/^[a-z.]+$/.test(k)) {
+                    return new RegExp("\\b" + k.replace(/\./g, "\\.") + "\\b").test(fullTemp);
+                } else {
+                    return fullTemp.includes(k);
+                }
+            })) {
+                guideName = p.name;
+                guidePhone = p.phone;
+                break;
+            }
+        }
+
+        let mailSubject = "";
+        let rawBody = "";
+
+        if (isChineseGuest) {
+            mailSubject = "我是您的导游";
+            rawBody = guideName ? `你好。我是导游 [${guideName}]。\n我的 WhatsApp 或 Viber 号码是 [${guidePhone}]。\n请添加我。\n\n` : "";
+        } else {
+            mailSubject = "I am your tour guide";
+            rawBody = guideName ? `Hello. I am [${guideName}], your tour guide.\nMy WhatsApp or Viber number is [${guidePhone}].\nPlease add me.\n\n` : "";
+        }
+
+        const mailBody = encodeURIComponent(rawBody);
+        scheme = `mailto:${text}?subject=${encodeURIComponent(mailSubject)}&body=${mailBody}`; 
+    }
+
     if (scheme) { setTimeout(() => { try { window.location.href = scheme; } catch(e) {} }, 300); }
 
 }
+
+
+
+
 
 
 function copyLunchMemos(btn) {
@@ -3306,7 +3363,8 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
 
         
 
-                let appIconHtml = getAppIconHtml(g.messenger, g.appType, encodedText);
+                        let appIconHtml = getAppIconHtml(g.messenger, g.appType, encodedText, g.phone);
+
 
 
         
@@ -3453,7 +3511,7 @@ if (g.isBike) extraTags += `<span class="day-tag tag-bike" style="margin-left:5p
 
 
 
-function getAppIconHtml(rawMsg, appType, encodedText) {
+function getAppIconHtml(rawMsg, appType, encodedText, fullPhone) {
 
     if (!rawMsg) return `<div class="btn-action logo-none">X</div>`;
 
@@ -3495,11 +3553,12 @@ function getAppIconHtml(rawMsg, appType, encodedText) {
 
             appClass = 'logo-viber'; appName = 'Vi'; 
 
-            copyValue = rawMsg.replace(/[^0-9]/g, ''); 
+            copyValue = fullPhone ? fullPhone : rawMsg.replace(/[^0-9]/g, ''); 
 
             schemeKey = 'viber';
 
         }
+
 
         else if (lower.includes('wechat') || lower.includes('weixin')) { 
 
