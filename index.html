@@ -917,12 +917,14 @@
 
 
 <div class="msg-section" id="msgSection" style="display:none;">
-    <div class="v11-card">
+        <div class="v11-card">
       <span class="v11-section-label">11. 메시지 발송 & 체크</span>
       <div class="v11-btn-group" style="margin-top: 5px;">
           <button class="btn-run v11-ui-element" style="background: #e65100; color: white; border:none; flex:1;" onclick="copyLunchMemos(this)">🍱 점심 주문 일괄 복사</button>
+          <button class="btn-run v11-ui-element" style="background: #4fc3f7; color: white; border:none; flex:1;" onclick="sendBulkEmail()">📧 메일 일괄 발송</button>
       </div>
     </div>
+
     <div id="msgList"></div>
 </div>
 
@@ -1689,9 +1691,61 @@ function copyAndOpen(el, text, schemeKey, encodedText) {
 
 
 
+function sendBulkEmail() {
+    let emailList = [];
+    msgListGroups.forEach(g => {
+        if (g.email && g.email.includes('@')) {
+            emailList.push(g.email.trim());
+        }
+    });
+
+    if (emailList.length === 0) {
+        alert("발송할 이메일 주소가 없습니다.");
+        return;
+    }
+
+    let uniqueEmails = [...new Set(emailList)];
+    const bccString = uniqueEmails.join(',');
+
+    const engTemp = (document.getElementById('englishTemplate').value || "").toLowerCase();
+    const chnTemp = (document.getElementById('chineseTemplate').value || "").toLowerCase();
+    const fullTemp = engTemp + " " + chnTemp;
+
+    // 템플릿에 'Mr. Shin' 관련 키워드가 있을 때만 본문 작성
+    let isMrShin = ["shin", "신승호", "미스터신", "mr.shin", "mr. shin"].some(k => fullTemp.includes(k));
+
+    let mailSubject = "I am Mr. Shin, tomorrow's guide / 我是您明天的导游 Mr. Shin";
+    let rawBody = "";
+
+    if (isMrShin) {
+        rawBody = "Hello. I am Mr. Shin, tomorrow's guide.\n" +
+                  "For smooth communication, please add me on your preferred messenger:\n" +
+                  "- WhatsApp/Viber: +82 10 9415 8825\n" +
+                  "- Line: https://line.me/ti/p/XYFy6dc8uN\n" +
+                  "- WeChat ID: coverstyle\n\n" +
+                  "Please let me know your order number when replying.\n" +
+                  "Thank you.\n\n" +
+                  "--------------------------------------------------\n\n" +
+                  "你好。我是您明天的导游 Mr. Shin。\n" +
+                  "为了方便沟通，请添加我的联系方式：\n" +
+                  "- WhatsApp/Viber: +82 10 9415 8825\n" +
+                  "- Line: https://line.me/ti/p/XYFy6dc8uN\n" +
+                  "- 微信 (WeChat ID): coverstyle\n\n" +
+                  "回复时请告知您的订单号。\n" +
+                  "谢谢。";
+    }
+
+    const mailBody = encodeURIComponent(rawBody);
+    const mailtoLink = `mailto:?bcc=${bccString}&subject=${encodeURIComponent(mailSubject)}&body=${mailBody}`;
+
+    setTimeout(() => { try { window.location.href = mailtoLink; } catch(e) {} }, 300);
+}
+
+
+// 이 줄 위에 넣으세요
 function copyLunchMemos(btn) {
     let statusData = JSON.parse(localStorage.getItem(lsKey('bus_msgStatus')) || '{}');
-    let resultText = "";
+ let resultText = "";
     let totals = {};
     let hasData = false;
     
