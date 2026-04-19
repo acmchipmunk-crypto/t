@@ -3376,12 +3376,18 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
 
 
 
-              // --- 2. 변수 치환 적용 ---
-        msgText = baseTemplate
-            .replace(/\[버스\]/g, busNo)
+                       // --- 2. 변수 치환 적용 ---
+        msgText = baseTemplate;
+        
+        if (isFit) {
+            msgText = msgText.replace(/^.*\[버스\].*$\n?/gm, '').replace(/^.*\[좌석\].*$\n?/gm, '');
+        } else {
+            msgText = msgText.replace(/\[버스\]/g, busNo).replace(/\[좌석\]/g, seatStr);
+        }
+
+        msgText = msgText
             .replace(/\[그룹\]/g, g.repNum)
             .replace(/\[인원수\]/g, g.count)
-            .replace(/\[좌석\]/g, isFit ? "" : seatStr) 
             .replace(/\[출발시간\]/g, userTime)
             .replace(/\[탑승지\]/g, userPlace)
             .replace(/\n?\[신발\]/g, varShoe)
