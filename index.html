@@ -3601,13 +3601,14 @@ function getAppIconHtml(rawMsg, appType, encodedText, fullPhone) {
 
         }
 
-        else if (lower.includes('kakao') || lower.includes('talk')) { 
+                else if (lower.includes('kakao') || lower.includes('talk') || lower.includes('카카오톡') || lower.includes('카톡')) { 
 
-            appClass = 'logo-kakao'; appName = 'Ka'; copyValue = rawMsg.replace(/^(kakao|talk|kakao\s*talk)[:\s]*/i, '').trim(); 
+            appClass = 'logo-kakao'; appName = 'Ka'; copyValue = rawMsg.replace(/^(kakaotalk|kakao\s*talk|kakao|talk|카카오톡|카톡)[:\s]*/i, '').trim(); 
 
             schemeKey = 'kakao';
 
         }
+
 
         else if (lower.includes('viber')) { 
 
