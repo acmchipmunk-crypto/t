@@ -981,10 +981,12 @@
         <span style="color:#e65100; font-weight:bold;">[남이섬]</span> 남이섬 안내 링크 (N.jpg)<br>
         <span style="color:#e65100; font-weight:bold;">[알파카]</span> 알파카 안내 링크 (A.jpg)<br>
         <span style="color:#e65100; font-weight:bold;">[쁘띠]</span> 쁘띠 프랑스 안내 링크 (F.png)<br>
-        <span style="color:#e65100; font-weight:bold;">[이탈리아]</span> 이탈리아 마을 안내 링크 (I.png)<br>
-        <span style="color:#e65100; font-weight:bold;">[수목원]</span> 수목원 안내 링크 (s.png)
+                <span style="color:#e65100; font-weight:bold;">[이탈리아]</span> 이탈리아 마을 안내 링크 (I.png)<br>
+        <span style="color:#e65100; font-weight:bold;">[수목원]</span> 수목원 안내 링크 (s.png)<br>
+        <span style="color:#e65100; font-weight:bold;">[한복]</span> 한복체험 안내 영상 링크
     </div>
 </div>
+
 
 
 <div class="badge-legend">
@@ -3365,7 +3367,7 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
             }
         }
 
-                let varGarden = "";
+                        let varGarden = "";
         if (g.isGarden) {
             if (g.langContext === 'CN') {
                 varGarden = "\n🌺 晨静树木园：https://acmchipmunk-crypto.github.io/t/s.png";
@@ -3374,7 +3376,14 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
             }
         }
 
-
+        let varHanbok = "";
+        if (g.isHanbok) {
+            if (g.langContext === 'CN') {
+                varHanbok = "\n✨ 韩服体验指南视频：https://youtube.com/shorts/o-X-UX2lpr4?si=-_fnzfC5XdKo8uih";
+            } else {
+                varHanbok = "\n✨ Hanbok Experience Guide Video: https://youtube.com/shorts/o-X-UX2lpr4?si=-_fnzfC5XdKo8uih";
+            }
+        }
 
                        // --- 2. 변수 치환 적용 ---
         msgText = baseTemplate;
@@ -3400,7 +3409,9 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
             .replace(/\n?\[알파카\]/g, varAlpaca)
             .replace(/\n?\[쁘띠\]/g, varPetite)
             .replace(/\n?\[이탈리아\]/g, varItalian)
-            .replace(/\n?\[수목원\]/g, varGarden);
+            .replace(/\n?\[수목원\]/g, varGarden)
+            .replace(/\n?\[한복\]/g, varHanbok);
+
 
 
 
@@ -3601,14 +3612,13 @@ function getAppIconHtml(rawMsg, appType, encodedText, fullPhone) {
 
         }
 
-                else if (lower.includes('kakao') || lower.includes('talk') || lower.includes('카카오톡') || lower.includes('카톡')) { 
+        else if (lower.includes('kakao') || lower.includes('talk')) { 
 
-            appClass = 'logo-kakao'; appName = 'Ka'; copyValue = rawMsg.replace(/^(kakaotalk|kakao\s*talk|kakao|talk|카카오톡|카톡)[:\s]*/i, '').trim(); 
+            appClass = 'logo-kakao'; appName = 'Ka'; copyValue = rawMsg.replace(/^(kakao|talk|kakao\s*talk)[:\s]*/i, '').trim(); 
 
             schemeKey = 'kakao';
 
         }
-
 
         else if (lower.includes('viber')) { 
 
