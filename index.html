@@ -1938,13 +1938,13 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
 
         resNoForOrigin = (headerMap.resNo !== -1 && parts[headerMap.resNo]) ? parts[headerMap.resNo] : "";
 
-        rawLang = ""; 
+                rawLang = ""; 
 
         count = findCount(parts); 
 
         location = findLocation(parts);
 
-        note = ""; 
+        note = (headerMap.note !== -1 && parts[headerMap.note]) ? parts[headerMap.note] : ""; 
 
         if(!customId) customId = originalOrder.toString();
 
@@ -2451,13 +2451,16 @@ function runAI() {
 
                 product: headerParts.findIndex(p => p.includes('행사명') || p.includes('상품') || p.includes('Product')),
 
-                name: headerParts.findIndex(p => p.includes('예약자') || p.includes('이름') || p.includes('Name')),
+                            name: headerParts.findIndex(p => p.includes('예약자') || p.includes('이름') || p.includes('Name')),
 
-                phone: headerParts.findIndex(p => p.includes('핸드폰') || p.includes('전화') || p.includes('연락처') || p.includes('Phone')),
+            phone: headerParts.findIndex(p => p.includes('핸드폰') || p.includes('전화') || p.includes('연락처') || p.includes('Phone')),
 
-                messenger: headerParts.findIndex(p => p.includes('메신저') || p.includes('카톡') || p.includes('Messenger') || p.includes('연락가능APP') || p.includes('앱'))
+            messenger: headerParts.findIndex(p => p.includes('메신저') || p.includes('카톡') || p.includes('Messenger') || p.includes('연락가능APP') || p.includes('앱')),
 
-            };
+            note: headerParts.findIndex(p => p.includes('비고') || p.includes('요청') || p.includes('Note') || p.includes('note'))
+
+        };
+
 
             startLineIdx = k + 1; 
 
@@ -3549,9 +3552,13 @@ if (g.isBike) extraTags += `<span class="day-tag tag-bike" style="margin-left:5p
                 <div><span style="font-size: 12px; color: #757575; display: inline-block; width: 35px;">전화:</span> <b style="font-size: 14px;">${g.phone || '없음'}</b></div>
                 ${g.phone ? `<span class="btn-copy-inline" onclick="copyOnly(this, '${g.phone}')" style="font-size: 16px; margin: 0;">📄</span>` : ''}
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+                   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
                 <div><span style="font-size: 12px; color: #757575; display: inline-block; width: 35px;">앱:</span> <b style="font-size: 14px;">${g.messenger || '없음'}</b></div>
                 ${g.messenger ? `<span class="btn-copy-inline" onclick="copyOnly(this, '${g.messenger.replace(/'/g, "\\'")}')" style="font-size: 16px; margin: 0;">📄</span>` : ''}
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div><span style="font-size: 12px; color: #757575; display: inline-block; width: 35px;">메일:</span> <b style="font-size: 14px;">${g.email || '없음'}</b></div>
+                ${g.email ? `<span class="btn-copy-inline" onclick="copyOnly(this, '${g.email}')" style="font-size: 16px; margin: 0;">📄</span>` : ''}
             </div>
         </div>
     </div>
