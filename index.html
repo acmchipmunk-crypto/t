@@ -2067,12 +2067,16 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
         hanbokCount = count;
     }
 
+    // 이 줄 위에 넣으세요
+    let rawDataVal = document.getElementById('rawData').value.trim();
+    let globalTitle = rawDataVal ? rawDataVal.split('\n')[0].toLowerCase() : "";
+
     let isBike = (line.includes('지정바이크'));
-    let isNami = line.includes('남이섬') || lineLower.includes('nami');
-    let isAlpaca = line.includes('알파카') || lineLower.includes('alpaca');
-    let isPetite = line.includes('쁘띠') || lineLower.includes('petite');
-    let isItalian = line.includes('이탈리아') || lineLower.includes('italian');
-    let isGarden = line.includes('수목원') || line.includes('아침고요') || lineLower.includes('garden');
+    let isNami = line.includes('남이섬') || lineLower.includes('nami') || globalTitle.includes('남이섬') || globalTitle.includes('nami');
+    let isAlpaca = line.includes('알파카') || lineLower.includes('alpaca') || globalTitle.includes('알파카') || globalTitle.includes('alpaca');
+    let isPetite = line.includes('쁘띠') || lineLower.includes('petite') || globalTitle.includes('쁘띠') || globalTitle.includes('petite');
+    let isItalian = line.includes('이탈리아') || lineLower.includes('italian') || globalTitle.includes('이탈리아') || globalTitle.includes('italian');
+    let isGarden = line.includes('수목원') || line.includes('아침고요') || lineLower.includes('garden') || globalTitle.includes('수목원') || globalTitle.includes('아침고요') || globalTitle.includes('garden');
 
     let lowerP = productName.toLowerCase();
 
