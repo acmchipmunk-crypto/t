@@ -779,11 +779,12 @@
 <div class="v11-card">
   <span class="v11-section-label">4. 배치 우선순위</span>
   <div class="control-panel" style="margin-top:0; border-top:none; padding-top:0;">
-    <div class="priority-display" id="priorityView" style="font-size: 11px; min-height: 12px;">우선순위: 없음</div>
+      <div class="priority-display" id="priorityView" style="font-size: 11px; min-height: 12px;">우선순위: 혼자 > 중국어</div>
     <div class="control-group" style="gap: 2px;">
-      <label class="chk-label"><input type="checkbox" class="criteria" value="solo" onchange="updatePriority(this)"> 혼자</label>
-      <label class="chk-label"><input type="checkbox" class="criteria" value="CN" onchange="updatePriority(this)"> 중어</label>
+      <label class="chk-label"><input type="checkbox" class="criteria" value="solo" onchange="updatePriority(this)" checked> 혼자</label>
+      <label class="chk-label"><input type="checkbox" class="criteria" value="CN" onchange="updatePriority(this)" checked> 중어</label>
       <label class="chk-label"><input type="checkbox" class="criteria" value="EN" onchange="updatePriority(this)"> 영어</label>
+
       <label class="chk-label"><input type="checkbox" class="criteria" value="G4" onchange="updatePriority(this)"> 4인↑</label>
       
       <label class="chk-label"><input type="checkbox" class="criteria" value="ODD" onchange="updatePriority(this)"> 홀수</label>
@@ -1179,9 +1180,10 @@ let selectedSeat = { busNum: 0, idx: -1 };
 
 let msgListGroups = []; 
 
-let priorityQueue = [];
+let priorityQueue = ['solo', 'CN'];
 
 let audioCtx = null;
+
 let lpTimer = null; // 롱프레스 타이머
 let lpTarget = null; // 롱프레스 대상 정보
 let activeBikeType = 0;
@@ -1300,8 +1302,8 @@ function lsKey(key) {
 function loadAllDataForRoom() {
     currentSeatMap1 = [];
     currentSeatMap2 = [];
-    msgListGroups = [];
-    priorityQueue = [];
+        msgListGroups = [];
+    priorityQueue = ['solo', 'CN'];
     selectedSeat = { busNum: 0, idx: -1 };
     document.getElementById('busGrid1').innerHTML = '';
     document.getElementById('busGrid2').innerHTML = '';
@@ -1310,9 +1312,16 @@ function loadAllDataForRoom() {
     document.getElementById('captureArea2').style.display = 'none';
     document.querySelectorAll('#msgList').forEach(el => el.innerHTML = '');
     document.getElementById('msgSection').style.display = 'none';
-    document.querySelectorAll('.criteria').forEach(chk => chk.checked = false);
-    document.getElementById('priorityView').innerText = "우선순위: 없음";
+    document.querySelectorAll('.criteria').forEach(chk => {
+        if (chk.value === 'solo' || chk.value === 'CN') {
+            chk.checked = true;
+        } else {
+            chk.checked = false;
+        }
+    });
+    updatePriorityDisplay();
     document.getElementById('paxInfo').innerText = "준비됨";
+
 
         loadTextInput(); 
     loadGuideName(); 
@@ -4123,9 +4132,9 @@ function clearData() {
         localStorage.removeItem(lsKey('bus_bikeGroups'));
         currentSeatMap1 = [];
 
-        currentSeatMap2 = [];
+                currentSeatMap2 = [];
         msgListGroups = [];
-        priorityQueue = [];
+        priorityQueue = ['solo', 'CN'];
         selectedSeat = { busNum: 0, idx: -1 };
         document.getElementById('busGrid1').innerHTML = '';
         document.getElementById('busGrid2').innerHTML = '';
@@ -4134,10 +4143,17 @@ function clearData() {
         document.getElementById('captureArea2').style.display = 'none';
         document.querySelectorAll('#msgList').forEach(el => el.innerHTML = '');
         document.getElementById('msgSection').style.display = 'none';
-        document.querySelectorAll('.criteria').forEach(chk => chk.checked = false);
-        document.getElementById('priorityView').innerText = "우선순위: 없음";
+        document.querySelectorAll('.criteria').forEach(chk => {
+            if (chk.value === 'solo' || chk.value === 'CN') {
+                chk.checked = true;
+            } else {
+                chk.checked = false;
+            }
+        });
+        updatePriorityDisplay();
         document.getElementById('paxInfo').innerText = "준비됨";
         syncToServer();
+
     }
 }
 
