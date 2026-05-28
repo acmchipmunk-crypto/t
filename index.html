@@ -3253,19 +3253,20 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
         let userPlaceEN = "";
         let userPlaceCN = "";
 
-        if (loc.includes('홍대') || loc.includes('Hongik')) { 
+            if (loc.includes('홍대') || loc.includes('Hongik')) { 
             userTime = tH; 
-            userPlaceEN = "Hongik Univ.s.t Exit 8"; 
+            userPlaceEN = "Hongik Univ. Stn. Exit 8"; 
             userPlaceCN = "弘大入口站 8號出口";
         } else if (loc.includes('명동') || loc.includes('Myeongdong')) { 
             userTime = tM; 
-            userPlaceEN = "Myeongdong s.t Exit 3"; 
+            userPlaceEN = "Myeongdong Stn. Exit 3"; 
             userPlaceCN = "明洞站 3號出口";
         } else if (loc.includes('동대문')) { 
             userTime = tD; 
-            userPlaceEN = "Dongdaemun History Culture park s.t Exit 11"; 
+            userPlaceEN = "Dongdaemun History Culture park Stn. Exit 11"; 
             userPlaceCN = "東大門歷史文化公園站 11號出口";
-        } else { 
+        }
+else { 
             userTime = `${tH} / ${tM} / ${tD}`; 
             userPlaceEN = "Hongik Univ. Exit 8 / Myeongdong Exit 3 / Dongdaemun Exit 11"; 
             userPlaceCN = "弘大 8號 / 明洞 3號 / 東大門 11號";
