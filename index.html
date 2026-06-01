@@ -3257,10 +3257,10 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
             userTime = tH; 
             userPlaceEN = "Hongik Univ. Stn. Exit 8"; 
             userPlaceCN = "弘大入口站 8號出口";
-        } else if (loc.includes('명동') || loc.includes('Myeongdong')) { 
+                } else if (loc.includes('명동') || loc.includes('Myeongdong')) { 
             userTime = tM; 
-            userPlaceEN = "Myeongdong Stn. Exit 3"; 
-            userPlaceCN = "明洞站 3號出口";
+            userPlaceEN = "Yejang Park Bus Parking Lot"; 
+            userPlaceCN = "艺场公园巴士停车场";
         } else if (loc.includes('동대문')) { 
             userTime = tD; 
             userPlaceEN = "Dongdaemun History Culture park Stn. Exit 11"; 
@@ -3268,9 +3268,10 @@ function renderMessages(allGroups, seatMap1, seatMap2, isFit) {
         }
 else { 
             userTime = `${tH} / ${tM} / ${tD}`; 
-            userPlaceEN = "Hongik Univ. Exit 8 / Myeongdong Exit 3 / Dongdaemun Exit 11"; 
-            userPlaceCN = "弘大 8號 / 明洞 3號 / 東大門 11號";
+            userPlaceEN = "Hongik Univ. Exit 8 / Yejang Park Bus Parking Lot / Dongdaemun Exit 11"; 
+            userPlaceCN = "弘大 8號 / 艺场公园巴士停车场 / 東大門 11號";
         }
+
 
         let userPlace = (g.langContext === 'CN') ? userPlaceCN : userPlaceEN;
         let baseTemplate = (g.langContext === 'CN') ? chnTemplate : engTemplate;
