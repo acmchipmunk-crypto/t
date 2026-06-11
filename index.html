@@ -2147,15 +2147,16 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
 
 
 
-      originTag: originTag, 
+            originTag: originTag, 
 
       resNo: resNoForOrigin,
 
-
+      productName: productName,
 
 
       options: { lift: optLift, gear: optGear, clothes: optClothes, lesson: optLesson }
     };
+
 
 
 
@@ -2296,7 +2297,7 @@ function createGroupsFromEntries(entries) {
             isItalian: currentGroupMembers.some(m => m.isItalian),
             isGarden: currentGroupMembers.some(m => m.isGarden),
 
-                        isSkiTour: currentGroupMembers.some(m => !m.isSancheoneo),
+                                                isSkiTour: currentGroupMembers.some(m => !m.isSancheoneo),
             note: currentGroupMembers.map(m => m.note).filter(n => n && n.trim() !== '').join(', '),
 
 
@@ -2304,11 +2305,13 @@ function createGroupsFromEntries(entries) {
 
             originTag: combinedOrigin, 
             resNo: rep.resNo,
+            productName: rep.productName,
             options: { lift: gLift, gear: gGear, clothes: gClothes, lesson: gLesson },
             isBoarded: false,
             offOptions: [],
             memberNames: [...new Set(currentGroupMembers.map(m => m.name))]
         });
+
 
 
 
@@ -4239,20 +4242,19 @@ function updateHeader1(seatMap) {
         topTitle += ` <span style="color:#FF4081;">(${teamLabel})</span>`;
     }
 
-    let tH = document.getElementById('timeHongdae').value;
+        let tH = document.getElementById('timeHongdae').value;
     let tM = document.getElementById('timeMyeongdong').value;
     let tD = document.getElementById('timeDongdaemun').value;
 
-    let rawText = document.getElementById('rawData').value.trim();
     let destTitle = "";
-    if (rawText) {
-        let firstLine = rawText.split('\n')[0];
-        destTitle = firstLine.split('-')[0].replace(/^[a-zA-Z가-힣]+:\s*/, '').trim();
+    if (msgListGroups && msgListGroups.length > 0 && msgListGroups[0].productName) {
+        destTitle = msgListGroups[0].productName.split('-')[0].replace(/^[a-zA-Z가-힣]+:\s*/, '').trim();
     }
     let destHtml = destTitle ? `<div style="font-size:20px; font-weight:900; color:#aed581; margin-top:4px;">🚩 ${destTitle}</div>` : "";
 
     // 4. 레이아웃
     const line1 = `<div style="font-size:20px; font-weight:900; color:#FFD54F; margin-bottom:6px; line-height:1.2;">
+
                       ${topTitle}
                       ${destHtml}
                    </div>`;
