@@ -2415,12 +2415,17 @@ function runAI() {
     const direction = document.querySelector('input[name="direction"]:checked').value;
 
 
-        let rawLines = raw.trim().split('\n');
+            let rawLines = raw.trim().split('\n');
     let lines = [];
     let tempLine = "";
     for (let i = 0; i < rawLines.length; i++) {
         let l = rawLines[i];
         let isNewRow = l.includes('\t') || l.match(/\s{2,}/) || l.trim() === '' || /^(no\.|total|엑셀|\d+|[a-z가-힣]+:)/i.test(l.trim());
+        
+        if (/^\d{4}-\d{2}-\d{2}/.test(l.trim())) {
+            isNewRow = false;
+        }
+        // 이 줄 위에 넣으세요
         if (isNewRow) {
             if (tempLine) lines.push(tempLine);
             tempLine = l;
@@ -2430,6 +2435,7 @@ function runAI() {
         }
     }
     if (tempLine) lines.push(tempLine);
+
 
     const rawLower = raw.toLowerCase();
 
@@ -3894,12 +3900,17 @@ function manualBatchAdd() {
     const rawLower = rawBatch.toLowerCase();
 
     const isGlobalSki = rawLower.includes('ski') || rawLower.includes('snowboard') || rawLower.includes('스키') || rawLower.includes('스노우');
-        let rawLines = rawBatch.split('\n');
+            let rawLines = rawBatch.split('\n');
     let lines = [];
     let tempLine = "";
     for (let i = 0; i < rawLines.length; i++) {
         let l = rawLines[i];
         let isNewRow = l.includes('\t') || l.match(/\s{2,}/) || l.trim() === '' || /^(no\.|total|엑셀|\d+|[a-z가-힣]+:)/i.test(l.trim());
+        
+        if (/^\d{4}-\d{2}-\d{2}/.test(l.trim())) {
+            isNewRow = false;
+        }
+        // 이 줄 위에 넣으세요
         if (isNewRow) {
             if (tempLine) lines.push(tempLine);
             tempLine = l;
@@ -3909,6 +3920,7 @@ function manualBatchAdd() {
         }
     }
     if (tempLine) lines.push(tempLine);
+
     
     let entries = [];
 
