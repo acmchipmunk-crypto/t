@@ -2114,11 +2114,12 @@ function parseRawDataLine(line, originalOrder, isGlobalSki, headerMap) {
     // 오직 텍스트(rawLang)에 포함된 단어만 기준으로 판별합니다.
         let langContext = 'EN'; 
 
-    if (line.includes('중국어') || line.toLowerCase().includes('chinese')) {
+    if (line.includes('중국어') || line.toLowerCase().includes('chinese') || line.toLowerCase().includes('zh-') || line.toLowerCase().includes('zh_')) {
         langContext = 'CN';
     } else if (line.includes('영어') || line.toLowerCase().includes('english')) {
         langContext = 'EN';
     }
+
 
 
 
