@@ -668,7 +668,17 @@
 .rb-dot-4 { background-color: rgba(255, 152, 0, 0.4); }
 .rb-dot-2 { background-color: rgba(0, 191, 165, 0.4); }
 
+/* --- [NEW] 달력 UI 스타일 --- */
+.cal-day { background: white; border: 1px solid #ccc; border-radius: 8px; padding: 10px 5px; text-align: center; cursor: pointer; font-weight: bold; position: relative; min-height: 40px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.cal-day:active { transform: scale(0.95); }
+.cal-day.today { border: 2px solid #e65100; background: #fff3e0; }
+.cal-header { font-weight: 900; text-align: center; font-size: 14px; color: #555; padding-bottom: 5px; }
+.cal-badge { font-size: 10px; font-weight: 900; color: white; background: #4CAF50; border-radius: 4px; padding: 2px 4px; margin-top: 4px; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+.cal-btn-nav { font-size: 22px; border: none; background: transparent; cursor: pointer; font-weight: bold; color: #3f51b5; padding: 0 10px; }
+.cal-btn-nav:active { transform: scale(0.8); }
+
 </style>
+
 
 
 </head>
@@ -678,10 +688,19 @@
 <button id="floatingBackBtn" onclick="goBack()">⬅️<br>뒤로</button>
 
 <div id="entryScreen">
-    <button class="big-btn btn-general" onclick="enterRoom('일반투어 (가)')">일반투어 (가)</button>
-    <button class="big-btn btn-general" style="margin-top: 15px;" onclick="enterRoom('일반투어 (나)')">일반투어 (나)</button>
-    <button class="big-btn btn-ski" onclick="checkSkiAuth()">스키투어</button>
+    <div id="calendarHeader" style="font-size:24px; font-weight:900; margin-bottom:10px; color:#333; display:flex; justify-content:space-between; width:90%; max-width:350px; align-items:center;"></div>
+    
+    <div style="display:flex; gap:10px; margin-bottom:15px; width:90%; max-width:350px;">
+        <button class="big-btn btn-general" style="padding:10px; font-size:16px; flex:1;" onclick="goToQuickDate(-1)">어제</button>
+        <button class="big-btn btn-general" style="padding:10px; font-size:16px; flex:1.2; background:linear-gradient(135deg, #e65100, #ef6c00);" onclick="goToQuickDate(0)">오늘</button>
+        <button class="big-btn btn-general" style="padding:10px; font-size:16px; flex:1;" onclick="goToQuickDate(1)">내일</button>
+    </div>
+    
+    <div id="calendarGrid" style="display:grid; grid-template-columns:repeat(7, 1fr); gap:6px; width:90%; max-width:350px; margin-bottom:20px;"></div>
+    
+    <button class="big-btn btn-ski" style="margin-top: 10px;" onclick="checkSkiAuth()">스키투어</button>
 </div>
+
 
 
 <div id="roomSelectScreen" style="display:none;">
@@ -1192,6 +1211,7 @@ let bikeGroups = [];
 
 let currentActiveRoom = '';
 let currentScreenMode = 'entry'; 
+let currentCalDate = new Date(); // 달력용 기준 날짜
 
 function saveScreenState() {
     sessionStorage.setItem('currentScreenMode', currentScreenMode);
@@ -1201,7 +1221,7 @@ function saveScreenState() {
 function goBack() {
     if (currentScreenMode === 'main') {
         forceSaveAllData();
-        if (currentActiveRoom === '일반투어 (가)' || currentActiveRoom === '일반투어 (나)') {
+        if (/^\d{4}-\d{2}-\d{2}$/.test(currentActiveRoom) || currentActiveRoom === '일반투어 (가)' || currentActiveRoom === '일반투어 (나)') {
             showEntryScreen();
         } else {
             showRoomSelectScreen();
@@ -1221,6 +1241,100 @@ function showEntryScreen() {
     document.getElementById('mainAppScreen').style.display = 'none';
     document.getElementById('floatingBackBtn').style.display = 'none';
     if (typeof pollTimer !== 'undefined') clearInterval(pollTimer);
+    
+    cleanupOldData();
+    renderCalendar(currentCalDate);
+}
+
+// 한 달 지난 찌꺼기 데이터 자동 삭제 로직
+function cleanupOldData() {
+    const now = new Date().getTime();
+    const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+    let keysToRemove = [];
+    
+    for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+        let match = key.match(/^(\d{4}-\d{2}-\d{2})_/);
+        if (match) {
+            let keyDate = new Date(match[1]).getTime();
+            if (now - keyDate > thirtyDays) {
+                keysToRemove.push(key);
+            }
+        }
+    }
+    
+    keysToRemove.forEach(k => localStorage.removeItem(k));
+}
+
+// 달력 렌더링 로직
+function renderCalendar(dateObj) {
+    const grid = document.getElementById('calendarGrid');
+    const header = document.getElementById('calendarHeader');
+    grid.innerHTML = '';
+    
+    const year = dateObj.getFullYear();
+    const month = dateObj.getMonth();
+    
+    header.innerHTML = `
+        <button class="cal-btn-nav" onclick="changeMonth(-1)">◀</button> 
+        <span>${year}년 ${month + 1}월</span>
+        <button class="cal-btn-nav" onclick="changeMonth(1)">▶</button>
+    `;
+    
+    const days = ['일', '월', '화', '수', '목', '금', '토'];
+    days.forEach(d => {
+        let el = document.createElement('div');
+        el.className = 'cal-header';
+        if(d === '일') el.style.color = '#f44336';
+        if(d === '토') el.style.color = '#1976d2';
+        el.innerText = d;
+        grid.appendChild(el);
+    });
+    
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+    
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+    
+    for (let i = 0; i < firstDay; i++) {
+        let el = document.createElement('div');
+        grid.appendChild(el);
+    }
+    
+    for (let i = 1; i <= lastDate; i++) {
+        let el = document.createElement('div');
+        el.className = 'cal-day';
+        
+        let currentDayOfWeek = (firstDay + i - 1) % 7;
+        if (currentDayOfWeek === 0) el.style.color = '#f44336';
+        if (currentDayOfWeek === 6) el.style.color = '#1976d2';
+        
+        let dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+        if (dateStr === todayStr) el.classList.add('today');
+        
+        el.innerHTML = `<div style="font-size:16px;">${i}</div>`;
+        
+        // 데이터가 존재하면 "작업함" 배지 표시
+        if (localStorage.getItem(dateStr + '_bus_rawData') || localStorage.getItem(dateStr + '_bus_seatMap')) {
+            el.innerHTML += `<div class="cal-badge">작업함</div>`;
+        }
+        
+        el.onclick = () => { enterRoom(dateStr); };
+        grid.appendChild(el);
+    }
+}
+
+function changeMonth(delta) {
+    currentCalDate.setMonth(currentCalDate.getMonth() + delta);
+    renderCalendar(currentCalDate);
+}
+
+function goToQuickDate(offset) {
+    let target = new Date();
+    target.setDate(target.getDate() + offset);
+    let dateStr = `${target.getFullYear()}-${String(target.getMonth()+1).padStart(2,'0')}-${String(target.getDate()).padStart(2,'0')}`;
+    enterRoom(dateStr);
 }
 
 
@@ -1267,7 +1381,23 @@ function enterRoom(roomName) {
     currentActiveRoom = roomName;
     currentScreenMode = 'main';
     saveScreenState();
-    document.getElementById('mainRoomTitle').innerText = roomName;
+    
+    // 날짜 형태면 예쁘게 타이틀 변환 및 캡처용 날짜 자동 세팅
+    if (/^\d{4}-\d{2}-\d{2}$/.test(roomName)) {
+        let parts = roomName.split('-');
+        document.getElementById('mainRoomTitle').innerText = `${parts[0]}년 ${parseInt(parts[1])}월 ${parseInt(parts[2])}일`;
+        
+        const days = ['일','월','화','수','목','금','토'];
+        let d = new Date(parts[0], parseInt(parts[1])-1, parts[2]);
+        let dateDisplayStr = `${roomName} (${days[d.getDay()]})`;
+        document.getElementById('dateDisplay1').innerText = dateDisplayStr;
+        document.getElementById('dateDisplay2').innerText = dateDisplayStr;
+        
+        let yymmdd = parts[0].slice(2) + parts[1] + parts[2];
+        document.getElementById('vcardDate').value = yymmdd;
+    } else {
+        document.getElementById('mainRoomTitle').innerText = roomName;
+    }
     
     document.getElementById('entryScreen').style.display = 'none';
     document.getElementById('roomSelectScreen').style.display = 'none';
@@ -1275,9 +1405,11 @@ function enterRoom(roomName) {
     document.getElementById('mainAppScreen').style.display = 'block';
     document.getElementById('floatingBackBtn').style.display = 'flex';
 
-    if (roomName === '일반투어 (가)' || roomName === '일반투어 (나)') {
+    // 날짜 기반 일반투어인지 검증
+    if (/^\d{4}-\d{2}-\d{2}$/.test(roomName) || roomName === '일반투어 (가)' || roomName === '일반투어 (나)') {
         loadAllDataForRoom();
     } else {
+
         document.getElementById('paxInfo').innerText = "서버 데이터 불러오는 중...";
         google.script.run.withSuccessHandler(function(serverData) {
             if (serverData) {
@@ -1296,8 +1428,12 @@ function enterRoom(roomName) {
 
 
 function lsKey(key) {
+    if (key === 'bus_englishTemplate' || key === 'bus_chineseTemplate') {
+        return 'GLOBAL_' + key;
+    }
     return currentActiveRoom + '_' + key;
 }
+
 
 function loadAllDataForRoom() {
     currentSeatMap1 = [];
@@ -3996,8 +4132,9 @@ let syncTimer = null;
 let pollTimer = null;
 
 function syncToServer() {
-    if (currentActiveRoom === '일반투어 (가)' || currentActiveRoom === '일반투어 (나)') return;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(currentActiveRoom) || currentActiveRoom === '일반투어 (가)' || currentActiveRoom === '일반투어 (나)') return;
     clearTimeout(syncTimer);
+
     syncTimer = setTimeout(() => {
                 let roomData = {
             'bus_seatMap': localStorage.getItem(currentActiveRoom + '_bus_seatMap') || '',
@@ -4020,8 +4157,9 @@ function syncToServer() {
 
 
 function startPolling() {
-    if (currentActiveRoom === '일반투어 (가)' || currentActiveRoom === '일반투어 (나)') return;
+    if (/^\d{4}-\d{2}-\d{2}$/.test(currentActiveRoom) || currentActiveRoom === '일반투어 (가)' || currentActiveRoom === '일반투어 (나)') return;
     clearInterval(pollTimer);
+
     pollTimer = setInterval(() => {
         google.script.run.withSuccessHandler(function(serverData) {
             if (serverData) {
