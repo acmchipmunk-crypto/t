@@ -1459,10 +1459,22 @@ function loadAllDataForRoom() {
     document.getElementById('paxInfo').innerText = "준비됨";
 
 
-        loadTextInput(); 
+                loadTextInput(); 
     loadGuideName(); 
-    document.getElementById('englishTemplate').value = localStorage.getItem(lsKey('bus_englishTemplate')) || "";
-    document.getElementById('chineseTemplate').value = localStorage.getItem(lsKey('bus_chineseTemplate')) || "";
+
+    let engTemp = localStorage.getItem('GLOBAL_bus_englishTemplate');
+    if (!engTemp) {
+        engTemp = localStorage.getItem('일반투어 (가)_bus_englishTemplate') || localStorage.getItem('일반투어 (나)_bus_englishTemplate') || "";
+        if (engTemp) localStorage.setItem('GLOBAL_bus_englishTemplate', engTemp);
+    }
+    document.getElementById('englishTemplate').value = engTemp;
+
+    let chnTemp = localStorage.getItem('GLOBAL_bus_chineseTemplate');
+    if (!chnTemp) {
+        chnTemp = localStorage.getItem('일반투어 (가)_bus_chineseTemplate') || localStorage.getItem('일반투어 (나)_bus_chineseTemplate') || "";
+        if (chnTemp) localStorage.setItem('GLOBAL_bus_chineseTemplate', chnTemp);
+    }
+    document.getElementById('chineseTemplate').value = chnTemp;
 
         const savedTimes = JSON.parse(localStorage.getItem(lsKey('bus_times')) || '{}');
 
