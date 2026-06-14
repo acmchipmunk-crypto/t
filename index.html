@@ -1315,10 +1315,11 @@ function renderCalendar(dateObj) {
         
         el.innerHTML = `<div style="font-size:16px;">${i}</div>`;
         
-        // 데이터가 존재하면 "작업함" 배지 표시
-        if (localStorage.getItem(dateStr + '_bus_rawData') || localStorage.getItem(dateStr + '_bus_seatMap')) {
+         // 데이터가 존재하면 "작업함" 배지 표시
+        if (localStorage.getItem(dateStr + '_bus_seatMap')) {
             el.innerHTML += `<div class="cal-badge">작업함</div>`;
         }
+
         
         el.onclick = () => { enterRoom(dateStr); };
         grid.appendChild(el);
@@ -4292,7 +4293,8 @@ function loadSeatMap() {
 
 }
 
-function loadTextInput() { const savedData = localStorage.getItem(lsKey('bus_rawData')); if(savedData) document.getElementById('rawData').value = savedData; const savedSize = localStorage.getItem(lsKey('bus_size')); if(savedSize) { const radios = document.getElementsByName('busSize'); for(let r of radios) { if(r.value === savedSize) r.checked = true; } } else { document.querySelector('input[name="busSize"][value="44"]').checked = true; } }
+function loadTextInput() { const savedData = localStorage.getItem(lsKey('bus_rawData')); if(savedData) document.getElementById('rawData').value = savedData; else document.getElementById('rawData').value = ''; const savedSize = localStorage.getItem(lsKey('bus_size')); if(savedSize) { const radios = document.getElementsByName('busSize'); for(let r of radios) { if(r.value === savedSize) r.checked = true; } } else { document.querySelector('input[name="busSize"][value="44"]').checked = true; } }
+
 
 function loadGuideName() { const savedBus = localStorage.getItem(lsKey('bus_number')); if(savedBus) document.getElementById('busNumberInput').value = savedBus; }
 
