@@ -354,12 +354,15 @@
   .lang-EN { background: #e3f2fd; color: #1565c0; }
 
   .lunch-btn-group { display: flex; gap: 4px; margin-top: 5px; width: 100%; grid-column: 1 / -1; }
-  .lunch-btn { flex: 1; padding: 6px 2px; border-radius: 6px; font-size: 12px; font-weight: 900; color: white; border: none; cursor: pointer; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-  .lunch-btn-mild { background-color: #8D6E63; }
+  .lunch-btn { flex: 1; padding: 6px 1px; border-radius: 6px; font-size: 11px; font-weight: 900; color: white; border: none; cursor: pointer; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.2); letter-spacing: -0.5px; }
   .lunch-btn-spicy { background-color: #E53935; }
+  .lunch-btn-soy { background-color: #8D6E63; }
   .lunch-btn-cheese { background-color: #FDD835; color: #333; }
   .lunch-btn-rice { background-color: #43A047; }
-  .lunch-btn-reset { background-color: #757575; }
+  .lunch-btn-udon { background-color: #FB8C00; }
+  .lunch-btn-cola { background-color: #1976D2; }
+  .lunch-btn-cider { background-color: #00897B; }
+
   .lunch-memo-input { width: 100%; margin-top: 4px; border: 2px solid #FF9800; border-radius: 6px; font-weight: bold; font-size: 12px; padding: 6px 8px; background: #FFF3E0; box-sizing: border-box; color: #E65100; }
 
   .msg-actions { display: flex; flex-direction: row; gap: 5px; align-items: center; justify-content: space-between; width: 100%; }
@@ -1934,8 +1937,8 @@ function copyLunchMemos(btn) {
                 }
             });
             
-            let orderStrArr = [];
-            const standardOrder = ['매움', '안매움', '치즈', '볶음밥'];
+                        let orderStrArr = [];
+            const standardOrder = ['매움', '간장', '치즈', '볶음', '우동', '콜라', '사이다'];
             standardOrder.forEach(item => {
                 if (groupOrders[item] > 0) {
                     orderStrArr.push(item + " " + groupOrders[item]);
@@ -1964,32 +1967,9 @@ function copyLunchMemos(btn) {
         return;
     }
     
-    let totalPeople = 0;
-    for (let i = 1; i < currentSeatMap1.length; i++) {
-        if (currentSeatMap1[i]) totalPeople++;
-    }
-    
-    resultText += "\n[전체 총합]\n";
-    let totalArr = [];
-    const standardOrder = ['매움', '안매움', '치즈', '볶음밥'];
-    standardOrder.forEach(item => {
-        if (totals[item] > 0) {
-            totalArr.push(item + " " + totals[item]);
-            delete totals[item];
-        }
-    });
-    
-    for (let name in totals) {
-        if (totals[name] > 0) {
-            totalArr.push(name + " " + totals[name]);
-        }
-    }
-    
-    resultText += totalArr.join(', ') + "\n";
-    resultText += "버스 총원: " + totalPeople + "명";
-    
     copyToClipboard(resultText.trim(), btn);
 }
+
 
 
 
@@ -3657,19 +3637,22 @@ if (g.isBike) extraTags += `<span class="day-tag tag-bike" style="margin-left:5p
 
                                                                 let optionHtml = "";
 
-                if (!g.isSkiTour) {
+                                if (!g.isSkiTour) {
             let gid = g.repNum;
             optionHtml = `
                 <div class="lunch-btn-group">
                     <button class="lunch-btn lunch-btn-spicy" onclick="addLunchItem('${gid}', '매움')">매움</button>
-                    <button class="lunch-btn lunch-btn-mild" onclick="addLunchItem('${gid}', '안매움')">안매움</button>
+                    <button class="lunch-btn lunch-btn-soy" onclick="addLunchItem('${gid}', '간장')">간장</button>
                     <button class="lunch-btn lunch-btn-cheese" onclick="addLunchItem('${gid}', '치즈')">치즈</button>
-                    <button class="lunch-btn lunch-btn-rice" onclick="addLunchItem('${gid}', '볶음밥')">볶음밥</button>
-                    <button class="lunch-btn lunch-btn-reset" onclick="resetLunch('${gid}')">다시작성</button>
+                    <button class="lunch-btn lunch-btn-rice" onclick="addLunchItem('${gid}', '볶음')">볶음</button>
+                    <button class="lunch-btn lunch-btn-udon" onclick="addLunchItem('${gid}', '우동')">우동</button>
+                    <button class="lunch-btn lunch-btn-cola" onclick="addLunchItem('${gid}', '콜라')">콜라</button>
+                    <button class="lunch-btn lunch-btn-cider" onclick="addLunchItem('${gid}', '사이다')">사이다</button>
                 </div>
                 <input type="text" id="lunchMemo_${gid}" class="lunch-memo-input" placeholder="점심 주문" value="${lunchMemoText}" onchange="updateMsgStatus('${gid}', 'lunchMemo', null, this.value)">
             `;
         } else if (g.isSkiTour) {
+
 
 
             let pickupColor = groupBgColor;
@@ -5256,8 +5239,9 @@ function addLunchItem(gid, item) {
         parts.push(item + "1");
     }
     
-    const order = ['매움', '안매움', '치즈', '볶음밥'];
+        const order = ['매움', '간장', '치즈', '볶음', '우동', '콜라', '사이다'];
     parts.sort((a, b) => {
+
         let idxA = order.findIndex(o => a.startsWith(o));
         let idxB = order.findIndex(o => b.startsWith(o));
         if (idxA === -1) idxA = 999;
