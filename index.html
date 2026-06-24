@@ -1967,8 +1967,10 @@ function copyLunchMemos(btn) {
         return;
     }
     
-    copyToClipboard(resultText.trim(), btn);
+    resultText = resultText.trim() + "\n\n-이상 끝-";
+    copyToClipboard(resultText, btn);
 }
+
 
 
 
@@ -1988,13 +1990,13 @@ function copyOnly(el, text) { copyToClipboard(text, el); }
 
 // =========================================
 
-                function findCount(parts) {
+                                function findCount(parts) {
 
       for (let i = 0; i < parts.length - 1; i++) {
 
         const p = parts[i].toLowerCase();
 
-        if (p.includes('중국어') || p.includes('영어') || p.includes('chinese') || p.includes('english') || p.includes('zh')) {
+        if (p.includes('중국어') || p.includes('영어') || p.includes('chinese') || p.includes('english') || p.includes('zh') || p === 'en' || p === 'cn') {
 
           let match = parts[i+1].match(/\d+/g);
 
@@ -2013,6 +2015,7 @@ function copyOnly(el, text) { copyToClipboard(text, el); }
       return 1;
 
     }
+
 
 
 
